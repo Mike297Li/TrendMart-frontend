@@ -7,7 +7,7 @@
     "formik": "^1.5.1",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
-    "react-router-dom": "^5.0.0",
+    "react-router-dom": "^5.3.4",
     "react-scripts": "2.1.8"
   },
   "scripts": {
