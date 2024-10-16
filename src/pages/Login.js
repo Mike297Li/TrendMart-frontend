@@ -11,6 +11,11 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // Basic validation for password length and null check
+        if (!password || password.length < 8) {
+            setError('Password must be at least 8 characters long.');
+            return;
+        }
         try {
             const response = await axios.post('http://localhost:8080/api/auth/login', { email, password });
             console.log(response.data);
