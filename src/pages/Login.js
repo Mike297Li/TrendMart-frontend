@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import '../styles/Login.css';
 import { useHistory } from 'react-router-dom'; // For navigation
+import {signInWithGooglePopup, auth, signInWithEmailPassword} from '../firebase.utils'; // Firebase config file
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -9,19 +9,30 @@ const Login = () => {
     const [error, setError] = useState('');
     const history = useHistory(); // Hook to programmatically navigate
 
-    const handleSubmit = async (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        // Basic validation for password length and null check
-        if (!password || password.length < 8) {
-            setError('Password must be at least 8 characters long.');
-            return;
-        }
         try {
-            const response = await axios.post('http://localhost:8080/api/auth/login', { email, password });
-            console.log(response.data);
-            // Handle successful login here
+            // Firebase login with email and password
+            const userCredential = await signInWithEmailPassword(email, password);
+            console.log("User Logged In: ", userCredential.user);
+            // Redirect to homePage after successful login
+            history.push('/homePage');
         } catch (error) {
-            setError('Login failed. Please check your credentials.'); // Set error message
+            console.error("Login failed:", error);
+            setError("Login failed. Please check your email or password.");
+        }
+    };
+
+    const logGoogleUser = async () => {
+        try {
+            // Firebase login using Google Popup
+            const response = await signInWithGooglePopup();
+            console.log("Google User Logged In: ", response);
+            // Redirect to homePage after successful login
+            history.push('/homePage');
+        } catch (error) {
+            console.error("Google login failed:", error);
+            setError("Google login failed. Please try again.");
         }
     };
 
@@ -36,23 +47,33 @@ const Login = () => {
             {/* Show error message if there's an error */}
             {error && <p className="error-message">{error}</p>}
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleLogin}>
                 <label>
                     Email:
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
                 </label>
                 <label>
                     Password:
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
                 </label>
 
-                {/* Row with login button and forgot password link */}
                 <div className="button-row">
                     <button type="submit">Login</button>
-                    <button className="forgot-password-link" onClick={handleForgotPassword}>
+                    <button type="button" className="forgot-password-link" onClick={handleForgotPassword}>
                         Forgot Password?
                     </button>
                 </div>
+                <button type="button" onClick={logGoogleUser}>Google login</button>
             </form>
         </div>
     );
