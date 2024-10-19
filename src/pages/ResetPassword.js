@@ -1,31 +1,24 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useHistory } from 'react-router-dom'; // Import useHistory
+import { auth, sendPasswordResetEmail } from '../firebase.utils'; // Import necessary functions
 import '../styles/ResetPassword.css';
-
 
 const ForgetPassword = () => {
     const [email, setEmail] = useState('');
-    const [newPassword, setNewPassword] = useState('');
     const [message, setMessage] = useState('');
     const history = useHistory(); // Initialize useHistory
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/api/auth/reset-password', {
-                email,
-                newPassword
-            });
-            setMessage(response.data); // Display success message from the backend
-            // Redirect to the login page after successful password reset
-            if (response.data === "Password has been reset successfully..") {
-                setTimeout(() => {
-                    history.push('/login'); // Redirect to login page
-                }, 2000); // Delay redirection by 2 seconds
-            }
+            await sendPasswordResetEmail(auth, email); // Send reset email
+            setMessage('Password reset email sent successfully. Please check your inbox.');
+            setTimeout(() => {
+                history.push('/login'); // Redirect to login page after a delay
+            }, 2000);
         } catch (error) {
-            setMessage('Failed to reset password. Please try again.');
+            console.error("Error sending password reset email: ", error.message); // Log error to console
+            setMessage(`Failed to send reset email: ${error.message}`); // Display detailed error message
         }
     };
 
@@ -39,15 +32,6 @@ const ForgetPassword = () => {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </label>
-                <label>
-                    Enter your new password:
-                    <input
-                        type="password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
                         required
                     />
                 </label>
