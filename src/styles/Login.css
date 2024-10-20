@@ -1,55 +1,54 @@
 /* General styles */
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* Background gradient */
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     margin: 0;
     padding: 0;
 }
 
 .login-container {
     max-width: 400px;
-    margin: 100px auto; /* Center the container */
+    margin: 100px auto;
     padding: 30px;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center contents */
+    align-items: center;
 }
 
 h2 {
     text-align: center;
     color: #333;
-    margin-bottom: 20px; /* Added space below heading */
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
     margin: 15px 0 5px;
     color: #555;
-    width: 100%; /* Full width */
+    width: 100%;
 }
 
 input[type="email"],
 input[type="password"] {
     width: 100%;
-    padding: 12px; /* Increased padding */
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
     transition: border 0.3s;
-    margin-bottom: 15px; /* Space between inputs */
+    margin-bottom: 15px;
 }
 
 input[type="email"]:focus,
 input[type="password"]:focus {
-    border: 1px solid #007BFF; /* Highlight border color */
+    border: 1px solid #007BFF;
     outline: none;
 }
 
 button {
-    width: 100%;
-    padding: 12px; /* Increased padding */
+    padding: 12px;
     background-color: #007BFF;
     color: white;
     border: none;
@@ -57,28 +56,42 @@ button {
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
-    margin-top: 10px; /* Space above button */
+    margin-top: 10px;
+    width: 100%;
 }
 
 button:hover {
-    background-color: #0056b3; /* Darken button color on hover */
+    background-color: #0056b3;
+}
+
+/* Styling for Google login button */
+button.google-login {
+    background-color: #DB4437; /* Google brand red */
+    margin-top: 15px; /* Space between Google login and Login button */
+    font-size: 16px;
+}
+
+button.google-login:hover {
+    background-color: #c23321; /* Darken Google button on hover */
 }
 
 .forgot-password-link {
     background-color: transparent;
-    color: #007BFF;
+    color: #007BFF; /* Initial color */
     text-decoration: underline;
     cursor: pointer;
     border: none;
     font-size: 14px;
     padding: 0;
-    margin-left: 10px; /* Space between login button and the link */
-    display: inline-block;
+    margin-top: 10px;
+    display: block;
+    text-align: right;
 }
 
 .forgot-password-link:hover {
-    color: #0056b3;
-    text-decoration: none;
+    text-decoration: none; /* Remove underline on hover */
+    color: #007BFF; /* Explicitly keep the blue color during hover */
+    background-color: transparent; /* Ensure no background change */
 }
 
 .success-message {
@@ -93,12 +106,13 @@ button:hover {
     margin: 15px 0;
 }
 
-/* Flex container to align login button and forgot-password link */
+/* Flex container to align forgot password link with login button */
 .button-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    margin-top: 10px;
 }
 
 /* Responsive styles */
@@ -125,10 +139,10 @@ button:hover {
 /* Additional styles for better appearance */
 input[type="email"],
 input[type="password"] {
-    font-size: 16px; /* Larger font for better readability */
+    font-size: 16px;
 }
 
 .success-message,
 .error-message {
-    font-size: 14px; /* Adjusted font size for messages */
+    font-size: 14px;
 }

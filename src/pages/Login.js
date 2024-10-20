@@ -67,13 +67,21 @@ const Login = () => {
                     />
                 </label>
 
-                <div className="button-row">
-                    <button type="submit">Login</button>
-                    <button type="button" className="forgot-password-link" onClick={handleForgotPassword}>
-                        Forgot Password?
-                    </button>
-                </div>
-                <button type="button" onClick={logGoogleUser}>Google login</button>
+                {/* Login button */}
+                <button type="submit">Login</button>
+
+                {/* Google login button */}
+                <button type="button" className="google-login" onClick={logGoogleUser}>
+                    Google login
+                </button>
+                {/* Forgot password link */}
+                <button
+                    type="button"
+                    className="forgot-password-link"
+                    onClick={handleForgotPassword}
+                >
+                    Forgot Password?
+                </button>
             </form>
         </div>
     );
