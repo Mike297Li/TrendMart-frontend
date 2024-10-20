@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
-import { useHistory } from 'react-router-dom'; // For navigation
-import {signInWithGooglePopup, auth, signInWithEmailPassword} from '../firebase.utils'; // Firebase config file
+import { useNavigate } from 'react-router-dom'; // For navigation
+import { signInWithGooglePopup, auth, signInWithEmailPassword } from '../firebase.utils'; // Firebase config file
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const history = useHistory(); // Hook to programmatically navigate
+    const navigate = useNavigate(); // Use useNavigate for navigation
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -16,7 +16,7 @@ const Login = () => {
             const userCredential = await signInWithEmailPassword(email, password);
             console.log("User Logged In: ", userCredential.user);
             // Redirect to homePage after successful login
-            history.push('/homePage');
+            navigate('/homePage');
         } catch (error) {
             console.error("Login failed:", error);
             setError("Login failed. Please check your email or password.");
@@ -29,7 +29,7 @@ const Login = () => {
             const response = await signInWithGooglePopup();
             console.log("Google User Logged In: ", response);
             // Redirect to homePage after successful login
-            history.push('/homePage');
+            navigate('/homePage');
         } catch (error) {
             console.error("Google login failed:", error);
             setError("Google login failed. Please try again.");
@@ -37,7 +37,7 @@ const Login = () => {
     };
 
     const handleForgotPassword = () => {
-        history.push('/reset-password'); // Redirect to reset password page
+        navigate('/reset-password'); // Redirect to reset password page
     };
 
     return (
@@ -74,6 +74,7 @@ const Login = () => {
                 <button type="button" className="google-login" onClick={logGoogleUser}>
                     Google login
                 </button>
+
                 {/* Forgot password link */}
                 <button
                     type="button"
