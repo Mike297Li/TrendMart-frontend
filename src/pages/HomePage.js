@@ -16,7 +16,6 @@ const HomePage = () => {
             unsubscribe();
         };
     }, []);
-
     // Logout function
     const handleLogout = () => {
         signOut(auth)

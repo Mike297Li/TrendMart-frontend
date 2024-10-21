@@ -6,28 +6,54 @@ import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of us
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [error, setError] = useState('');
 
     const navigate = useNavigate(); // Use useNavigate for navigation
 
+    const isValidPassword = (password) => {
+        const hasUpperCase = /[A-Z]/.test(password);
+        const hasSpecialCharacter = /[!@#$%^&*(),.?":{}|<>+]/.test(password);
+        return hasUpperCase && hasSpecialCharacter;
+    };
+
     const handleRegister = async (e) => {
         e.preventDefault();
 
+        
+        if (!acceptedTerms) {
+            setError('You must accept the terms and conditions to register.');
+            return;
+        }
+
+      
+        if (password !== confirmPassword) {
+            setError('Passwords do not match. Please try again.');
+            return;
+        }
+
+        
+        if (!isValidPassword(password)) {
+            setError('Password must include at least one uppercase letter and one special character.');
+            return;
+        }
+
         try {
-            // Firebase method to create a user with email and password
+            
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            console.log("User Registered: ", userCredential.user);
+            console.log('User Registered: ', userCredential.user);
 
             // Redirect to login page after successful registration
             navigate('/login'); // Use navigate instead of history.push
         } catch (error) {
-            // Error handling based on Firebase's error codes
+
             if (error.code === 'auth/email-already-in-use') {
-                setError("This email is already registered.");
+                setError('This email is already registered.');
             } else if (error.code === 'auth/weak-password') {
-                setError("Password is too weak. Please choose a stronger password.");
+                setError('Password is too weak. Please choose a stronger password.');
             } else {
-                setError("Error during registration: " + error.message);
+                setError('Error during registration: ' + error.message);
             }
         }
     };
@@ -46,6 +72,7 @@ const Register = () => {
                         required
                     />
                 </label>
+                <br />
                 <label>
                     Password:
                     <input
@@ -55,6 +82,26 @@ const Register = () => {
                         required
                     />
                 </label>
+                <br />
+                <label>
+                    Confirm Password:
+                    <input
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
+                    />
+                </label>
+                <br />
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={acceptedTerms}
+                        onChange={(e) => setAcceptedTerms(e.target.checked)}
+                    />
+                    I accept the <a href="/terms" target="_blank" rel="noopener noreferrer">terms and conditions</a>
+                </label>
+                <br />
                 <button type="submit">Register</button>
             </form>
         </div>
