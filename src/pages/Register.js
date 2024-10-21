@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { auth } from '../firebase.utils'; // Correctly imported Firebase auth
-import { createUserWithEmailAndPassword } from 'firebase/auth'; // Import the function
-import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
+import { auth } from '../firebase.utils';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate, Link  } from 'react-router-dom';  // v6 method
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -10,7 +10,7 @@ const Register = () => {
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [error, setError] = useState('');
 
-    const navigate = useNavigate(); // Use useNavigate for navigation
+    const navigate = useNavigate();  // v6 hook
 
     const isValidPassword = (password) => {
         const hasUpperCase = /[A-Z]/.test(password);
@@ -21,33 +21,27 @@ const Register = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
 
-        
         if (!acceptedTerms) {
             setError('You must accept the terms and conditions to register.');
             return;
         }
 
-      
         if (password !== confirmPassword) {
             setError('Passwords do not match. Please try again.');
             return;
         }
 
-        
         if (!isValidPassword(password)) {
             setError('Password must include at least one uppercase letter and one special character.');
             return;
         }
 
         try {
-            
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             console.log('User Registered: ', userCredential.user);
 
-            // Redirect to login page after successful registration
-            navigate('/login'); // Use navigate instead of history.push
+            navigate('/login');  // Use navigate instead of history.push
         } catch (error) {
-
             if (error.code === 'auth/email-already-in-use') {
                 setError('This email is already registered.');
             } else if (error.code === 'auth/weak-password') {
@@ -61,7 +55,7 @@ const Register = () => {
     return (
         <div>
             <h2>Register</h2>
-            {error && <p className="error-message">{error}</p>} {/* Optionally add a class for styling */}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleRegister}>
                 <label>
                     Email:
@@ -99,7 +93,7 @@ const Register = () => {
                         checked={acceptedTerms}
                         onChange={(e) => setAcceptedTerms(e.target.checked)}
                     />
-                    I accept the <a href="/terms" target="_blank" rel="noopener noreferrer">terms and conditions</a>
+                    I accept the <Link to="/terms">terms and conditions</Link>
                 </label>
                 <br />
                 <button type="submit">Register</button>
