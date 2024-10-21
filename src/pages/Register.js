@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { auth } from '../firebase.utils'; 
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { useHistory } from 'react-router-dom';
+import { auth } from '../firebase.utils'; // Correctly imported Firebase auth
+import { createUserWithEmailAndPassword } from 'firebase/auth'; // Import the function
+import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -10,7 +10,7 @@ const Register = () => {
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [error, setError] = useState('');
 
-    const history = useHistory();
+    const navigate = useNavigate(); // Use useNavigate for navigation
 
     const isValidPassword = (password) => {
         const hasUpperCase = /[A-Z]/.test(password);
@@ -44,8 +44,8 @@ const Register = () => {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             console.log('User Registered: ', userCredential.user);
 
-           
-            history.push('/login');
+            // Redirect to login page after successful registration
+            navigate('/login'); // Use navigate instead of history.push
         } catch (error) {
 
             if (error.code === 'auth/email-already-in-use') {
@@ -61,7 +61,7 @@ const Register = () => {
     return (
         <div>
             <h2>Register</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p className="error-message">{error}</p>} {/* Optionally add a class for styling */}
             <form onSubmit={handleRegister}>
                 <label>
                     Email:

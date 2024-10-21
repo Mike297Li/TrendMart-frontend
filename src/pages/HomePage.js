@@ -1,12 +1,11 @@
-// src/HomePage.js
 import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from '../firebase.utils'; // Firebase config file
-import { useHistory } from 'react-router-dom';
+import { auth } from '../firebase.utils';
+import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
 
 const HomePage = () => {
     const [user, setUser] = useState(null);
-    const history = useHistory();
+    const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -17,40 +16,32 @@ const HomePage = () => {
             unsubscribe();
         };
     }, []);
-
+    // Logout function
     const handleLogout = () => {
         signOut(auth)
             .then(() => {
-                history.push('/login'); // Redirige a la página de login después de cerrar sesión
+                console.log("User signed out successfully");
+                navigate('/login'); // Redirect to login page after signing out
             })
             .catch((error) => {
-                console.error('Error while logging out:', error);
+                console.error("Error signing out: ", error);
             });
     };
 
     if (!user) {
-        return <div>Loading...</div>;
+        return <div>Loading...</div>; // Loading state while fetching user
     }
 
     return (
         <div style={{ textAlign: 'center', marginTop: '50px' }}>
             <h1>Welcome to the Home Page</h1>
-            <p><strong>Name:</strong> {user.displayName}</p>
+            {/* Check if user has displayName and email before rendering */}
+            <p><strong>Name:</strong> {user.displayName ? user.displayName : 'N/A'}</p>
             <p><strong>Email:</strong> {user.email}</p>
-            <button
-            onClick={handleLogout}
-            style={{
-                marginTop: '20px',
-                marginRight: '50px', 
-                padding: '10px 20px',
-                fontSize: '16px',
-                borderRadius: '5px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                cursor: 'pointer',
-            }}
-        >            Logout
+
+            {/* Logout button with adjusted styling */}
+            <button onClick={handleLogout} style={{ padding: '10px 20px', marginTop: '20px', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '14px' }}>
+                Logout
             </button>
         </div>
     );

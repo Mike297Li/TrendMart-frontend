@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom'; // Import useHistory
+import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
 import { auth, sendPasswordResetEmail } from '../firebase.utils'; // Import necessary functions
 import '../styles/ResetPassword.css';
 
 const ForgetPassword = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
-    const history = useHistory(); // Initialize useHistory
+    const navigate = useNavigate(); // Initialize useNavigate
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -14,7 +14,7 @@ const ForgetPassword = () => {
             await sendPasswordResetEmail(auth, email); // Send reset email
             setMessage('Password reset email sent successfully. Please check your inbox.');
             setTimeout(() => {
-                history.push('/login'); // Redirect to login page after a delay
+                navigate('/login'); // Redirect to login page after a delay
             }, 2000);
         } catch (error) {
             console.error("Error sending password reset email: ", error.message); // Log error to console
@@ -37,7 +37,7 @@ const ForgetPassword = () => {
                 </label>
                 <button type="submit">Reset Password</button>
             </form>
-            {message && <p>{message}</p>}
+            {message && <p className="message">{message}</p>} {/* Optionally add a class for styling */}
         </div>
     );
 };
