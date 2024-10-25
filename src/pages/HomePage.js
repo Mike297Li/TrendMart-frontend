@@ -21,6 +21,7 @@ const HomePage = () => {
         signOut(auth)
             .then(() => {
                 console.log("User signed out successfully");
+                sessionStorage.clear();
                 navigate('/login'); // Redirect to login page after signing out
             })
             .catch((error) => {
