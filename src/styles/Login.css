@@ -146,3 +146,37 @@ input[type="password"] {
 .error-message {
     font-size: 14px;
 }
+/* Container for Register and Forgot Password links */
+.link-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Ensures both links are aligned vertically */
+    width: 100%;
+    margin-top: 10px;
+    padding: 0; /* Ensures no extra spacing from padding */
+}
+
+/* Register link styling */
+.register-link {
+    color: #007BFF;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0; /* Removes any default margin */
+}
+
+/* Forgot Password link styling */
+.forgot-password-link {
+    color: #007BFF;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 0; /* Removes any default margin */
+}
+
+.register-link:hover,
+.forgot-password-link:hover {
+    text-decoration: none;
+    color: #0056b3;
+}
+
