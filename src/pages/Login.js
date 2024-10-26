@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
 import { useNavigate } from 'react-router-dom'; // For navigation
-import { signInWithGooglePopup, auth, signInWithEmailPassword } from '../firebase.utils'; // Firebase config file
+import { signInWithGooglePopup, signInWithEmailPassword } from '../firebase.utils'; // Firebase config file
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -68,15 +68,15 @@ const Login = () => {
                 </label>
 
                 {/* Login button */}
-                <button type="submit">Login</button>
+                <button style={{ width: "110%" }} type="submit">Login</button>
 
                 {/* Google login button */}
-                <button type="button" className="google-login" onClick={logGoogleUser}>
+                <button style={{ width: "110%" }} type="button" className="google-login" onClick={logGoogleUser}>
                     Google login
                 </button>
 
                 {/* Forgot password link */}
-                <button
+                <button style={{ width: "110%" }}
                     type="button"
                     className="forgot-password-link"
                     onClick={handleForgotPassword}
