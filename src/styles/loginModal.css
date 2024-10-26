@@ -1,0 +1,116 @@
+/* src/styles/loginModal.css */
+.login-modal {
+    position: fixed;
+    top: 50%; /* Centra el modal verticalmente */
+    right: -100%; /* Inicia fuera de la vista a la derecha */
+    transform: translateY(20%);
+    width: 280px; /* Ajusta el ancho del modal */
+    background-color: rgba(255, 255, 255, 0.85);
+    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+    border-radius: 8px 0 0 8px;
+    transition: right 0.5s ease-in-out; /* Transición suave */
+}
+
+.login-modal.show {
+    right: 5.5em; /* Desliza el modal a la posición visible */
+    display: block; /* Muestra el modal cuando la clase 'show' está presente */
+    opacity: 1; /* Transición para aparecer */
+}
+
+.modal-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #555; /* Color más sutil para el botón de cerrar */
+    cursor: pointer;
+    position: absolute;
+    top: 0px;
+    right: 10px; /* Mueve el botón de cerrar a la derecha */
+    transition: color 0.5s ease;
+}
+
+.close-button:hover {
+    color: #ff5722; /* Cambia el color al pasar el ratón */
+}
+
+
+
+input {
+    width: 100%;
+    padding: 8px 10px; /* Relleno más pequeño */
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px; /* Bordes más suaves */
+    font-size: 0.9rem; /* Tamaño de fuente más pequeño */
+    transition: border-color 0.3s ease;
+}
+
+input:focus {
+    border-color: #007BFF; /* Color azul al enfocar */
+    outline: none;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.button-row button {
+    background-color: #73a5d9;
+    color: #fff;
+    padding: 8px 12px; /* Relleno reducido para botones más pequeños */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 0.85rem; /* Tamaño de fuente reducido */
+    flex: 1;
+    margin-right: 5px; /* Espacio reducido entre botones */
+}
+
+.button-row button:last-child {
+    margin-right: 0;
+}
+
+.button-row button:hover {
+    background-color: #0056b3;
+}
+
+.google-login-button {
+    background-color: #edb5b0;
+    color: white;
+    padding: 8px 12px; /* Botón más pequeño */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    font-size: 0.85rem; /* Tamaño de fuente reducido */
+}
+
+.google-login-button:hover {
+    background-color: #c33428;
+}
+
+.error-message {
+    color: #ff5722;
+    margin-bottom: 10px;
+    font-size: 0.85rem; /* Tamaño de fuente reducido para el mensaje de error */
+    text-align: center;
+}
