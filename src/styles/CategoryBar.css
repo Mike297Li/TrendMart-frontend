@@ -1,0 +1,36 @@
+/* src/styles/CategoryBar.css */
+.category-bar-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+    padding: 0;
+    font-family: 'Playfair Display', serif;
+}
+
+.promo-bar {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 1rem;
+}
+
+.category-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fafafa;
+    padding: 15px 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.category-option {
+    margin: 0 20px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.category-option:hover {
+    color: #007BFF; /* Cambia el color al pasar el ratón */
+}

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
-import { useNavigate } from 'react-router-dom'; // For navigation
+import { useNavigate } from 'react-router-dom'; // Cambiar a useNavigate
 import { signInWithGooglePopup, auth, signInWithEmailPassword } from '../firebase.utils'; // Firebase config file
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const navigate = useNavigate(); // Use useNavigate for navigation
+    const navigate = useNavigate(); // Cambiar a useNavigate
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -16,7 +16,7 @@ const Login = () => {
             const userCredential = await signInWithEmailPassword(email, password);
             console.log("User Logged In: ", userCredential.user);
             // Redirect to homePage after successful login
-            navigate('/homePage');
+            navigate('/homePage'); // Cambiar a navigate
         } catch (error) {
             console.error("Login failed:", error);
             setError("Login failed. Please check your email or password.");
@@ -29,7 +29,7 @@ const Login = () => {
             const response = await signInWithGooglePopup();
             console.log("Google User Logged In: ", response);
             // Redirect to homePage after successful login
-            navigate('/homePage');
+            navigate('/homePage'); // Cambiar a navigate
         } catch (error) {
             console.error("Google login failed:", error);
             setError("Google login failed. Please try again.");
@@ -67,22 +67,13 @@ const Login = () => {
                     />
                 </label>
 
-                {/* Login button */}
-                <button type="submit">Login</button>
-
-                {/* Google login button */}
-                <button type="button" className="google-login" onClick={logGoogleUser}>
-                    Google login
-                </button>
-
-                {/* Forgot password link */}
-                <button
-                    type="button"
-                    className="forgot-password-link"
-                    onClick={handleForgotPassword}
-                >
-                    Forgot Password?
-                </button>
+                <div className="button-row">
+                    <button type="submit">Login</button>
+                    <button type="button" className="forgot-password-link" onClick={handleForgotPassword}>
+                        Forgot Password?
+                    </button>
+                </div>
+                <button type="button" onClick={logGoogleUser}>Google Login</button>
             </form>
         </div>
     );

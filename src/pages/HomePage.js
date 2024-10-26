@@ -1,11 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+// src/pages/HomePage.js
+import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase.utils';
-import { useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../component/Navbar';
+import WelcomeSection from '../component/WelcomeSection';
+import CategoryBar from '../pages/CategoryBar';
+import ImageSection from './ImageSection';
+import Footer from '../component/footer'; // Importa el Footer
+import collection1 from '../assets/collection1.jpg';
+import collection2 from '../assets/collection2.jpg';
+import '../styles/HomePage.css';
 
 const HomePage = () => {
     const [user, setUser] = useState(null);
-    const navigate = useNavigate(); // Initialize useNavigate
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isScrolling, setIsScrolling] = useState(false);
+    const categoryBarRef = useRef(null);
+    const navbarRef = useRef(null);
+    
+
+    const sections = ['welcome', 'category-bar'];
+    const scrollTimeout = 700;
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -16,33 +36,63 @@ const HomePage = () => {
             unsubscribe();
         };
     }, []);
-    // Logout function
-    const handleLogout = () => {
-        signOut(auth)
-            .then(() => {
-                console.log("User signed out successfully");
-                navigate('/login'); // Redirect to login page after signing out
-            })
-            .catch((error) => {
-                console.error("Error signing out: ", error);
-            });
-    };
 
-    if (!user) {
-        return <div>Loading...</div>; // Loading state while fetching user
-    }
+    const isAuthenticated = Boolean(user);
+
+    const handleScroll = useCallback((event) => {
+        if (isScrolling) return;
+
+        if (event.deltaY > 0 && currentIndex < sections.length - 1) {
+            setCurrentIndex((prevIndex) => prevIndex + 1);
+            setIsScrolling(true);
+        } else if (event.deltaY < 0 && currentIndex > 0) {
+            setCurrentIndex((prevIndex) => prevIndex - 1);
+            setIsScrolling(true);
+        }
+
+        setTimeout(() => {
+            setIsScrolling(false);
+        }, scrollTimeout);
+    }, [currentIndex, isScrolling]);
+
+    useEffect(() => {
+        window.addEventListener('wheel', handleScroll);
+        return () => {
+            window.removeEventListener('wheel', handleScroll);
+        };
+    }, [handleScroll]);
+
+    useEffect(() => {
+        if (currentIndex === 1 && categoryBarRef.current && navbarRef.current) {
+            const navbarHeight = navbarRef.current.offsetHeight;
+            const categoryBarPosition = categoryBarRef.current.getBoundingClientRect().top + window.scrollY - navbarHeight;
+            window.scrollTo({
+                top: categoryBarPosition,
+                behavior: 'smooth',
+            });
+        }
+    }, [currentIndex]);
 
     return (
-        <div style={{ textAlign: 'center', marginTop: '50px' }}>
-            <h1>Welcome to the Home Page</h1>
-            {/* Check if user has displayName and email before rendering */}
-            <p><strong>Name:</strong> {user.displayName ? user.displayName : 'N/A'}</p>
-            <p><strong>Email:</strong> {user.email}</p>
-
-            {/* Logout button with adjusted styling */}
-            <button onClick={handleLogout} style={{ padding: '10px 20px', marginTop: '20px', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '14px' }}>
-                Logout
-            </button>
+        <div>
+            <div ref={navbarRef}>
+                <Navbar isAuthenticated={isAuthenticated} user={user} />
+            </div>
+            <WelcomeSection id="welcome" />
+            <CategoryBar ref={categoryBarRef} />
+            <div className="content">
+                <div className="image-row">
+                    <ImageSection 
+                        id="section1"
+                        imageUrl={collection1}
+                    />
+                    <ImageSection 
+                        id="section2"
+                        imageUrl={collection2}
+                    />
+                </div>
+            </div>
+            <Footer /> {/* Agrega el Footer aquí */}
         </div>
     );
 };

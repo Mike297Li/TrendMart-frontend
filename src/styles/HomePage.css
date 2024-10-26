@@ -1,0 +1,37 @@
+/* src/styles/HomePage.css */
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px; /* Espacio entre cada sección de imagen */
+    
+}
+
+.image-row {
+    display: flex;
+    justify-content: center; /* Centra las imágenes dentro de la fila */
+    gap: 0px; /* Espacio entre las dos imágenes */
+    width: 100%;
+    max-width: 2000px; /* Limita el ancho máximo de la fila */
+}
+
+.image-row .image-section {
+    flex: 1; /* Hace que las imágenes ocupen el mismo espacio */
+    max-width: 800px; /* Limita el ancho máximo de cada imagen */
+}
+
+.image-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0; /* Espacio entre cada sección */
+    width: 100%;
+}
+
+.image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px; /* Bordes redondeados, opcional */
+}
