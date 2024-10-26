@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import TermsAndConditions from './pages/TermsAndConditions';
 import AdminLogin from './pages/AdminLogin';
 import './App.css'
+import AdminDashboard from './pages/AdminDashboard';
 
 const App = () => {
     const location = useLocation();
@@ -24,6 +25,8 @@ const App = () => {
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/homePage" element={<HomePage />} />
                 <Route path="/terms" element={<TermsAndConditions />} />
+                <Route path="/admin" element={<AdminLogin />} />
+                <Route path="/adminPortal" element={<AdminDashboard />} />
                 <Route path="/" element={<HomePage />} />
             </Routes>
         </div>

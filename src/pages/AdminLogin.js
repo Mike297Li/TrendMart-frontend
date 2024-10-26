@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // For navigation
 import axios from 'axios';
 import '../styles/Login.css';
 
-const Login = () => {
+const AdminLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    
+    const navigate = useNavigate(); // Use useNavigate for navigation
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:8080/api/auth/login', { email, password });
-            if(response.data.role){
-                sessionStorage.setItem('role', response.data.role)
+            if(response.data){
+                sessionStorage.setItem('user', JSON.stringify(response.data))
             }
             console.log(response.data);
+            navigate('/adminPortal');
             // Handle successful login here
         } catch (error) {
             setError('Login failed. Please check your credentials.'); // Set error message
@@ -45,4 +49,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default AdminLogin;
