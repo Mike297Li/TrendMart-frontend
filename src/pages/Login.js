@@ -8,7 +8,9 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate(); // Use useNavigate for navigation
-
+    const onRegister = () => {
+        navigate('/register'); // Redirect to the registration page
+    };
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
@@ -75,14 +77,15 @@ const Login = () => {
                     Google login
                 </button>
 
-                {/* Forgot password link */}
-                <button style={{ width: "110%" }}
-                    type="button"
-                    className="forgot-password-link"
-                    onClick={handleForgotPassword}
-                >
-                    Forgot Password?
-                </button>
+                {/* Container for Register and Forgot Password links */}
+                <div className="link-row">
+                    <p className="register-link" onClick={onRegister}>
+                        Register
+                    </p>
+                    <p className="forgot-password-link" onClick={handleForgotPassword}>
+                        Forgot Password?
+                    </p>
+                </div>
             </form>
         </div>
     );
