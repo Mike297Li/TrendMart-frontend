@@ -1,24 +1,26 @@
+
 /* src/styles/loginModal.css */
 .login-modal {
     position: fixed;
-    top: 50%; /* Centra el modal verticalmente */
+    top: 250%; /* Centra el modal verticalmente */
     right: -100%; /* Inicia fuera de la vista a la derecha */
     transform: translateY(20%);
     width: 280px; /* Ajusta el ancho del modal */
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.5);
     box-shadow: -2px 0 12px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     z-index: 1000;
     padding: 20px;
     border-radius: 8px 0 0 8px;
-    transition: right 0.5s ease-in-out; /* Transición suave */
+    transition: opacity 0.5s ease-in-out, visibility 0s linear 0.5s; /* Suaviza la entrada y salida */
 }
 
 .login-modal.show {
     right: 5.5em; /* Desliza el modal a la posición visible */
     display: block; /* Muestra el modal cuando la clase 'show' está presente */
-    opacity: 1; /* Transición para aparecer */
+    transition: opacity 0.5s ease-in-out; /* Transición para aparecer */
+    visibility: visible;
 }
 
 .modal-content {
@@ -27,19 +29,9 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    transition: right 0.5s ease-in-out;
 }
 
-.close-button {
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: #555; /* Color más sutil para el botón de cerrar */
-    cursor: pointer;
-    position: absolute;
-    top: 0px;
-    right: 10px; /* Mueve el botón de cerrar a la derecha */
-    transition: color 0.5s ease;
-}
 
 .close-button:hover {
     color: #ff5722; /* Cambia el color al pasar el ratón */
@@ -66,7 +58,7 @@ input:focus {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .button-row button {
@@ -84,10 +76,20 @@ input:focus {
 
 .button-row button:last-child {
     margin-right: 0;
+    background: none; 
+    background-color: transparent; 
+    border: none; 
+    color: blue; 
+    cursor: pointer; 
 }
 
 .button-row button:hover {
     background-color: #0056b3;
+}
+
+.button-row button:hover:last-child {
+    background-color: #0056b3;
+    color: #fff;
 }
 
 .google-login-button {
@@ -113,4 +115,19 @@ input:focus {
     margin-bottom: 10px;
     font-size: 0.85rem; /* Tamaño de fuente reducido para el mensaje de error */
     text-align: center;
+}
+
+.register-button {
+    background-color: #C3988B; /* Color mate dorado-rosado */
+    color: white;
+    margin-top: 10px;
+    padding: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+    background-color: #B08D79; /* Un dorado ligeramente más oscuro al pasar el cursor */
 }

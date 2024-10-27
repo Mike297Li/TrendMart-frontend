@@ -1,13 +1,16 @@
 // src/component/Navbar.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/navbar.css';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase.utils';
-import LoginModal from './LoginModal'; // Importa el modal
+import LoginModal from './LoginModal';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 const Navbar = ({ isAuthenticated, user }) => {
     const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -28,9 +31,20 @@ const Navbar = ({ isAuthenticated, user }) => {
         setLoginModalOpen(false);
     };
 
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
         <nav className="navbar">
-            <h2 className="navbar-logo">TRENDMART</h2>
+            <h2 className={`navbar-logo ${isScrolled ? 'scrolled' : ''}`} aria-label="TrendMart Logo">TRENDMART</h2>
             <ul className="navbar-links">
                 <li className="navbar-item dropdown">
                     <span className="navbar-link">CATEGORIES</span>
@@ -67,15 +81,15 @@ const Navbar = ({ isAuthenticated, user }) => {
                         </ul>
                     </li>
                 ) : (
-                    // Asegúrate de que LOGIN solo se muestre si el modal no está abierto y el usuario no está autenticado.
                     !isLoginModalOpen && (
-                        <li className="navbar-item">
-                            <span onClick={openLoginModal} className="navbar-link">LOGIN</span>
-                        </li>
+                    <li className="navbar-item">
+                        <span onClick={openLoginModal} className="navbar-link">
+                            <i className="fas fa-user" style={{ marginRight: '8px' }}></i> Login
+                        </span>
+                    </li>
                     )
                 )}
             </ul>
-
 
             {isLoginModalOpen && <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />}
         </nav>

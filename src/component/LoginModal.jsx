@@ -1,4 +1,3 @@
-// src/component/LoginModal.jsx
 import React, { useState } from 'react';
 import '../styles/loginModal.css';
 import { useNavigate } from 'react-router-dom';
@@ -40,10 +39,19 @@ const LoginModal = ({ isOpen, onClose }) => {
         onClose(); // Cierra el modal
     };
 
+    // Función para manejar el clic en el fondo
+    const handleClickOutside = (e) => {
+        if (e.target.classList.contains('login-modal')) {
+            onClose(); // Cierra el modal si el clic es en el fondo
+        }
+    };
+
     return (
-        <div className={`login-modal ${isOpen ? 'show' : ''}`}>
+        <div 
+            className={`login-modal ${isOpen ? 'show' : ''}`} 
+            onClick={handleClickOutside} // Detecta el clic en el fondo
+        >
             <div className="modal-content">
-                <button className="close-button" onClick={onClose}>×</button>
                 <h2>Login</h2>
                 {error && <p className="error-message">{error}</p>}
                 <form onSubmit={handleLogin}>
@@ -77,6 +85,13 @@ const LoginModal = ({ isOpen, onClose }) => {
                         className="google-login-button"
                     >
                         Google Login
+                    </button>
+                    <button 
+                        type="button" 
+                        onClick={() => navigate('/register')} 
+                        className="register-button"
+                    >
+                        Register
                     </button>
                 </form>
             </div>

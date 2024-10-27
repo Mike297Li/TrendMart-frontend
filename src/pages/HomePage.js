@@ -10,6 +10,7 @@ import ImageSection from './ImageSection';
 import Footer from '../component/footer'; // Importa el Footer
 import collection1 from '../assets/collection1.jpg';
 import collection2 from '../assets/collection2.jpg';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import '../styles/HomePage.css';
 
 const HomePage = () => {
