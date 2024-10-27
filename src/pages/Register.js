@@ -96,6 +96,7 @@ const Register = () => {
                 <label>
                     <input
                         type="checkbox"
+                        style={{width: 'auto'}}
                         checked={acceptedTerms}
                         onChange={(e) => setAcceptedTerms(e.target.checked)}
                     />

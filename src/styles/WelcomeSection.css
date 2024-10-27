@@ -2,7 +2,7 @@
     background: url('../assets/background.jpg') no-repeat center center/cover;
     background-size: cover; /* Asegura que la imagen cubra toda el área */
     height: 100vh; /* La imagen ocupa toda la altura de la ventana */
-    width: 96vw; /* Asegura que la imagen ocupe todo el ancho de la ventana */
+    width: 100vw; /* Asegura que la imagen ocupe todo el ancho de la ventana */
     margin: 0; /* Elimina los márgenes */
     padding: 0;
     display: flex;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
 import { useNavigate } from 'react-router-dom'; // Cambiar a useNavigate
-import { signInWithGooglePopup, auth, signInWithEmailPassword } from '../firebase.utils'; // Firebase config file
+import { signInWithGooglePopup, signInWithEmailPassword } from '../firebase.utils'; // Firebase config file
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -40,6 +40,10 @@ const Login = () => {
         navigate('/reset-password'); // Redirect to reset password page
     };
 
+    const gotoRegister = () => {
+        navigate('/register'); // Redirect to register page
+    }
+
     return (
         <div className="login-container">
             <h2>Login</h2>
@@ -73,7 +77,8 @@ const Login = () => {
                         Forgot Password?
                     </button>
                 </div>
-                <button type="button" onClick={logGoogleUser}>Google Login</button>
+                <button style={{width: '100%', borderRadius: '5px', padding: '5px'}} type="button" onClick={gotoRegister}>Register</button>
+                <button style={{width: '100%', borderRadius: '5px', padding: '5px', margin: '5px 0 0 0'}} type="button" onClick={logGoogleUser}>Google Login</button>
             </form>
         </div>
     );

@@ -29,7 +29,7 @@ const Navbar = ({ isAuthenticated, user }) => {
     };
 
     return (
-        <nav className="navbar">
+        <nav className="navbar" style={{background: "#bbb"}}>
             <h2 className="navbar-logo">TRENDMART</h2>
             <ul className="navbar-links">
                 <li className="navbar-item dropdown">
@@ -53,7 +53,7 @@ const Navbar = ({ isAuthenticated, user }) => {
                     <Link to="/contact" className="navbar-link">CONTACT US</Link>
                 </li>
             </ul>
-            <ul className="navbar-links login-container">
+            <ul className="navbar-links">
                 {isAuthenticated ? (
                     <li className="navbar-item dropdown">
                         <span className="navbar-link">{user?.displayName || 'ACCOUNT'}</span>
