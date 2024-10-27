@@ -99,8 +99,8 @@ const Register = () => {
                     />
                     I accept the <Link to="/terms">terms and conditions</Link>
                 </label>
-                <button type="submit">Register</button>
-                <button type="submit" onClick={goToLogin}>Login</button>
+                <button className='registerButton' type="submit">Register</button>
+                <button className='loginButton' type="submit" onClick={goToLogin}>Login</button>
             </form>
         </div>
     );
