@@ -1,0 +1,62 @@
+.welcome-section {
+    background: url('../assets/background.jpg') no-repeat center center/cover;
+    background-size: cover; /* Asegura que la imagen cubra toda el área */
+    height: 100vh; /* La imagen ocupa toda la altura de la ventana */
+    width: 96vw; /* Asegura que la imagen ocupe todo el ancho de la ventana */
+    margin: 0; /* Elimina los márgenes */
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    color: #fff;
+    padding: 20px;
+    
+}
+
+
+
+.welcome-text {
+    align-self: flex-start; /* Alinea el contenedor del texto al inicio horizontalmente */
+    max-width: 60%; /* Limita el ancho del texto para que no ocupe toda la pantalla */
+    margin: auto 0; /* Centra el contenedor verticalmente */
+    text-align: left; /* Alinea el contenido del texto a la izquierda */
+    padding-left: 15em; /* Añade un poco de espacio a la izquierda si es necesario */
+}
+
+
+.welcome-text h1 {
+    font-size: 5rem; /* Tamaño del título */
+    margin-bottom: 0.05rem; /* Reduce la separación entre el título y el párrafo */
+}
+
+.welcome-text p:nth-of-type(1) {
+    color: #fff; /* Estilo para el primer párrafo */
+    font-size: 2rem;
+    margin-bottom: 0.2rem;
+}
+
+.welcome-text p:nth-of-type(2) {
+    color: #fff; /* Estilo para el segundo párrafo */
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: left
+}
+
+.cta-button {
+    align-self: center; /* Centra el botón horizontalmente */
+    background-color: rgba(0, 0, 0, 0.4); /* Fondo semitransparente */
+    color: white;
+    width: 10em; /* Ancho fijo de 2 cm */
+    padding: 0.5rem 0; /* Relleno solo en la parte superior e inferior */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center; /* Centra el texto dentro del botón */
+    transition: background-color 0.3s ease;
+    margin-bottom: 50px; /* Espacio en la parte inferior */
+}
+
+.cta-button:hover {
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo más oscuro al pasar el ratón */
+}
