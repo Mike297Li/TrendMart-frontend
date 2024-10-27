@@ -70,10 +70,10 @@ const Login = () => {
                 </label>
 
                 {/* Login button */}
-                <button style={{ width: "110%" }} type="submit">Login</button>
+                <button style={{ width: "100%" }} type="submit">Login</button>
 
                 {/* Google login button */}
-                <button style={{ width: "110%" }} type="button" className="google-login" onClick={logGoogleUser}>
+                <button style={{ width: "100%" }} type="button" className="google-login" onClick={logGoogleUser}>
                     Google login
                 </button>
 

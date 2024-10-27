@@ -7,7 +7,9 @@ import HomePage from './pages/HomePage';
 import TermsAndConditions from './pages/TermsAndConditions';
 import AdminLogin from './pages/AdminLogin';
 import './App.css'
-import AdminDashboard from './pages/AdminDashboard';
+import AdminProductManagement from './pages/AdminProductManagement';
+import ProductPage from './pages/ProductPage';
+
 
 const App = () => {
     return (
@@ -20,7 +22,9 @@ const App = () => {
                     <Route path="/homePage" element={<HomePage />} />
                     <Route path="/terms" element={<TermsAndConditions/>} />
                     <Route path="/admin" element={<AdminLogin />} />
-                    <Route path="/adminPortal" element={<AdminDashboard />} />
+                    <Route path="/adminPortal" element={<AdminProductManagement />} />
+                    <Route path="/create-product" element={<ProductPage />} />
+                    <Route path="/edit-product/:productId" element={<ProductPage />} /> {/* New edit route */}
                     <Route path="/" element={<h1>Welcome! Please login or register.</h1>} />
                 </Routes>
             </div>

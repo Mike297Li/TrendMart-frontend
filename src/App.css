@@ -1,5 +1,53 @@
-html{
-    width: 100%;
-    height: 100%;
+h1{
+    display: block;
+    font-size: 2em;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    unicode-bidi: isolate;
 }
 
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark{
+    display: flex;
+    height: fit-content;
+    flex-direction: row;
+    align-content: space-around;
+    justify-content: space-between;
+}
+
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark > div > button{
+    padding: 8px;
+    margin: 10px;
+}
+
+.table-responsive {
+    display:flex;
+    justify-content:center;
+}
+
+.product-listing-buttons {
+    display: flex;
+    justify-content:center;
+}
+
+.product-listing-buttons > button {
+    margin:10px;
+    display: flex;
+    justify-content:center;
+}
+
+.custom-table > tbody > tr > td{
+    /* display: flex;
+    justify-content:center; */
+    text-align:center;
+}
+
+.table>tbody {
+    vertical-align: unset !important;
+}
+
+.mr-3{
+    margin-right: 10px;
+}

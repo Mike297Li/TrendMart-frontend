@@ -52,8 +52,12 @@ const Register = () => {
         }
     };
 
+    const goToLogin = () =>{
+        navigate('/login');
+    }
+
     return (
-        <div>
+        <div className="login-container">
             <h2>Register</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleRegister}>
@@ -95,8 +99,8 @@ const Register = () => {
                     />
                     I accept the <Link to="/terms">terms and conditions</Link>
                 </label>
-                <br />
                 <button type="submit">Register</button>
+                <button type="submit" onClick={goToLogin}>Login</button>
             </form>
         </div>
     );
