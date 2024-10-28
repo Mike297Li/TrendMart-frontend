@@ -43,7 +43,7 @@ const AdminLogin = () => {
                 </label>
 
                 {/* Row with login button */}
-                    <button style={{width: "110%"}} type="submit">Login</button>
+                    <button style={{width: "100%"}} type="submit">Login</button>
             </form>
         </div>
     );

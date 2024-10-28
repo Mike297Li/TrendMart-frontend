@@ -67,7 +67,7 @@ const Navbar = ({ isAuthenticated, user }) => {
                     <Link to="/contact" className="navbar-link">CONTACT US</Link>
                 </li>
             </ul>
-            <ul className="navbar-links login-container">
+            <ul className="navbar-links">
                 {isAuthenticated ? (
                     <li className="navbar-item dropdown">
                         <span className="navbar-link">{user?.displayName || 'ACCOUNT'}</span>
