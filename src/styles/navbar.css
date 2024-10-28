@@ -1,10 +1,7 @@
 /* src/styles/navbar.css */
-.hidden {
-    display: none !important;
-}
 
 .navbar {
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(249, 244, 244, 0));
     position: fixed;
     top: 0;
     width: 100%;
@@ -13,23 +10,42 @@
     align-items: center;
     padding: 10px 40px;
     z-index: 1000;
-    height: 40px; /* Altura del navbar */
-    backdrop-filter: blur(0px); /* Añade un efecto de desenfoque para un look más suave */
-    box-shadow: none; /* Elimina cualquier sombra para mantener el efecto limpio */
-    
+    height: 40px;
+    backdrop-filter: blur(0px);
+    box-shadow: none;
 }
-
 
 .navbar-logo {
     position: absolute;
-    color: #fff;
+    color: #e9dbc0;
     left: 50%;
     transform: translateX(-50%);
+    transition: font-size 1s ease;
+    font-family: aria-label;
+    font-size: 6em; /* Tamaño grande en la parte superior */
+}
+
+.navbar-logo.scrolled {
+    font-size: 1.8em; /* Tamaño pequeño cuando haces scroll */
+    margin-top: 1%;
+    left: 50%;
+    letter-spacing: 5px;
+}
+
+.navbar-logo {
+    font-size: 840%; /* Tamaño grande en la parte superior */
+    margin-top: 15%;
+    letter-spacing: 0.11em;
+    font-weight: 200;
+    margin-left: 0;
+    letter-spacing: 0.5em;
+    
+    
+    
 }
 
 .navbar-link {
-    color: #fff;
-    
+    color: #efe2b7;
     text-decoration: none;
     transition: color 0.3s ease;
 }
@@ -40,15 +56,11 @@
     gap: 15px;
     margin: 0 70px 0 0;
     padding: 0;
-    
 }
 
 .navbar-item {
-    position: relative; /* Necesario para el dropdown */
-    
+    position: relative;
 }
-
-
 
 .navbar-link:hover {
     color: #ff5722;
@@ -56,7 +68,7 @@
 
 .dropdown-menu {
     position: absolute;
-    top: 100%; /* Justo debajo del elemento padre */
+    top: 100%;
     left: 0;
     background-color: #bbb;
     list-style: none;
@@ -69,11 +81,11 @@
 }
 
 .dropdown:hover .dropdown-menu {
-    display: block; /* Muestra el submenú al pasar el ratón */
+    display: block;
 }
 
 .navbar-item.dropdown {
-    margin-left: auto; /* This will push the ACCOUNT dropdown to the right */
+    margin-left: auto;
 }
 
 .dropdown-link {
@@ -86,10 +98,5 @@
 
 .dropdown-link:hover {
     background-color: #ff5722;
-    color: #fff;
+    color: #ffffff;
 }
-
-.navbar-logo h2 {
-    text-align: center;
-}
-
