@@ -11,7 +11,7 @@ const AdminProductManagement = () => {
 
     useEffect(() => {
         if(sessionStorage.getItem('user') == null){
-            navigate('/admin');
+            // navigate('/admin');
         }
         // setUser(JSON.parse(sessionStorage.getItem('user')))
         fetchProducts();

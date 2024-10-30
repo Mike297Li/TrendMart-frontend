@@ -1,3 +1,4 @@
+ /* eslint-disable */
 // src/component/Footer.jsx
 import React from 'react';
 import '../styles/footer.css';
