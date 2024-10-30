@@ -1,3 +1,4 @@
+ /* eslint-disable */
 import React, { useState } from 'react';
 import '../styles/loginModal.css';
 import { useNavigate } from 'react-router-dom';

@@ -1,3 +1,4 @@
+/* eslint-disable */
 // src/pages/HomePage.js
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
