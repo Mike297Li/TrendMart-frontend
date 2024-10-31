@@ -6,14 +6,14 @@ import ProductForm from './ProductForm';
 const ProductPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const isEditing = location.state?.product ? true : false;
+    const isEditing = !!location.state?.product; // Check if we are in editing mode
     const [formData, setFormData] = useState({
         name: '',
         description: '',
         price: '',
         features: '',
         average_rating: '',
-        images: [],
+        imageBase64: '' // Change this to a single base64 string
     });
 
     useEffect(() => {
@@ -25,14 +25,24 @@ const ProductPage = () => {
                 price: product.price,
                 features: product.features,
                 average_rating: product.average_rating,
-                images: [],
+                imageBase64: product.imageBase64 || '', // Ensure to get base64 string if available
             });
         }
     }, [isEditing, location.state]);
 
     const handleChange = (e) => {
-        if (e.target.name === 'images') {
-            setFormData({ ...formData, images: [...e.target.files] });
+        if (e.target.name === 'images') { // Ensure you're handling the file input correctly
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        imageBase64: reader.result,
+                    }));
+                };
+                reader.readAsDataURL(file);
+            }
         } else {
             setFormData({ ...formData, [e.target.name]: e.target.value });
         }
@@ -41,26 +51,39 @@ const ProductPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const formDataToSubmit = new FormData();
-        formDataToSubmit.append('name', formData.name);
-        formDataToSubmit.append('description', formData.description);
-        formDataToSubmit.append('price', formData.price);
-        formDataToSubmit.append('features', formData.features);
-        formDataToSubmit.append('average_rating', formData.average_rating);
+        const formDataToSend = new FormData(); // Rename this variable
+        formDataToSend.append('name', formData.name);
+        formDataToSend.append('description', formData.description);
+        formDataToSend.append('price', parseFloat(formData.price).toFixed(2));
+        formDataToSend.append('features', formData.features);
+        formDataToSend.append('average_rating', parseFloat(formData.average_rating).toFixed(2));
 
-        for (let i = 0; i < formData.images.length; i++) {
-            formDataToSubmit.append('images', formData.images[i]);
+        // Append the image if it exists
+        if (formData.imageBase64) {
+            const response = await fetch(formData.imageBase64);
+            const blob = await response.blob();
+            const file = new File([blob], 'image.png', { type: 'image/png' });
+            formDataToSend.append('images', file);
+        }
+
+        // Log FormData
+        for (let pair of formDataToSend.entries()) {
+            console.log(`${pair[0]}: ${pair[1]}`);
         }
 
         try {
             if (isEditing) {
-                await axios.put(`http://localhost:8080/api/products/${location.state.product.productId}`, formDataToSubmit, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
+                await axios.put(`http://localhost:8080/api/products/${location.state.product.productId}`, formDataToSend, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
                 });
                 alert('Product updated successfully');
             } else {
-                await axios.post('http://localhost:8080/api/products', formDataToSubmit, {
-                    headers: { 'Content-Type': 'multipart/form-data' },
+                await axios.post('http://localhost:8080/api/products', formDataToSend, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
                 });
                 alert('Product created successfully');
             }

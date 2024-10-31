@@ -4,31 +4,38 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 
 const ProductForm = ({
-    formData,
-    isEditing,
-    handleChange,
-    handleSubmit,
-}) => {
-    const [imagePreview, setImagePreview] = useState(null);
+                         formData,
+                         isEditing,
+                         handleChange,
+                         handleSubmit,
+                     }) => {
+    const [imagePreviews, setImagePreviews] = useState([]);
 
     useEffect(() => {
         if (isEditing && formData.pictureBase64) {
-            // Set image preview to existing base64 image if editing
-            setImagePreview(`data:image/jpeg;base64,${formData.pictureBase64}`);
+            // Initialize image previews based on pictureBase64 if editing
+            const existingImages = Array.isArray(formData.pictureBase64)
+                ? formData.pictureBase64
+                : [formData.pictureBase64];
+            const previewImages = existingImages.map((base64) => `data:image/jpeg;base64,${base64}`);
+            setImagePreviews(previewImages);
         }
-    }, [isEditing, formData.pictureBase64]);
+    }, [isEditing, formData.pictureBase64]); // Update only if these values change
 
     // Update image preview when a new file is selected
     const handleImageChange = (e) => {
         handleChange(e); // Call the original handleChange
-        const file = e.target.files[0];
-        if (file) {
+        const files = Array.from(e.target.files);
+        const newImagePreviews = [];
+
+        files.forEach((file) => {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImagePreview(reader.result);
+                newImagePreviews.push(reader.result);
+                setImagePreviews((prevPreviews) => [...prevPreviews, reader.result]);
             };
             reader.readAsDataURL(file);
-        }
+        });
     };
 
     return (
@@ -94,14 +101,19 @@ const ProductForm = ({
                         onChange={handleImageChange} // Updated to handle image preview
                     />
                 </Form.Group>
-                {imagePreview && (
+                {imagePreviews.length > 0 && (
                     <div className="mt-3">
-                        <Form.Label>Image Preview</Form.Label>
-                        <img
-                            src={imagePreview}
-                            alt="Product Preview"
-                            style={{ width: '100%', maxHeight: '200px', objectFit: 'contain' }}
-                        />
+                        <Form.Label>Image Previews</Form.Label>
+                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                            {imagePreviews.map((preview, index) => (
+                                <img
+                                    key={index}
+                                    src={preview}
+                                    alt={`Product Preview ${index + 1}`}
+                                    style={{ width: '100px', height: '100px', objectFit: 'contain' }}
+                                />
+                            ))}
+                        </div>
                     </div>
                 )}
                 <Button variant="primary" type="submit" className="mt-3 mr-3">
