@@ -13,7 +13,7 @@ const ProductPage = () => {
         price: '',
         features: '',
         average_rating: '',
-        imageBase64: '' // Change this to a single base64 string
+        pictureBase64: '' // Change this to a single base64 string
     });
 
     useEffect(() => {
@@ -25,7 +25,7 @@ const ProductPage = () => {
                 price: product.price,
                 features: product.features,
                 average_rating: product.average_rating,
-                imageBase64: product.imageBase64 || '', // Ensure to get base64 string if available
+                pictureBase64: product.pictureBase64 || '', // Ensure to get base64 string if available
             });
         }
     }, [isEditing, location.state]);
@@ -38,7 +38,7 @@ const ProductPage = () => {
                 reader.onloadend = () => {
                     setFormData((prevData) => ({
                         ...prevData,
-                        imageBase64: reader.result,
+                        pictureBase64: reader.result,
                     }));
                 };
                 reader.readAsDataURL(file);
@@ -46,6 +46,16 @@ const ProductPage = () => {
         } else {
             setFormData({ ...formData, [e.target.name]: e.target.value });
         }
+    };
+
+    // Helper function to convert file to Base64
+    const convertFileToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
     };
 
     const handleSubmit = async (e) => {
@@ -58,12 +68,15 @@ const ProductPage = () => {
         formDataToSend.append('features', formData.features);
         formDataToSend.append('average_rating', parseFloat(formData.average_rating).toFixed(2));
 
-        // Append the image if it exists
-        if (formData.imageBase64) {
-            const response = await fetch(formData.imageBase64);
-            const blob = await response.blob();
-            const file = new File([blob], 'image.png', { type: 'image/png' });
-            formDataToSend.append('images', file);
+        // Append the base64 image if it exists
+        if (formData.pictureBase64) {
+            formDataToSend.append('pictureBase64', formData.pictureBase64); // Directly append the Base64 data
+        } else if (formData.images.length > 0) {
+            // For new product images, convert to base64 and append each file
+            for (let imageFile of formData.images) {
+                const base64Image = await convertFileToBase64(imageFile);
+                formDataToSend.append('pictureBase64', base64Image.split(',')[1]);
+            }
         }
 
         // Log FormData
@@ -75,19 +88,19 @@ const ProductPage = () => {
             if (isEditing) {
                 await axios.put(`http://localhost:8080/api/products/${location.state.product.productId}`, formDataToSend, {
                     headers: {
-                        'Content-Type': 'multipart/form-data',
+                        'Content-Type': 'application/json',
                     },
                 });
                 alert('Product updated successfully');
             } else {
                 await axios.post('http://localhost:8080/api/products', formDataToSend, {
                     headers: {
-                        'Content-Type': 'multipart/form-data',
+                        'Content-Type': 'application/json',
                     },
                 });
                 alert('Product created successfully');
             }
-            navigate('/'); // Redirect to product listing page
+            navigate('/adminPortal'); // Redirect to product listing page
         } catch (error) {
             console.error('Error submitting product:', error);
         }
