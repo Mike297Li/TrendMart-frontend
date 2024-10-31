@@ -15,19 +15,22 @@ const ProductForm = ({
         if (isEditing && formData.pictureBase64) {
             setImagePreview(formData.pictureBase64); // Show existing image for editing
         }
-    }, [isEditing, formData.pictureBase64]);
+    }, [isEditing, formData.pictureBase64]); // Update only if these values change
 
     // Update image preview when a new file is selected
     const handleImageChange = (e) => {
         handleChange(e); // Call the original handleChange
-        const file = e.target.files[0];
-        if (file) {
+        const files = Array.from(e.target.files);
+        const newImagePreviews = [];
+
+        files.forEach((file) => {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImagePreview(reader.result);
+                newImagePreviews.push(reader.result);
+                setImagePreviews((prevPreviews) => [...prevPreviews, reader.result]);
             };
             reader.readAsDataURL(file);
-        }
+        });
     };
 
     return (
@@ -92,7 +95,7 @@ const ProductForm = ({
                         onChange={handleImageChange} // Updated to handle image preview
                     />
                 </Form.Group>
-                {imagePreview && (
+                {imagePreviews.length > 0 && (
                     <div className="mt-3">
                         <Form.Label>Image Preview</Form.Label>
                         <div>
