@@ -71,7 +71,7 @@ const Navbar = ({ isAuthenticated, user }) => {
                 {isAuthenticated ? (
                     <li className="navbar-item dropdown">
                         <span className="navbar-link">{user?.displayName || 'ACCOUNT'}</span>
-                        <ul className="dropdown-menu">
+                        <ul className="dropdown-menu dropdown-menu-custom">
                             <li>
                                 <Link to="/user-account/profile" className="dropdown-link">PROFILE</Link>
                             </li>
