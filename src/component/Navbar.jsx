@@ -7,10 +7,18 @@ import { auth } from '../firebase.utils';
 import LoginModal from './LoginModal';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
+// Mock Products Data (replace with actual product data)
+const productsData = [
+    { id: 1, name: "Men's T-Shirt", average_rating: 4.5 },
+    { id: 2, name: "Women's Handbag", average_rating: 4.0 },
+    { id: 3, name: "Kids' Shoes", average_rating: 3.5 },
+    // Add more products as needed
+];
 
 const Navbar = ({ isAuthenticated, user }) => {
     const [isLoginModalOpen, setLoginModalOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [searchQuery, setSearchQuery] = useState(""); // State for search query
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -41,6 +49,20 @@ const Navbar = ({ isAuthenticated, user }) => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+
+    const handleSearchInputChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+    const handleSearchSubmit = (event) => {
+        event.preventDefault();
+        // Filtering logic (replace with your actual search handling)
+        const results = productsData.filter(product =>
+            product.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        console.log("Filtered Products:", results);
+        // Navigate or display results as needed
+    };
 
     return (
         <nav className="navbar">
@@ -82,18 +104,56 @@ const Navbar = ({ isAuthenticated, user }) => {
                     </li>
                 ) : (
                     !isLoginModalOpen && (
-                    <li className="navbar-item">
-                        <span onClick={openLoginModal} className="navbar-link">
-                            <i className="fas fa-user" style={{ marginRight: '8px' }}></i> Login
-                        </span>
-                    </li>
+                        <li className="navbar-item">
+                            <span onClick={openLoginModal} className="navbar-link">
+                                <i className="fas fa-user" style={{ marginRight: '8px' }}></i> Login
+                            </span>
+                        </li>
                     )
                 )}
             </ul>
 
+            {/* Search Bar */}
+            <form onSubmit={handleSearchSubmit} style={styles.searchForm}>
+                <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={handleSearchInputChange}
+                    placeholder="Search products..."
+                    style={styles.searchInput}
+                />
+                <button type="submit" style={styles.searchButton}>
+                    <i className="fas fa-search"></i>
+                </button>
+            </form>
+
             {isLoginModalOpen && <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />}
         </nav>
     );
+};
+
+// Inline styles for search form
+const styles = {
+    searchForm: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    searchInput: {
+        padding: '8px 12px',
+        border: '1px solid #ccc',
+        borderRadius: '4px',
+        fontSize: '16px',
+        marginRight: '5px',
+    },
+    searchButton: {
+        padding: '8px 12px',
+        border: 'none',
+        backgroundColor: '#007bff',
+        color: '#fff',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s',
+    },
 };
 
 export default Navbar;
