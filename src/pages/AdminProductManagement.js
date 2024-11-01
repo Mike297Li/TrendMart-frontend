@@ -68,7 +68,7 @@ const AdminProductManagement = () => {
                                     <td>{product.description}</td>
                                     <td>${product.price}</td>
                                     <td>{product.features}</td>
-                                    <td>{product.average_rating}</td>
+                                    <td>{product.averageRating}</td>
                                     <td className='product-listing-buttons'>
                                         <Button variant="warning" onClick={() => handleEdit(product)} className="me-2">
                                             Edit
