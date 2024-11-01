@@ -15,7 +15,12 @@
     "react-dom": "^18.2.0",
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.27.0",
+<<<<<<< HEAD
+    "react-scripts": "^3.0.1",
+    "trendmart": "file:"
+=======
     "react-scripts": "^5.0.1"
+>>>>>>> dd50e093545ec7335e2730bd353ebfbf83fb6562
   },
   "scripts": {
     "start": "react-scripts start",
