@@ -1,27 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import Navbar from './component/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
 import HomePage from './pages/HomePage';
 import TermsAndConditions from './pages/TermsAndConditions';
 import AdminLogin from './pages/AdminLogin';
-import './App.css'
 import AdminProductManagement from './pages/AdminProductManagement';
 import ProductPage from './pages/ProductPage';
-
+import ProductList from './component/ProductList'; 
+import Cart from './pages/Cart'; // Import Cart page
+import './App.css';
 
 const App = () => {
-    // const location = useLocation();
-
-    // Show Navbar only on certain routes
-    // const showNavbar = !['/login', '/register', '/reset-password', '/admin', '/adminportal', '/create-product', '/edit-product'].includes(location.pathname);
-
     return (
         <div>
-            {/* {showNavbar && <Navbar />}  */}
-            {/* Show Navbar conditionally */}
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
@@ -31,7 +24,12 @@ const App = () => {
                 <Route path="/admin" element={<AdminLogin />} />
                 <Route path="/adminPortal" element={<AdminProductManagement />} />
                 <Route path="/create-product" element={<ProductPage />} />
-                <Route path="/edit-product/:productId" element={<ProductPage />} /> {/* New edit route */}
+                <Route path="/edit-product/:productId" element={<ProductPage />} />
+                
+                {/* New Route for Product List/Search */}
+                <Route path="/products" element={<ProductList />} />
+                <Route path="/cart" element={<Cart />} /> {/* Route for Cart */}
+
                 <Route path="/" element={<HomePage />} />
             </Routes>
         </div>
