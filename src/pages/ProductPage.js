@@ -12,7 +12,7 @@ const ProductPage = () => {
         description: '',
         price: '',
         features: '',
-        average_rating: '',
+        averageRating: '',
         pictureBase64: '' // Change this to a single base64 string
     });
 
@@ -24,7 +24,7 @@ const ProductPage = () => {
                 description: product.description,
                 price: product.price,
                 features: product.features,
-                average_rating: product.average_rating,
+                averageRating: product.averageRating,
                 pictureBase64: product.pictureBase64 || '', // Ensure to get base64 string if available
             });
         }
@@ -66,7 +66,7 @@ const ProductPage = () => {
         formDataToSend.append('description', formData.description);
         formDataToSend.append('price', parseFloat(formData.price).toFixed(2));
         formDataToSend.append('features', formData.features);
-        formDataToSend.append('average_rating', parseFloat(formData.average_rating).toFixed(2));
+        formDataToSend.append('averageRating', parseFloat(formData.average_rating).toFixed(2));
 
         // Append the base64 image if it exists
         if (formData.pictureBase64) {
