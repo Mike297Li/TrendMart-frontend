@@ -1,0 +1,78 @@
+/* src/styles/findProducts.css */
+
+.find-products-modal {
+    position:absolute;
+    top: 450%;
+    left: 50%;
+    right: 0;
+    bottom: 0;
+    background-color: transparent; /* Fondo semitransparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.find-products-content {
+    background-color: #ffffff;
+    padding: 20px;
+    width: 90%;
+    max-width: 600px; /* Controla el ancho máximo del modal */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.find-products-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 8px 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.cancel-link {
+    color: #007BFF;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.cancel-link:hover {
+    color: #ff5722;
+}
+
+.find-products-sections {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px; /* Espacio entre secciones */
+}
+
+.find-products-section h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.find-products-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.find-products-section li {
+    margin-bottom: 5px;
+}
+
+.find-products-section li a {
+    color: #333;
+    text-decoration: none;
+}
+
+.find-products-section li a:hover {
+    text-decoration: underline;
+}

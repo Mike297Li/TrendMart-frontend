@@ -1,40 +1,52 @@
 /* src/styles/navbar.css */
 
 .navbar {
-    position: fixed !important; /* Asegura que el navbar esté fijo en la parte superior */
+    position: fixed !important;
     top: 0;
     left: 0;
     width: 100%;
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
+    background: linear-gradient(to bottom, rgba(46, 41, 41, 0.4), rgba(255, 255, 255, 0));
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 40px;
-    z-index: 1000 !important; /* Asegura que esté por encima de otros elementos */
-    height: 40px;
+    z-index: 500 !important;
+    height: 60px;
     backdrop-filter: blur(0px);
     box-shadow: none;
 }
 
-
-.navbar-logo {
-    position: absolute;
-    color: #e9dbc0;
-    left: 51.5%;
-    transform-origin: center;
-    transform: translateX(-50%);
-    transition: font-size 1s ease;
-    font-family: aria-label;
-    font-size: 840%; /* Tamaño grande en la parte superior */
+/* Logo grande para la página de inicio */
+.navbar-logo.large-logo {
+    font-size: 840%;
     margin-top: 13%;
+    color: #e9dbc0;
+    position: absolute;
+    left: 51.5%;
+    transform: translateX(-50%);
+    font-family: aria-label;
     font-weight: 200;
     letter-spacing: 0.5em;
+    transition: font-size 1s ease;
 }
 
-.navbar-logo.scrolled {
-    font-size: 1.8em; /* Tamaño pequeño cuando haces scroll */
+/* Logo pequeño para todas las demás páginas */
+.navbar-logo.small-logo {
+    font-size: 1.8em;
     margin-top: 1%;
+    color: #e9dbc0;
+    position: absolute;
+    left: 51.5%;
+    transform: translateX(-50%);
+    font-family: aria-label;
+    font-weight: 200;
     letter-spacing: 5px;
+}
+
+/* Color blanco para el navbar en páginas diferentes a la de inicio */
+.navbar.white-text .navbar-link,
+.navbar.white-text .navbar-logo {
+    color: #ffffff;
 }
 
 .navbar-link {
@@ -46,9 +58,20 @@
 .navbar-links {
     list-style: none;
     display: flex;
-    gap: 15px;
-    margin: 0 1% 0;
+    align-items: center;
+    gap: 20px;
+    margin-right: 2%;
+    margin-left: 2%;
     padding: 0;
+    white-space: nowrap;
+}
+
+.navbar-links2 {
+    list-style: none;
+    display: flex;
+    gap: 0;
+    margin-left: 0;
+    padding-left: 61%;
 }
 
 .navbar-item {
@@ -92,4 +115,14 @@
 .dropdown-link:hover {
     background-color: #ff5722;
     color: #ffffff;
+}
+
+/* Efecto de transición de color para el logo y los enlaces del navbar */
+.navbar.white-text .dropdown-link {
+    color: #ffffff;
+}
+
+.navbar.white-text .dropdown-link:hover {
+    color: #ffffff;
+    background-color: #ff5722;
 }
