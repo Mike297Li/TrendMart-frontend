@@ -2,7 +2,7 @@
 /* src/styles/loginModal.css */
 .login-modal {
     position: fixed;
-    top: -77%; /* Centra el modal verticalmente */
+    top: -25%; /* Centra el modal verticalmente */
     right: -100%; /* Inicia fuera de la vista a la derecha */
     transform: translateY(20%);
     width: 280px; /* Ajusta el ancho del modal */
