@@ -43,10 +43,17 @@
     letter-spacing: 5px;
 }
 
+/* Asegura que el enlace del logo conserve el color deseado */
+.logo-link {
+    color: inherit;
+    text-decoration: none;
+    display: inline-block;
+}
+
 /* Color blanco para el navbar en páginas diferentes a la de inicio */
 .navbar.white-text .navbar-link,
 .navbar.white-text .navbar-logo {
-    color: #ffffff;
+    color: #000000;
 }
 
 .navbar-link {

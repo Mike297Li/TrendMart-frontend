@@ -1,26 +1,31 @@
-// src/component/Navbar.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../styles/navbar.css';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase.utils';
 import LoginModal from './LoginModal';
-import FindProducts from '../pages/FindProducts';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Navbar = ({ isAuthenticated, user }) => {
     const [isLoginModalOpen, setLoginModalOpen] = useState(false);
-    const [isFindProductsOpen, setFindProductsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 
     const isHomePage = location.pathname === '/';
+    const isSearchProductPage = location.pathname === '/searchproduct';
+
+    // Estado para manejar el popup de búsqueda
+    const [isFindProductsOpen, setIsFindProductsOpen] = useState(false);
+
+    const handleSearchClick = () => {
+        navigate('/search'); // Cambia '/search' a la ruta correcta de ProductSearch
+    };
 
     const handleLogout = () => {
         signOut(auth)
             .then(() => {
-                navigate('/homePage');
+                navigate('/');
             })
             .catch((error) => {
                 console.error('Error while logging out:', error);
@@ -28,7 +33,6 @@ const Navbar = ({ isAuthenticated, user }) => {
     };
 
     const openLoginModal = () => {
-        setFindProductsOpen(false);
         setLoginModalOpen(true);
     };
 
@@ -36,46 +40,44 @@ const Navbar = ({ isAuthenticated, user }) => {
         setLoginModalOpen(false);
     };
 
-    const openFindProducts = () => {
-        setLoginModalOpen(false);
-        setFindProductsOpen(true);
-    };
-
-    const closeFindProducts = () => {
-        setFindProductsOpen(false);
-    };
-
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
+            if (isHomePage) {
+                setIsScrolled(window.scrollY > 50);
+            }
         };
 
-        handleScroll();
-        
-        window.addEventListener('scroll', handleScroll);
+        if (isHomePage) {
+            window.addEventListener('scroll', handleScroll);
+        }
+
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, []);
+    }, [isHomePage]);
 
     return (
-        <nav className={`navbar ${!isHomePage ? 'white-text' : ''}`}>
+        <nav className={`navbar ${isSearchProductPage ? 'black-text' : ''} ${!isHomePage ? 'white-text' : ''}`}>
             <h2
-                className={`navbar-logo ${isHomePage ? 'large-logo' : 'small-logo'}`}
+                className={`navbar-logo ${isHomePage && !isScrolled ? 'large-logo' : 'small-logo'}`}
                 aria-label="TrendMart Logo"
             >
-                TRENDMART
+                <Link to="/" className="logo-link">
+                    TRENDMART
+                </Link>
             </h2>
             <ul className="navbar-links">
-                <li className="navbar-item dropdown">
-                    <span className="navbar-link">CATEGORIES</span>
-                    <ul className="dropdown-menu">
-                        <li><Link to="/products/man" className="dropdown-link">MAN</Link></li>
-                        <li><Link to="/products/women" className="dropdown-link">WOMEN</Link></li>
-                        <li><Link to="/products/kids" className="dropdown-link">KIDS</Link></li>
-                        <li><Link to="/products/accessories" className="dropdown-link">ACCESSORIES</Link></li>
-                    </ul>
-                </li>
+                {isHomePage && (
+                    <li className="navbar-item dropdown">
+                        <span className="navbar-link">CATEGORIES</span>
+                        <ul className="dropdown-menu">
+                            <li><Link to="/products/man" className="dropdown-link">MAN</Link></li>
+                            <li><Link to="/products/women" className="dropdown-link">WOMEN</Link></li>
+                            <li><Link to="/products/kids" className="dropdown-link">KIDS</Link></li>
+                            <li><Link to="/products/accessories" className="dropdown-link">ACCESSORIES</Link></li>
+                        </ul>
+                    </li>
+                )}
                 <li className="navbar-item">
                     <Link to="/products/maple" className="navbar-link">MAPLE</Link>
                 </li>
@@ -88,7 +90,7 @@ const Navbar = ({ isAuthenticated, user }) => {
             </ul>
             <ul className="navbar-links2">
                 <li className="navbar-item navbar-find-products">
-                    <span className="navbar-link" onClick={openFindProducts}>
+                    <span className="navbar-link" onClick={handleSearchClick}>
                         <i className="fas fa-search" style={{ marginLeft: '8px' }}></i>
                     </span>
                 </li>
@@ -108,17 +110,16 @@ const Navbar = ({ isAuthenticated, user }) => {
                     </li>
                 ) : (
                     !isLoginModalOpen && (
-                    <li className="navbar-item">
-                        <span onClick={openLoginModal} className="navbar-link">
-                            <i className="fas fa-user" style={{ marginRight: '8px' }}></i> Login
-                        </span>
-                    </li>
+                        <li className="navbar-item">
+                            <span onClick={openLoginModal} className="navbar-link">
+                                <i className="fas fa-user" style={{ marginRight: '8px' }}></i> Login
+                            </span>
+                        </li>
                     )
                 )}
             </ul>
 
             <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
-            <FindProducts isOpen={isFindProductsOpen} onClose={closeFindProducts} />
         </nav>
     );
 };

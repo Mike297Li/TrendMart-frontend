@@ -1,6 +1,5 @@
 // src/components/ProductSearchPage.jsx
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import ProductGrid from './ProductGrid';
 import '../styles/ProductSearchPage.css';
 
@@ -10,73 +9,86 @@ const ProductSearchPage = () => {
     const [hoveredRating, setHoveredRating] = useState(0);
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
-    const [products, setProducts] = useState([]);
-    
-    // Obtiene el término de búsqueda desde la URL
-    const location = useLocation();
-    const searchTerm = new URLSearchParams(location.search).get('query') || '';
+    const [productName, setProductName] = useState('');
+    const [allProducts, setAllProducts] = useState([]); // Todos los productos desde el backend
+    const [filteredProducts, setFilteredProducts] = useState([]); // Productos filtrados que se mostrarán
 
-    // Efecto para cargar productos cada vez que cambia algún filtro o el término de búsqueda
+    // Cargar todos los productos una vez al montar el componente
     useEffect(() => {
-        fetchProducts();
-    }, [searchTerm, selectedRating, minPrice, maxPrice]);
+        fetchAllProducts();
+    }, []);
 
-    const toggleFilterVisibility = () => {
-        setIsFilterVisible(!isFilterVisible);
-    };
-
-    const handleRatingChange = (rating) => {
-        setSelectedRating(rating);
-    };
-
-    const handleMouseEnter = (rating) => {
-        setHoveredRating(rating);
-    };
-
-    const handleMouseLeave = () => {
-        setHoveredRating(0);
-    };
-
-    const handleMinPriceChange = (event) => {
-        const value = Math.min(Number(event.target.value), maxPrice - 1);
-        setMinPrice(value);
-    };
-
-    const handleMaxPriceChange = (event) => {
-        const value = Math.max(Number(event.target.value), minPrice + 1);
-        setMaxPrice(value);
-    };
-
-    const handleMinSliderChange = (event) => {
-        const min = Math.min(Number(event.target.value), maxPrice - 1);
-        setMinPrice(min);
-    };
-
-    const handleMaxSliderChange = (event) => {
-        const max = Math.max(Number(event.target.value), minPrice + 1);
-        setMaxPrice(max);
-    };
-
-    // Función para obtener productos desde la API usando los filtros
-    const fetchProducts = async () => {
+    // Función para traer todos los productos del backend
+    const fetchAllProducts = async () => {
         try {
-            const queryParams = new URLSearchParams({
-                name: searchTerm,
-                rating: selectedRating || undefined,
-                minPrice: minPrice || undefined,
-                maxPrice: maxPrice || undefined,
-            });
-
-            const response = await fetch(`/api/products/search?${queryParams.toString()}`);
+            const response = await fetch(`http://localhost:8080/api/products`);
             if (response.ok) {
                 const data = await response.json();
-                setProducts(data);
+                setAllProducts(data);
+                setFilteredProducts(data); // Inicialmente, muestra todos los productos
             } else {
                 console.error("Error fetching products:", response.statusText);
             }
         } catch (error) {
             console.error("Error fetching products:", error);
         }
+    };
+
+    // Aplicar los filtros cuando cambian los valores
+    useEffect(() => {
+        applyFilters();
+    }, [productName, selectedRating, minPrice, maxPrice]);
+
+    const applyFilters = () => {
+        let filtered = allProducts;
+
+        // Filtrar por nombre
+        if (productName) {
+            filtered = filtered.filter(product =>
+                product.name.toLowerCase().includes(productName.toLowerCase())
+            );
+        }
+
+        // Filtrar por calificación
+        if (selectedRating) {
+            filtered = filtered.filter(product =>
+                product.averageRating >= selectedRating
+            );
+        }
+
+        // Filtrar por rango de precios
+        if (minPrice) {
+            filtered = filtered.filter(product =>
+                product.price >= parseFloat(minPrice)
+            );
+        }
+        if (maxPrice) {
+            filtered = filtered.filter(product =>
+                product.price <= parseFloat(maxPrice)
+            );
+        }
+
+        setFilteredProducts(filtered);
+    };
+
+    const handleMinPriceChange = (event) => {
+        setMinPrice(event.target.value);
+    };
+
+    const handleMaxPriceChange = (event) => {
+        setMaxPrice(event.target.value);
+    };
+
+    const handleProductNameChange = (event) => {
+        setProductName(event.target.value);
+    };
+
+    const handleRatingChange = (rating) => {
+        setSelectedRating(rating);
+    };
+
+    const toggleFilterVisibility = () => {
+        setIsFilterVisible(!isFilterVisible);
     };
 
     return (
@@ -87,12 +99,26 @@ const ProductSearchPage = () => {
             <div className="product-search-container">
                 <div className={`filters-container ${isFilterVisible ? 'visible' : ''}`}>
                     <div className="filter-header">
-                        <h2 className="filter-title">Filter</h2>
+                        <h2 className="filter-title">Filters</h2>
                         <button className="close-filter-button" onClick={toggleFilterVisibility}>X</button>
                     </div>
-
                     <div className="filter-content">
-                        {/* Average Rating Filter */}
+                        {/* Filtro por nombre */}
+                        <div className="filter-section">
+                            <details open>
+                                <summary>By Product Name</summary>
+                                <input
+                                    type="text"
+                                    placeholder="Enter product name"
+                                    className="product-name-input"
+                                    value={productName}
+                                    onChange={handleProductNameChange}
+                                />
+                            </details>
+                        </div>
+                        <div className="filter-divider"></div>
+
+                        {/* Filtro por calificación */}
                         <div className="filter-section">
                             <details open>
                                 <summary>Average Rating</summary>
@@ -102,8 +128,8 @@ const ProductSearchPage = () => {
                                             key={star}
                                             className={`star ${hoveredRating >= star || selectedRating >= star ? 'selected' : ''}`}
                                             onClick={() => handleRatingChange(star)}
-                                            onMouseEnter={() => handleMouseEnter(star)}
-                                            onMouseLeave={handleMouseLeave}
+                                            onMouseEnter={() => setHoveredRating(star)}
+                                            onMouseLeave={() => setHoveredRating(0)}
                                         >
                                             ★
                                         </span>
@@ -113,12 +139,12 @@ const ProductSearchPage = () => {
                         </div>
                         <div className="filter-divider"></div>
 
-                        {/* Price Range Filter */}
+                        {/* Filtro por rango de precios */}
                         <div className="filter-section">
                             <details open>
                                 <summary>Price Range</summary>
                                 <div className="price-range-container">
-                                    <label htmlFor="minPriceInput">minPrice</label>
+                                    <label htmlFor="minPriceInput">Min Price</label>
                                     <input
                                         type="number"
                                         id="minPriceInput"
@@ -128,7 +154,7 @@ const ProductSearchPage = () => {
                                         min="0"
                                         max="100000"
                                     />
-                                    <label htmlFor="maxPriceInput">maxPrice</label>
+                                    <label htmlFor="maxPriceInput">Max Price</label>
                                     <input
                                         type="number"
                                         id="maxPriceInput"
@@ -138,115 +164,15 @@ const ProductSearchPage = () => {
                                         min="0"
                                         max="100000"
                                     />
-
-                                    <div className="slider-container">
-                                        <label htmlFor="minSlider">minPrice</label>
-                                        <input
-                                            type="range"
-                                            id="minSlider"
-                                            className="price-slider"
-                                            min="0"
-                                            max="100000"
-                                            value={minPrice}
-                                            onChange={handleMinSliderChange}
-                                            step="100"
-                                        />
-                                    </div>
-
-                                    <div className="slider-container">
-                                        <label htmlFor="maxSlider">maxPrice</label>
-                                        <input
-                                            type="range"
-                                            id="maxSlider"
-                                            className="price-slider"
-                                            min="0"
-                                            max="100000"
-                                            value={maxPrice}
-                                            onChange={handleMaxSliderChange}
-                                            step="100"
-                                        />
-                                    </div>
-                                </div>
-                            </details>
-                        </div>
-                        <div className="filter-divider"></div>
-
-                        {/* Additional Filters */}
-                        <div className="filter-section">
-                            <details>
-                                <summary>Gender</summary>
-                                <ul>
-                                    <li><input type="checkbox" /> All</li>
-                                    <li><input type="checkbox" /> Women</li>
-                                    <li><input type="checkbox" /> Men</li>
-                                    <li><input type="checkbox" /> Children</li>
-                                </ul>
-                            </details>
-                        </div>
-                        <div className="filter-divider"></div>
-
-                        <div className="filter-section">
-                            <details>
-                                <summary>Shop by Category</summary>
-                                <ul>
-                                    <li><input type="checkbox" /> Handbags</li>
-                                    <li><input type="checkbox" /> Bags</li>
-                                    <li><input type="checkbox" /> Wallets and Small Accessories</li>
-                                    <li><input type="checkbox" /> Accessories</li>
-                                    <li><input type="checkbox" /> Travel</li>
-                                </ul>
-                            </details>
-                        </div>
-                        <div className="filter-divider"></div>
-
-                        <div className="filter-section">
-                            <details>
-                                <summary>Material</summary>
-                                <ul>
-                                    <li><input type="checkbox" /> GG Canvas</li>
-                                    <li><input type="checkbox" /> Leather</li>
-                                    <li><input type="checkbox" /> Fabric</li>
-                                    <li><input type="checkbox" /> Original GG Fabric</li>
-                                    <li><input type="checkbox" /> GG Leather</li>
-                                </ul>
-                            </details>
-                        </div>
-                        <div className="filter-divider"></div>
-
-                        <div className="filter-section">
-                            <details>
-                                <summary>Color</summary>
-                                <div className="color-options">
-                                    <div className="color-circle" style={{ backgroundColor: 'beige' }}></div>
-                                    <div className="color-circle" style={{ backgroundColor: 'black' }}></div>
-                                    <div className="color-circle" style={{ backgroundColor: 'white' }}></div>
-                                    <div className="color-circle" style={{ backgroundColor: 'blue' }}></div>
-                                    <div className="color-circle" style={{ backgroundColor: 'brown' }}></div>
-                                    <div className="color-circle" style={{ backgroundColor: 'pink' }}></div>
-                                </div>
-                            </details>
-                        </div>
-                        <div className="filter-divider"></div>
-
-                        <div className="filter-section">
-                            <details>
-                                <summary>Product Size</summary>
-                                <div className="size-options">
-                                    <ul>
-                                        <li><input type="checkbox" /> XS</li>
-                                        <li><input type="checkbox" /> S</li>
-                                        <li><input type="checkbox" /> M</li>
-                                        <li><input type="checkbox" /> L</li>
-                                        <li><input type="checkbox" /> XL</li>
-                                    </ul>
                                 </div>
                             </details>
                         </div>
                     </div>
                 </div>
 
+                {/* Mostrar productos filtrados */}
                 <div className={`product-grid-container ${isFilterVisible ? 'with-filter' : ''}`}>
-                    <ProductGrid products={products} isFilterVisible={isFilterVisible} />
+                    <ProductGrid products={filteredProducts} isFilterVisible={isFilterVisible} />
                 </div>
             </div>
         </div>

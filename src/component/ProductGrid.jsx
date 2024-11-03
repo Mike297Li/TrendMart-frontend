@@ -2,25 +2,20 @@
 import React from 'react';
 import '../styles/ProductGrid.css';
 
-const ProductGrid = ({ isFilterVisible }) => {
-    // Datos de ejemplo para productos
-    const products = [
-        { id: 1, name: "TrendMart Bag", price: "$1000", imgSrc: "https://via.placeholder.com/150" },
-        { id: 2, name: "TrendMart Shoe", price: "$500", imgSrc: "https://via.placeholder.com/150" },
-        { id: 3, name: "TrendMart Belt", price: "$200", imgSrc: "https://via.placeholder.com/150" },
-        { id: 4, name: "TrendMart Hat", price: "$150", imgSrc: "https://via.placeholder.com/150" },
-        // Agrega más productos según sea necesario
-    ];
-
+const ProductGrid = ({ products, isFilterVisible }) => {
     return (
         <div className={`product-grid ${isFilterVisible ? 'filter-visible' : ''}`}>
-            {products.map(product => (
-                <div className="product-card" key={product.id}>
-                    <img src={product.imgSrc} alt={product.name} />
-                    <h3>{product.name}</h3>
-                    <p>{product.price}</p>
-                </div>
-            ))}
+            {products.length > 0 ? (
+                products.map((product, index) => (
+                    <div className="product-card" key={product.id || index}>
+                        <img src={product.imgSrc || "https://via.placeholder.com/150"} alt={product.name || "Product"} />
+                        <h3>{product.name || "No name available"}</h3>
+                        <p>{product.price ? `$${product.price}` : "No price available"}</p>
+                    </div>
+                ))
+            ) : (
+                <p>No products found.</p>
+            )}
         </div>
     );
 };

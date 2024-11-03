@@ -15,7 +15,7 @@ const LoginModal = ({ isOpen, onClose }) => {
         try {
             const userCredential = await signInWithEmailPassword(email, password);
             console.log("User Logged In: ", userCredential.user);
-            navigate('/homePage'); // Redirige al homePage después del login
+            navigate('/'); // Redirige al homePage después del login
             onClose(); // Cierra el modal después del login exitoso
         } catch (error) {
             console.error("Login failed:", error);

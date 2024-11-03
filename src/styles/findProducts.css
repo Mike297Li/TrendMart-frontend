@@ -38,9 +38,11 @@
 }
 
 .cancel-link {
-    color: #007BFF;
+    color: #333;
     cursor: pointer;
     font-size: 0.9rem;
+    background-color: transparent;
+    text-transform: uppercase;
 }
 
 .cancel-link:hover {
@@ -64,15 +66,23 @@
     padding: 0;
 }
 
-.find-products-section li {
-    margin-bottom: 5px;
-}
-
-.find-products-section li a {
+.find-products-section li button {
+    display:contents;
+    align-items: center;
+    width: 80%;
+    padding: 1px;
+    font-size: 0.9rem;
     color: #333;
-    text-decoration: none;
+    background-color: #ffffff; 
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.find-products-section li a:hover {
-    text-decoration: underline;
+.error-message {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-align: left;
 }

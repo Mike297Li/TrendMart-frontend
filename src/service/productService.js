@@ -1,22 +1,23 @@
-// src/service/productService.js
-export const searchProducts = async (queryParams) => {
-    const { name, rating, minPrice, maxPrice } = queryParams;
-    const query = new URLSearchParams();
+// services/productService.js
 
-    if (name) query.append("name", name);
-    if (rating) query.append("rating", rating);
-    if (minPrice) query.append("minPrice", minPrice);
-    if (maxPrice) query.append("maxPrice", maxPrice);
-
+export async function getProductById(productId) {
     try {
-        const response = await fetch(`/api/products/search?${query.toString()}`);
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
-        }
-        const data = await response.json();
-        return data;
+      const response = await fetch(`http://localhost:8080/api/products/1`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error fetching product');
+      }
+  
+      const product = await response.json();
+      return product;
     } catch (error) {
-        console.error("Error fetching products:", error);
-        throw error;
+      console.error('Error fetching product:', error);
+      throw error;
     }
-};
+  }
+  
