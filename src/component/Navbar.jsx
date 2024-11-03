@@ -54,8 +54,11 @@ const Navbar = ({ isAuthenticated, user }) => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            const results = await response.json();
-            navigate('/search-results', { state: { results, query: searchQuery } });
+            const data = await response.json();
+            const results = data.products;
+            const totalCount = data.totalCount;
+
+            navigate('/search-results', { state: { results, totalCount, query: searchQuery } });
         } catch (error) {
             console.error("Error fetching search results:", error);
         }

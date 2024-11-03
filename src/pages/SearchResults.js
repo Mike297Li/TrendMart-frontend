@@ -1,4 +1,3 @@
- /* eslint-disable */
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Form, Button, InputGroup, Row, Col, Container, Pagination } from 'react-bootstrap';
@@ -15,29 +14,25 @@ const SearchResults = () => {
     const [maxPrice, setMaxPrice] = useState('');
     const [results, setResults] = useState(initialResults);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalResults, setTotalResults] = useState(0);
+    const [totalResults, setTotalResults] = useState(location.state?.totalCount || 0);
     const resultsPerPage = 10;
 
     useEffect(() => {
-        if (initialResults.length > 0) {
-            setResults(initialResults);
-            setTotalResults(location.state?.totalResults || 0);
-        }
-    }, [initialResults]);
+        setTotalResults(location.state?.totalCount || 0);
+    }, [location.state?.totalCount]);
 
-
-    useEffect(()=>{
-        if(sessionStorage.getItem('user') == null){
+    useEffect(() => {
+        if (sessionStorage.getItem('user') == null) {
             navigate('/');
         }
-    }, [])
+    }, [navigate]);
 
     const buildQueryParams = () => {
         const params = new URLSearchParams();
-        if (searchValue) params.append('name', searchValue);
-        if (rating) params.append('rating', rating);
-        if (minPrice) params.append('minPrice', minPrice);
-        if (maxPrice) params.append('maxPrice', maxPrice);
+        params.append('name', searchValue || '');
+        params.append('rating', rating || '');
+        params.append('minPrice', minPrice || '');
+        params.append('maxPrice', maxPrice || '');
         params.append('page', currentPage);
         params.append('limit', resultsPerPage);
         return params.toString();
@@ -49,8 +44,9 @@ const SearchResults = () => {
         try {
             const response = await fetch(`http://localhost:8080/api/products/search?${buildQueryParams()}`);
             const data = await response.json();
-            navigate('/search-results', { state: { results: data, totalResults: data.length, query: searchValue } });
-            setResults(data);
+            setResults(data.products);
+            setTotalResults(data.totalCount);
+            navigate('/search-results', { state: { results: data.products, totalCount: data.totalCount, query: searchValue } });
         } catch (error) {
             console.error('Error fetching search results:', error);
         }
@@ -61,7 +57,7 @@ const SearchResults = () => {
         try {
             const response = await fetch(`http://localhost:8080/api/products/search?${buildQueryParams()}`);
             const data = await response.json();
-            setResults(data);
+            setResults(data.products);
         } catch (error) {
             console.error('Error fetching search results:', error);
         }
