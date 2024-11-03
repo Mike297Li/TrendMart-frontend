@@ -57,7 +57,7 @@ const Navbar = ({ isAuthenticated, user }) => {
 
     const handleSearchSubmit = async (event) => {
         event.preventDefault();
-        console.log("Search button clicked"); // Add this line for debugging
+        console.log("Search button clicked"); // Debugging log
 
         try {
             const response = await fetch(`http://localhost:8080/api/products/search?name=${encodeURIComponent(searchQuery)}`);
@@ -69,13 +69,17 @@ const Navbar = ({ isAuthenticated, user }) => {
             const results = await response.json();
             console.log("Search Results:", results);
 
-            // Handle the search results (e.g., display them or navigate to a results page)
-            // Example: navigate to a search results page and pass data
-            navigate('/search-results', { state: { results } });
+            // Check if results are present
+            if (results.products && results.products.length > 0) {
+                navigate('/search-results', { state: { results: results.products, totalCount: results.totalCount, query: searchQuery } });
+            } else {
+                navigate('/search-results', { state: { results: [], totalCount: 0, query: searchQuery } });
+            }
         } catch (error) {
             console.error("Error fetching search results:", error);
         }
     };
+
 
 
     return (

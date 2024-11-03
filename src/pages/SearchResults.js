@@ -5,43 +5,44 @@ import { useState, useEffect } from 'react';
 const SearchResults = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const initialResults = location.state?.results || [];
     const initialQuery = location.state?.query || '';
     const [searchValue, setSearchValue] = useState(initialQuery);
-    const [results, setResults] = useState(initialResults);
+    const [results, setResults] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalResults, setTotalResults] = useState(0);
-    const resultsPerPage = 10; // Set the number of results per page
+    const [loading, setLoading] = useState(false);
+    const resultsPerPage = 1; // Set the number of results per page to 1
 
     useEffect(() => {
-        if (initialResults.length > 0) {
-            setResults(initialResults);
-            setTotalResults(location.state?.totalResults || 0); // Use the total results from state
+        if (initialQuery) {
+            fetchResults(initialQuery, 1);
         }
-    }, [initialResults]);
+    }, [initialQuery]);
 
-    const handleSearch = async (e) => {
-        e.preventDefault();
+    const fetchResults = async (query, page) => {
+        setLoading(true);
+        console.log(`Fetching results for: "${query}" on page: ${page}`);
         try {
-            const response = await fetch(`http://localhost:8080/api/products/search?name=${encodeURIComponent(searchValue)}&page=1&limit=${resultsPerPage}`);
+            const response = await fetch(`http://localhost:8080/api/products/search?name=${encodeURIComponent(query)}&page=${page}&size=${resultsPerPage}`);
             const data = await response.json();
-            navigate('/search-results', { state: { results: data.results, totalResults: data.totalResults, query: searchValue } });
-            setCurrentPage(1); // Reset to the first page
+            console.log('API response:', data);
+            setResults(data.products || []);
+            setTotalResults(data.totalCount || 0);
+            setCurrentPage(page);
         } catch (error) {
             console.error('Error fetching search results:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
-    const handlePageChange = async (page) => {
-        setCurrentPage(page);
-        try {
-            const response = await fetch(`http://localhost:8080/api/products/search?name=${encodeURIComponent(searchValue)}&page=${page}&limit=${resultsPerPage}`);
-            const data = await response.json();
-            setResults(data.results);
-            navigate('/search-results', { state: { results: data.results, totalResults: data.totalResults, query: searchValue } });
-        } catch (error) {
-            console.error('Error fetching search results:', error);
-        }
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        fetchResults(searchValue, 1);
+    };
+
+    const handlePageChange = (page) => {
+        fetchResults(searchValue, page);
     };
 
     const totalPages = Math.ceil(totalResults / resultsPerPage);
@@ -64,22 +65,31 @@ const SearchResults = () => {
                 </form>
             </div>
 
-            {results.length > 0 ? (
-                <ul className="search-results-list">
-                    {results.map((product) => (
-                        <li key={product.id} className="search-result-item">
-                            <img
-                                src={`data:image/jpeg;base64,${product.pictureBase64}`}
-                                alt={product.name}
-                                className="product-image"
-                            />
-                            <h3 className="product-name">{product.name}</h3>
-                            <p className="product-rating">Rating: {product.averageRating}</p>
-                        </li>
-                    ))}
-                </ul>
+            {loading ? (
+                <p>Loading results...</p>
+            ) : results.length > 0 ? (
+                <div>
+                    <p className="results-count">Showing {results.length} of {totalResults} results</p>
+                    <ul className="search-results-list">
+                        {results.map((product) => (
+                            <li key={product.productId} className="search-result-item">
+                                <h3 className="product-name">{product.name}</h3>
+                                <p className="product-rating">Rating: {product.averageRating}</p>
+                                <p className="product-price">${product.price}</p>
+                                <p className="product-description">{product.description}</p>
+                                {product.pictureBase64 && (
+                                    <img
+                                        src={`data:image/jpeg;base64,${product.pictureBase64}`}
+                                        alt={product.name}
+                                        className="product-image"
+                                    />
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             ) : (
-                <p>No products found.</p>
+                <p>No products found. Please try a different search.</p>
             )}
 
             {/* Pagination Controls */}
