@@ -13,7 +13,7 @@ const SearchResults = () => {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const [results, setResults] = useState(initialResults);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(location.state?.page || 1);
     const [totalResults, setTotalResults] = useState(location.state?.totalCount || 0);
     const resultsPerPage = 10;
 
@@ -34,7 +34,7 @@ const SearchResults = () => {
         params.append('minPrice', minPrice || '');
         params.append('maxPrice', maxPrice || '');
         params.append('page', currentPage);
-        params.append('limit', resultsPerPage);
+        params.append('size', resultsPerPage);
         return params.toString();
     };
 
@@ -46,18 +46,19 @@ const SearchResults = () => {
             const data = await response.json();
             setResults(data.products);
             setTotalResults(data.totalCount);
-            navigate('/search-results', { state: { results: data.products, totalCount: data.totalCount, query: searchValue } });
+            navigate('/search-results', { state: { results: data.products, totalCount: data.totalCount, query: searchValue, page: 1 } });
         } catch (error) {
             console.error('Error fetching search results:', error);
         }
     };
 
     const handlePageChange = async (page) => {
-        setCurrentPage(page);
+        await setCurrentPage(page);
         try {
             const response = await fetch(`http://localhost:8080/api/products/search?${buildQueryParams()}`);
             const data = await response.json();
             setResults(data.products);
+            navigate('/search-results', { state: { results: data.products, totalCount: totalResults, query: searchValue, page } });
         } catch (error) {
             console.error('Error fetching search results:', error);
         }
@@ -147,21 +148,20 @@ const SearchResults = () => {
                 <p className="text-center">No products found.</p>
             )}
 
-            {totalPages > 1 && (
-                <div className="d-flex justify-content-center mt-4">
-                    <Pagination>
-                        {[...Array(totalPages)].map((_, index) => (
-                            <Pagination.Item
-                                key={index + 1}
-                                active={currentPage === index + 1}
-                                onClick={() => handlePageChange(index + 1)}
-                            >
-                                {index + 1}
-                            </Pagination.Item>
-                        ))}
-                    </Pagination>
-                </div>
-            )}
+            <div className="d-flex justify-content-center mt-4">
+                <Pagination>
+                    {[...Array(totalPages)].map((_, index) => (
+                        <Pagination.Item
+                            key={index + 1}
+                            active={currentPage === index + 1}
+                            onClick={() => handlePageChange(index + 1)}
+                        >
+                            {index + 1}
+                        </Pagination.Item>
+                    ))}
+                </Pagination>
+            </div>
+
         </Container>
     );
 };

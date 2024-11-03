@@ -116,3 +116,43 @@
 .pagination-button.active {
     background-color: #0056b3; /* Highlight the active page */
 }
+
+/* File: src/styles/SearchResults.css */
+
+/* Container styling for pagination */
+.search-results-container {
+    padding-bottom: 20px; /* Space for pagination at the bottom */
+}
+
+/* Pagination component styling */
+.pagination {
+    margin-top: 20px;
+}
+
+.pagination .page-item {
+    margin: 0 5px;
+}
+
+.pagination .page-link {
+    color: #007bff; /* Primary color for pagination links */
+    border-radius: 4px;
+    padding: 8px 12px;
+    transition: background-color 0.2s ease;
+}
+
+.pagination .page-link:hover {
+    background-color: #e9ecef; /* Light hover effect */
+}
+
+.pagination .active .page-link {
+    background-color: #007bff; /* Highlight active page */
+    color: #fff;
+    border-color: #007bff;
+}
+
+/* Extra styling for alignment */
+.d-flex.justify-content-center {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
