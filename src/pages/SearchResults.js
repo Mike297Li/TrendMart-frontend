@@ -129,7 +129,7 @@ const SearchResults = () => {
                             <Row>
                                 <Col xs={4} md={3}>
                                     <img
-                                        src={product.pictureBase64}
+                                        src={`data:image/jpeg;base64,${product.pictureBase64}`}
                                         alt={product.name}
                                         className="img-fluid rounded"
                                     />
