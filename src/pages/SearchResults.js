@@ -15,11 +15,11 @@ const SearchResults = () => {
     const [results, setResults] = useState(initialResults);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalResults, setTotalResults] = useState(location.state?.totalCount || 0);
-    const resultsPerPage = 10;
+    const resultsPerPage = 5;
 
     useEffect(() => {
-        setTotalResults(location.state?.totalCount || 0);
-    }, [location.state?.totalCount]);
+        setTotalResults(location.state?.totalCount || initialResults.length);
+    }, [location.state?.totalCount, initialResults.length]);
 
     useEffect(() => {
         if (sessionStorage.getItem('user') == null) {
@@ -64,6 +64,9 @@ const SearchResults = () => {
     };
 
     const totalPages = Math.ceil(totalResults / resultsPerPage);
+
+    // Determine the current results to display based on pagination
+    const paginatedResults = results.slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage);
 
     return (
         <Container className="search-results-container">
@@ -122,9 +125,9 @@ const SearchResults = () => {
                 </Row>
             </Form>
 
-            {results.length > 0 ? (
+            {paginatedResults.length > 0 ? (
                 <ul className="list-unstyled">
-                    {results.map((product) => (
+                    {paginatedResults.map((product) => (
                         <li key={product.productId} className="search-result-item mb-3 p-3 border rounded">
                             <Row>
                                 <Col xs={4} md={3}>
