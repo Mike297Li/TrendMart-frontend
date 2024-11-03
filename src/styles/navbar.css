@@ -1,107 +1,45 @@
-/* src/styles/navbar.css */
-
 .navbar {
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(249, 244, 244, 0));
-    position: fixed;
-    top: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 40px;
-    z-index: 1000;
-    height: 40px;
-    backdrop-filter: blur(0px);
-    box-shadow: none;
+    background-color: #fff; /* Set background color */
+    padding: 10px 20px; /* Add padding */
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space out elements */
+    align-items: center; /* Center vertically */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow for better visibility */
 }
 
 .navbar-logo {
-    position: absolute;
-    color: #e9dbc0;
-    left: 50%;
-    transform: translateX(-50%);
-    transition: font-size 1s ease;
-    font-family: aria-label;
-    font-size: 6em; /* Tamaño grande en la parte superior */
+    font-size: 24px; /* Adjust font size */
+    margin: 0; /* Remove default margin */
+    color: #333; /* Text color */
+    transition: font-size 0.3s; /* Smooth transition on scroll */
 }
 
 .navbar-logo.scrolled {
-    font-size: 1.8em; /* Tamaño pequeño cuando haces scroll */
-    margin-top: 1%;
-    left: 50%;
-    letter-spacing: 5px;
-}
-
-.navbar-logo {
-    font-size: 840%; /* Tamaño grande en la parte superior */
-    margin-top: 15%;
-    letter-spacing: 0.11em;
-    font-weight: 200;
-    margin-left: 0;
-    letter-spacing: 0.5em;
-    
-    
-    
-}
-
-.navbar-link {
-    color: #efe2b7;
-    text-decoration: none;
-    transition: color 0.3s ease;
+    font-size: 20px; /* Reduce size on scroll (optional) */
 }
 
 .navbar-links {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-    margin: 0 70px 0 0;
-    padding: 0;
-    margin-top: 10px;
+    list-style: none; /* Remove list styling */
+    display: flex; /* Use flexbox for layout */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
 }
 
 .navbar-item {
-    position: relative;
+    margin-left: 20px; /* Space between items */
+}
+
+.navbar-link {
+    text-decoration: none; /* Remove underline */
+    color: #007bff; /* Link color */
+    transition: color 0.3s; /* Smooth transition for hover effect */
 }
 
 .navbar-link:hover {
-    color: #ff5722;
+    color: #0056b3; /* Darker color on hover */
 }
 
-.dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #bbb;
-    list-style: none;
-    padding: 10px 0;
-    margin: 0;
-    display: none;
-    border-radius: 4px;
-    min-width: 150px;
-    z-index: 2000;
-}
-
-.dropdown:hover .dropdown-menu {
-    display: block;
-}
-
-.navbar-item.dropdown {
-    margin-left: auto;
-}
-
-.dropdown-link {
-    color: #000;
-    text-decoration: none;
-    display: block;
-    padding: 8px 15px;
-    transition: background-color 0.3s ease;
-}
-
-.dropdown-link:hover {
-    background-color: #ff5722;
-    color: #ffffff;
-}
-
-.dropdown-menu-custom{
-    margin-left: -25px !important;
+/* Optional: Add some bottom margin to separate the navbar from content */
+.product-detail-container {
+    margin-top: 20px; /* Space below the navbar */
 }

@@ -1,4 +1,3 @@
-// src/component/Navbar.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/navbar.css';
@@ -64,8 +63,6 @@ const Navbar = ({ isAuthenticated, user }) => {
         }
     };
 
-
-
     return (
         <nav className="navbar">
             <h2 className={`navbar-logo ${isScrolled ? 'scrolled' : ''}`} aria-label="TrendMart Logo">TRENDMART</h2>
@@ -79,17 +76,9 @@ const Navbar = ({ isAuthenticated, user }) => {
                         <li><Link to="/products/accessories" className="dropdown-link">ACCESSORIES</Link></li>
                     </ul>
                 </li>
-
-                <li className="navbar-item">
-                    <Link to="/products/maple" className="navbar-link">MAPLE</Link>
-                </li>
-
-                <li className="navbar-item">
-                    <Link to="/about" className="navbar-link">ABOUT US</Link>
-                </li>
-                <li className="navbar-item">
-                    <Link to="/contact" className="navbar-link">CONTACT US</Link>
-                </li>
+                <li className="navbar-item"><Link to="/products/maple" className="navbar-link">MAPLE</Link></li>
+                <li className="navbar-item"><Link to="/about" className="navbar-link">ABOUT US</Link></li>
+                <li className="navbar-item"><Link to="/contact" className="navbar-link">CONTACT US</Link></li>
             </ul>
             <ul className="navbar-links">
                 {isAuthenticated ? (

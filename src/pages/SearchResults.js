@@ -64,6 +64,10 @@ const SearchResults = () => {
         }
     };
 
+    const handleProductClick = (product) => {
+        navigate(`/product/${product.productId}`, { state: { product } });
+    };
+
     const totalPages = Math.ceil(totalResults / resultsPerPage);
 
     return (
@@ -126,7 +130,12 @@ const SearchResults = () => {
             {results.length > 0 ? (
                 <ul className="list-unstyled">
                     {results.map((product) => (
-                        <li key={product.productId} className="search-result-item mb-3 p-3 border rounded">
+                        <li
+                            key={product.productId}
+                            className="search-result-item mb-3 p-3 border rounded"
+                            onClick={() => navigate(`/product-detail/${product.productId}`)} // Update this line
+                            style={{ cursor: 'pointer' }} // Optional: to indicate it's clickable
+                        >
                             <Row>
                                 <Col xs={4} md={3}>
                                     <img
