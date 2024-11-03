@@ -51,18 +51,32 @@ const Navbar = ({ isAuthenticated, user }) => {
     }, []);
 
     const handleSearchInputChange = (event) => {
+        console.log("Search input changed"); // Check if this triggers
         setSearchQuery(event.target.value);
     };
 
-    const handleSearchSubmit = (event) => {
+    const handleSearchSubmit = async (event) => {
         event.preventDefault();
-        // Filtering logic (replace with your actual search handling)
-        const results = productsData.filter(product =>
-            product.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        console.log("Filtered Products:", results);
-        // Navigate or display results as needed
+        console.log("Search button clicked"); // Add this line for debugging
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/products/search?name=${encodeURIComponent(searchQuery)}`);
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const results = await response.json();
+            console.log("Search Results:", results);
+
+            // Handle the search results (e.g., display them or navigate to a results page)
+            // Example: navigate to a search results page and pass data
+            navigate('/search-results', { state: { results } });
+        } catch (error) {
+            console.error("Error fetching search results:", error);
+        }
     };
+
 
     return (
         <nav className="navbar">
