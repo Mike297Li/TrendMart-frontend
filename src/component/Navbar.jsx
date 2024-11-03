@@ -65,6 +65,7 @@ const Navbar = ({ isAuthenticated, user }) => {
     };
 
 
+
     return (
         <nav className="navbar">
             <h2 className={`navbar-logo ${isScrolled ? 'scrolled' : ''}`} aria-label="TrendMart Logo">TRENDMART</h2>
