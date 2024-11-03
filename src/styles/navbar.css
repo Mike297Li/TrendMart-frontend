@@ -124,12 +124,6 @@
     color: #ffffff;
 }
 
-/* Efecto de transición de color para el logo y los enlaces del navbar */
-.navbar.white-text .dropdown-link {
-    color: #ffffff;
-}
-
-.navbar.white-text .dropdown-link:hover {
-    color: #ffffff;
-    background-color: #ff5722;
+.dropdown-menu-custom{
+    margin-left: -25px !important;
 }

@@ -77,7 +77,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <div ref={navbarRef}>
+            <div className='bg-black' style={{height: '60px'}} ref={navbarRef}>
                 <Navbar isAuthenticated={isAuthenticated} user={user} />
             </div>
             <WelcomeSection id="welcome" />
