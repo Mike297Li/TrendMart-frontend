@@ -6,6 +6,7 @@ import '../styles/SearchResults.css';
 const SearchResults = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const initialResults = location.state?.results || [];
     const initialQuery = location.state?.query || '';
     const [searchValue, setSearchValue] = useState(initialQuery);
     const [rating, setRating] = useState('');
