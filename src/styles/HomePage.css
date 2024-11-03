@@ -35,3 +35,12 @@
     object-fit: cover;
     border-radius: 10px; /* Bordes redondeados, opcional */
 }
+
+/* Styles for debugging */
+.navbar .searchForm {
+    z-index: 1000; /* Ensure it's above other elements */
+}
+.searchButton {
+    z-index: 1000;
+    position: relative;
+}

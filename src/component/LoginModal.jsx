@@ -1,8 +1,9 @@
-// src/component/LoginModal.jsx
+ /* eslint-disable */
 import React, { useState } from 'react';
 import '../styles/loginModal.css';
 import { useNavigate } from 'react-router-dom';
 import { signInWithGooglePopup, auth, signInWithEmailPassword } from '../firebase.utils';
+import { AiOutlineClose } from 'react-icons/ai';
 
 const LoginModal = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
@@ -14,6 +15,9 @@ const LoginModal = ({ isOpen, onClose }) => {
         e.preventDefault();
         try {
             const userCredential = await signInWithEmailPassword(email, password);
+            if(userCredential.user){
+                sessionStorage.setItem('user', JSON.stringify(userCredential.user))
+            }
             console.log("User Logged In: ", userCredential.user);
             navigate('/homePage'); // Redirige al homePage después del login
             onClose(); // Cierra el modal después del login exitoso
@@ -26,6 +30,9 @@ const LoginModal = ({ isOpen, onClose }) => {
     const logGoogleUser = async () => {
         try {
             const response = await signInWithGooglePopup();
+            if(response.user){
+                sessionStorage.setItem('user',  JSON.stringify(response.user))
+            }
             console.log("Google User Logged In: ", response);
             navigate('/homePage'); // Redirige al homePage después del login con Google
             onClose(); // Cierra el modal después del login exitoso
@@ -40,11 +47,26 @@ const LoginModal = ({ isOpen, onClose }) => {
         onClose(); // Cierra el modal
     };
 
+    // Función para manejar el clic en el fondo
+    const handleClickOutside = (e) => {
+        if (e.target.classList.contains('login-modal')) {
+            onClose(); // Cierra el modal si el clic es en el fondo
+        }
+    };
+
     return (
-        <div className={`login-modal ${isOpen ? 'show' : ''}`}>
-            <div className="modal-content">
-                <button className="close-button" onClick={onClose}>×</button>
-                <h2>Login</h2>
+        <div 
+            className={`login-modal ${isOpen ? 'show' : ''}`} 
+            onClick={handleClickOutside} // Detecta el clic en el fondo
+        >
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-header">
+                    <h2>Login</h2>
+                    <AiOutlineClose 
+                        className="close-icon" 
+                        onClick={onClose} 
+                    />
+                </div>
                 {error && <p className="error-message">{error}</p>}
                 <form onSubmit={handleLogin}>
                     <input
@@ -77,6 +99,13 @@ const LoginModal = ({ isOpen, onClose }) => {
                         className="google-login-button"
                     >
                         Google Login
+                    </button>
+                    <button 
+                        type="button" 
+                        onClick={() => navigate('/register')} 
+                        className="google-login-button"
+                    >
+                        Register
                     </button>
                 </form>
             </div>

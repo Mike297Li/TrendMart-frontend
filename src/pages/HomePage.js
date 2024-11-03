@@ -1,3 +1,4 @@
+/* eslint-disable */
 // src/pages/HomePage.js
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -10,6 +11,7 @@ import ImageSection from './ImageSection';
 import Footer from '../component/footer'; // Importa el Footer
 import collection1 from '../assets/collection1.jpg';
 import collection2 from '../assets/collection2.jpg';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import '../styles/HomePage.css';
 
 const HomePage = () => {
@@ -75,7 +77,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <div ref={navbarRef}>
+            <div className='bg-black' style={{height: '60px'}} ref={navbarRef}>
                 <Navbar isAuthenticated={isAuthenticated} user={user} />
             </div>
             <WelcomeSection id="welcome" />
