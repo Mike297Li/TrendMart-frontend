@@ -15,11 +15,11 @@ const SearchResults = () => {
     const [results, setResults] = useState(initialResults);
     const [currentPage, setCurrentPage] = useState(location.state?.page || 1);
     const [totalResults, setTotalResults] = useState(location.state?.totalCount || 0);
-    const resultsPerPage = 5;
+    const resultsPerPage = 10;
 
     useEffect(() => {
-        setTotalResults(location.state?.totalCount || initialResults.length);
-    }, [location.state?.totalCount, initialResults.length]);
+        setTotalResults(location.state?.totalCount || 0);
+    }, [location.state?.totalCount]);
 
     useEffect(() => {
         if (sessionStorage.getItem('user') == null) {
@@ -65,9 +65,6 @@ const SearchResults = () => {
     };
 
     const totalPages = Math.ceil(totalResults / resultsPerPage);
-
-    // Determine the current results to display based on pagination
-    const paginatedResults = results.slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage);
 
     return (
         <Container className="search-results-container">
@@ -126,14 +123,14 @@ const SearchResults = () => {
                 </Row>
             </Form>
 
-            {paginatedResults.length > 0 ? (
+            {results.length > 0 ? (
                 <ul className="list-unstyled">
-                    {paginatedResults.map((product) => (
+                    {results.map((product) => (
                         <li key={product.productId} className="search-result-item mb-3 p-3 border rounded">
                             <Row>
                                 <Col xs={4} md={3}>
                                     <img
-                                        src={product.pictureBase64}
+                                        src={`data:image/jpeg;base64,${product.pictureBase64}`}
                                         alt={product.name}
                                         className="img-fluid rounded"
                                     />
