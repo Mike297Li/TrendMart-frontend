@@ -27,13 +27,13 @@ const SearchResults = () => {
         }
     }, [navigate]);
 
-    const buildQueryParams = () => {
+    const buildQueryParams = (page) => {
         const params = new URLSearchParams();
         params.append('name', searchValue || '');
         params.append('rating', rating || '');
         params.append('minPrice', minPrice || '');
         params.append('maxPrice', maxPrice || '');
-        params.append('page', currentPage);
+        params.append('page', page); // Use the page passed as argument
         params.append('size', resultsPerPage);
         return params.toString();
     };
@@ -42,7 +42,7 @@ const SearchResults = () => {
         e.preventDefault();
         setCurrentPage(1);
         try {
-            const response = await fetch(`http://localhost:8080/api/products/search?${buildQueryParams()}`);
+            const response = await fetch(`http://localhost:8080/api/products/search?${buildQueryParams(1)}`);
             const data = await response.json();
             setResults(data.products);
             setTotalResults(data.totalCount);
@@ -53,21 +53,19 @@ const SearchResults = () => {
     };
 
     const handlePageChange = async (page) => {
-        await setCurrentPage(page);
+        setCurrentPage(page); // Update page state immediately
         try {
-            const response = await fetch(`http://localhost:8080/api/products/search?${buildQueryParams()}`);
+            const response = await fetch(`http://localhost:8080/api/products/search?${buildQueryParams(page)}`);
             const data = await response.json();
             setResults(data.products);
-            navigate('/search-results', { state: { results: data.products, totalCount: totalResults, query: searchValue, page } });
+            setTotalResults(data.totalCount);
+            navigate('/search-results', { state: { results: data.products, totalCount: data.totalCount, query: searchValue, page } });
         } catch (error) {
             console.error('Error fetching search results:', error);
         }
     };
 
     const totalPages = Math.ceil(totalResults / resultsPerPage);
-
-    // Determine the current results to display based on pagination
-    const paginatedResults = results.slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage);
 
     return (
         <Container className="search-results-container">
@@ -126,9 +124,9 @@ const SearchResults = () => {
                 </Row>
             </Form>
 
-            {paginatedResults.length > 0 ? (
+            {results.length > 0 ? (
                 <ul className="list-unstyled">
-                    {paginatedResults.map((product) => (
+                    {results.map((product) => (
                         <li key={product.productId} className="search-result-item mb-3 p-3 border rounded">
                             <Row>
                                 <Col xs={4} md={3}>
@@ -157,14 +155,13 @@ const SearchResults = () => {
                         <Pagination.Item
                             key={index + 1}
                             active={currentPage === index + 1}
-                            onClick={() => handlePageChange(index + 1)}
+                            onClick={() => handlePageChange(index + 1)} // Use the updated page value here
                         >
                             {index + 1}
                         </Pagination.Item>
                     ))}
                 </Pagination>
             </div>
-
         </Container>
     );
 };
