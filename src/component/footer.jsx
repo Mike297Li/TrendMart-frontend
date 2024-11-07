@@ -3,6 +3,7 @@
 import React from 'react';
 import '../styles/footer.css';
 import { FaInstagram, FaFacebook, FaTiktok, FaYoutube, FaLinkedin, FaPinterest } from 'react-icons/fa'; // Asegúrate de tener react-icons instalado
+ import { Link } from 'react-router-dom';
 
 const Footer = () => {
     return (
@@ -29,7 +30,7 @@ const Footer = () => {
                 <div className="footer-section">
                     <h3>About Us</h3>
                     <ul>
-                        <li><a href="#">Our Story</a></li>
+                        <li><Link to="/payment">Our Story</Link></li> {/* Updated to use Link */}
                         <li><a href="#">Sustainability</a></li>
                         <li><a href="#">Our Stores</a></li>
                     </ul>
