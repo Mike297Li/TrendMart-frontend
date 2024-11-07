@@ -10,6 +10,7 @@ import AdminLogin from './pages/AdminLogin';
 import './App.css'
 import AdminProductManagement from './pages/AdminProductManagement';
 import ProductPage from './pages/ProductPage';
+import SearchResults from "./pages/SearchResults";
 
 
 const App = () => {
@@ -32,6 +33,7 @@ const App = () => {
                 <Route path="/adminPortal" element={<AdminProductManagement />} />
                 <Route path="/create-product" element={<ProductPage />} />
                 <Route path="/edit-product/:productId" element={<ProductPage />} /> {/* New edit route */}
+                <Route path="/search-results" element={<SearchResults />} />
                 <Route path="/" element={<HomePage />} />
             </Routes>
         </div>

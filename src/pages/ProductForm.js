@@ -9,12 +9,11 @@ const ProductForm = ({
     handleChange,
     handleSubmit,
 }) => {
-    const [imagePreview, setImagePreview] = useState(null);
+    const [imagePreview, setImagePreview] = useState('');
 
     useEffect(() => {
         if (isEditing && formData.pictureBase64) {
-            // Set image preview to existing base64 image if editing
-            setImagePreview(`data:image/jpeg;base64,${formData.pictureBase64}`);
+            setImagePreview(formData.pictureBase64); // Show existing image for editing
         }
     }, [isEditing, formData.pictureBase64]);
 
@@ -86,22 +85,23 @@ const ProductForm = ({
                     />
                 </Form.Group>
                 <Form.Group controlId="formProductImages">
-                    <Form.Label>Product Images</Form.Label>
+                    <Form.Label>Product Image</Form.Label>
                     <Form.Control
                         type="file"
                         name="images"
-                        multiple
                         onChange={handleImageChange} // Updated to handle image preview
                     />
                 </Form.Group>
                 {imagePreview && (
                     <div className="mt-3">
                         <Form.Label>Image Preview</Form.Label>
-                        <img
-                            src={imagePreview}
-                            alt="Product Preview"
-                            style={{ width: '100%', maxHeight: '200px', objectFit: 'contain' }}
-                        />
+                        <div>
+                            <img
+                                src={imagePreview}
+                                alt="Product Preview"
+                                style={{ width: '100px', height: '100px', objectFit: 'contain' }}
+                            />
+                        </div>
                     </div>
                 )}
                 <Button variant="primary" type="submit" className="mt-3 mr-3">

@@ -49,6 +49,7 @@
     gap: 15px;
     margin: 0 1% 0;
     padding: 0;
+    margin-top: 10px;
 }
 
 .navbar-item {
@@ -92,4 +93,8 @@
 .dropdown-link:hover {
     background-color: #ff5722;
     color: #ffffff;
+}
+
+.dropdown-menu-custom{
+    margin-left: -25px !important;
 }

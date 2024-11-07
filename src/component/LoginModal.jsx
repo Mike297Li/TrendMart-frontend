@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import '../styles/loginModal.css';
 import { useNavigate } from 'react-router-dom';
 import { signInWithGooglePopup, auth, signInWithEmailPassword } from '../firebase.utils';
+import { AiOutlineClose } from 'react-icons/ai';
 
 const LoginModal = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
@@ -14,6 +15,9 @@ const LoginModal = ({ isOpen, onClose }) => {
         e.preventDefault();
         try {
             const userCredential = await signInWithEmailPassword(email, password);
+            if(userCredential.user){
+                sessionStorage.setItem('user', JSON.stringify(userCredential.user))
+            }
             console.log("User Logged In: ", userCredential.user);
             navigate('/homePage'); // Redirige al homePage después del login
             onClose(); // Cierra el modal después del login exitoso
@@ -26,6 +30,9 @@ const LoginModal = ({ isOpen, onClose }) => {
     const logGoogleUser = async () => {
         try {
             const response = await signInWithGooglePopup();
+            if(response.user){
+                sessionStorage.setItem('user',  JSON.stringify(response.user))
+            }
             console.log("Google User Logged In: ", response);
             navigate('/homePage'); // Redirige al homePage después del login con Google
             onClose(); // Cierra el modal después del login exitoso
@@ -52,8 +59,14 @@ const LoginModal = ({ isOpen, onClose }) => {
             className={`login-modal ${isOpen ? 'show' : ''}`} 
             onClick={handleClickOutside} // Detecta el clic en el fondo
         >
-            <div className="modal-content">
-                <h2>Login</h2>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-header">
+                    <h2>Login</h2>
+                    <AiOutlineClose 
+                        className="close-icon" 
+                        onClick={onClose} 
+                    />
+                </div>
                 {error && <p className="error-message">{error}</p>}
                 <form onSubmit={handleLogin}>
                     <input
@@ -90,7 +103,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                     <button 
                         type="button" 
                         onClick={() => navigate('/register')} 
-                        className="register-button"
+                        className="google-login-button"
                     >
                         Register
                     </button>
