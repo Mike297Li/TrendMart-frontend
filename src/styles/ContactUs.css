@@ -1,0 +1,64 @@
+.contact-us-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    color: #6e6e6e;
+    margin-top: 3%;
+}
+
+.contact-columns {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 800px; /* Ajusta según el ancho deseado */
+    margin-bottom: 40px;
+    gap: 12em;
+}
+
+.contact-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra horizontalmente el contenido */
+    justify-content: center; /* Centra verticalmente el contenido */
+    max-width: 300px;
+    text-align: center;
+}
+
+.contact-section p{
+    margin-top: 0;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.5em;
+    font-weight: 400;
+    margin-bottom: 15px;
+}
+
+.icon {
+    width: 50px;
+    height: auto;
+    margin: 10px 0;
+}
+
+.contact-number, .contact-email {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.contact-button {
+    padding: 10px 20px;
+    background-color: #d3d3d3;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.contact-button:hover {
+    background-color: #b5b5b5;
+}

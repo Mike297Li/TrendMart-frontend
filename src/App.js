@@ -16,6 +16,8 @@ import FindProducts from './pages/FindProducts';
 import ProductSearchPage from './component/ProductSearchPage';
 import AboutPage from './pages/AboutPage';
 import Footer from './component/footer';
+import ContactUs from './component/ContactUs';
+import ClaimForm from './component/ClaimForm';
 
 
 
@@ -39,20 +41,23 @@ const App = () => {
             {/* Pasar el estado de usuario autenticado al Navbar */}
             {showNavbar && <Navbar isAuthenticated={Boolean(user)} user={user} />}
             <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/reset-password" element={<ResetPassword />} />
-                <Route path="/homePage" element={<HomePage />} />
-                <Route path="/terms" element={<TermsAndConditions />} />
-                <Route path="/admin" element={<AdminLogin />} />
-                <Route path="/adminPortal" element={<AdminProductManagement />} />
-                <Route path="/create-product" element={<ProductPage />} />
-                <Route path="/edit-product/:productId" element={<ProductPage />} /> 
-                <Route path="/find_products" element={<FindProducts />} /> 
-                <Route path="/search" element={<ProductSearchPage />} /> 
-                <Route path="/" element={<HomePage />} />
-                <Route path="/about" element={<AboutPage />} /> {/* Añade esta línea */}
-
+               
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/reset-password" element={<ResetPassword />} />
+                    <Route path="/homePage" element={<HomePage />} />
+                    <Route path="/terms" element={<TermsAndConditions />} />
+                    <Route path="/admin" element={<AdminLogin />} />
+                    <Route path="/adminPortal" element={<AdminProductManagement />} />
+                    <Route path="/create-product" element={<ProductPage />} />
+                    <Route path="/edit-product/:productId" element={<ProductPage />} /> 
+                    <Route path="/find_products" element={<FindProducts />} /> 
+                    <Route path="/search" element={<ProductSearchPage />} /> 
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/about" element={<AboutPage />} /> {/* Añade esta línea */}
+                    <Route path="/claim-form" element={<ClaimForm />} />
+                    <Route path="/contact" element={<ContactUs />} />
+                
             </Routes>
             <Footer />
         </div>
