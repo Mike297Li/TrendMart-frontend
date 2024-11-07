@@ -1,5 +1,7 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase.utils'; // Asegúrate de que la ruta esté correcta
 import Navbar from './component/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -12,12 +14,30 @@ import AdminProductManagement from './pages/AdminProductManagement';
 import ProductPage from './pages/ProductPage';
 import FindProducts from './pages/FindProducts';
 import ProductSearchPage from './component/ProductSearchPage';
+import AboutPage from './pages/AboutPage';
+import Footer from './component/footer';
+
+
 
 
 const App = () => {
+    const location = useLocation();
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        // Escuchar el estado de autenticación para mantener el usuario actualizado
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+        });
+        return () => unsubscribe();
+    }, []);
+
+    const showNavbar = location.pathname !== '/homePage';
+
     return (
         <div>
-             <Navbar />
+            {/* Pasar el estado de usuario autenticado al Navbar */}
+            {showNavbar && <Navbar isAuthenticated={Boolean(user)} user={user} />}
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
@@ -31,8 +51,10 @@ const App = () => {
                 <Route path="/find_products" element={<FindProducts />} /> 
                 <Route path="/search" element={<ProductSearchPage />} /> 
                 <Route path="/" element={<HomePage />} />
-                
+                <Route path="/about" element={<AboutPage />} /> {/* Añade esta línea */}
+
             </Routes>
+            <Footer />
         </div>
     );
 };

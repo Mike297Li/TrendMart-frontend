@@ -34,7 +34,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                 sessionStorage.setItem('user',  JSON.stringify(response.user))
             }
             console.log("Google User Logged In: ", response);
-            navigate('/homePage'); // Redirige al homePage después del login con Google
+            navigate('/'); // Redirige al homePage después del login con Google
             onClose(); // Cierra el modal después del login exitoso
         } catch (error) {
             console.error("Google login failed:", error);

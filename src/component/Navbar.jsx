@@ -26,6 +26,7 @@ const Navbar = ({ isAuthenticated, user }) => {
     const handleLogout = () => {
         signOut(auth)
             .then(() => {
+                sessionStorage.clear();
                 navigate('/');
             })
             .catch((error) => {
@@ -91,20 +92,8 @@ const Navbar = ({ isAuthenticated, user }) => {
                 </Link>
             </h2>
             <ul className="navbar-links">
-                {isHomePage && (
-                    <li className="navbar-item dropdown">
-                        <span className="navbar-link">CATEGORIES</span>
-                        <ul className="dropdown-menu">
-                            <li><Link to="/products/man" className="dropdown-link">MAN</Link></li>
-                            <li><Link to="/products/women" className="dropdown-link">WOMEN</Link></li>
-                            <li><Link to="/products/kids" className="dropdown-link">KIDS</Link></li>
-                            <li><Link to="/products/accessories" className="dropdown-link">ACCESSORIES</Link></li>
-                        </ul>
-                    </li>
-                )}
-                <li className="navbar-item">
-                    <Link to="/products/maple" className="navbar-link">MAPLE</Link>
-                </li>
+                
+                
                 <li className="navbar-item">
                     <Link to="/about" className="navbar-link">ABOUT US</Link>
                 </li>
@@ -143,23 +132,7 @@ const Navbar = ({ isAuthenticated, user }) => {
                 )}
             </ul>
 
-            {/* Conditionally render the search bar only when authenticated */}
-            {isAuthenticated && (
-                <form onSubmit={handleSearchSubmit} style={styles.searchForm}>
-                    <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={handleSearchInputChange}
-                        placeholder="Search products..."
-                        style={styles.searchInput}
-                    />
-                    <button type="submit" style={styles.searchButton}>
-                        <i className="fas fa-search"></i>
-                    </button>
-                </form>
-            )}
-
-            {isLoginModalOpen && <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />}
+            <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
         </nav>
     );
 };
