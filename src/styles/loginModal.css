@@ -35,11 +35,29 @@
 }
 
 
-.close-button:hover {
-    color: #ff5722; /* Cambia el color al pasar el ratón */
+.close-button {
+    position: absolute;
+    top: -15px;
+    LEFT: -15px;
+    background-color: rgba(207, 209, 211, 0.841); /* Fondo azul con 50% de opacidad */
+    border: none;
+    color: #fff; /* Color del ícono en blanco */
+    font-size: 1.5rem;
+    width: 35px;
+    height: 35px;
+    border-radius: 25%; /* Haciendo el botón circular */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 
+.close-button:hover {
+    color: #ff5722; /* Cambia el color del ícono a naranja al pasar el ratón */
+    background-color: transparent; 
+}
 
 input {
     width: 100%;
@@ -125,12 +143,15 @@ input:focus {
 .register-button {
     background-color: #C3988B; /* Color mate dorado-rosado */
     color: white;
-    margin-top: 10px;
-    padding: 5px;
+    padding: 8px 12px; /* Botón más pequeño */
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
     transition: background-color 0.3s ease;
+    font-size: 0.85rem;
 }
 
 .register-button:hover {

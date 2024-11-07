@@ -1,4 +1,4 @@
- /* eslint-disable */
+/* eslint-disable */
 import React, { useState } from 'react';
 import '../styles/loginModal.css';
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                 sessionStorage.setItem('user', JSON.stringify(userCredential.user))
             }
             console.log("User Logged In: ", userCredential.user);
-            navigate('/homePage'); // Redirige al homePage después del login
+            navigate('/'); // Redirige al homePage después del login
             onClose(); // Cierra el modal después del login exitoso
         } catch (error) {
             console.error("Login failed:", error);
@@ -34,7 +34,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                 sessionStorage.setItem('user',  JSON.stringify(response.user))
             }
             console.log("Google User Logged In: ", response);
-            navigate('/homePage'); // Redirige al homePage después del login con Google
+            navigate('/'); // Redirige al homePage después del login con Google
             onClose(); // Cierra el modal después del login exitoso
         } catch (error) {
             console.error("Google login failed:", error);
@@ -47,26 +47,13 @@ const LoginModal = ({ isOpen, onClose }) => {
         onClose(); // Cierra el modal
     };
 
-    // Función para manejar el clic en el fondo
-    const handleClickOutside = (e) => {
-        if (e.target.classList.contains('login-modal')) {
-            onClose(); // Cierra el modal si el clic es en el fondo
-        }
-    };
-
     return (
-        <div 
-            className={`login-modal ${isOpen ? 'show' : ''}`} 
-            onClick={handleClickOutside} // Detecta el clic en el fondo
-        >
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                <div className="modal-header">
-                    <h2>Login</h2>
-                    <AiOutlineClose 
-                        className="close-icon" 
-                        onClick={onClose} 
-                    />
-                </div>
+        <div className={`login-modal ${isOpen ? 'show' : ''}`}>
+            <div className="modal-content">
+                {/* Botón de cerrar en la esquina superior derecha */}
+                <button className="close-button" onClick={onClose}>×</button>
+
+                <h2>Login</h2>
                 {error && <p className="error-message">{error}</p>}
                 <form onSubmit={handleLogin}>
                     <input

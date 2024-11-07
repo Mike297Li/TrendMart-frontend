@@ -1,0 +1,192 @@
+.product-search-container {
+    display: flex;
+    padding-top: 130px; /* Espacio reservado para el navbar */
+    background-color: #ffffff;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Contenedor del panel de filtros */
+.filters-container {
+    width: 250px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+    position: fixed;
+    top: 130px; /* Ajuste para el navbar */
+    left: 0;
+    height: calc(100vh - 80px); /* Altura total menos el espacio del navbar */
+    overflow-y: auto;
+    color: #333;
+    z-index: 1002; /* Asegura que esté encima del navbar */
+    transform: translateX(-100%); /* Oculto inicialmente */
+    transition: transform 0.3s ease-in-out;
+    opacity: 1; /* Asegura que el contenido esté visible */
+}
+
+/* Muestra el panel de filtros cuando está visible */
+.filters-container.visible {
+    transform: translateX(0);
+    
+}
+
+/* Contenedor de cuadrícula de productos */
+.product-grid-container {
+    flex: 1;
+    transition: margin-left 0.3s ease;
+    padding-left: 0px;
+}
+
+/* Ajusta la cuadrícula cuando el filtro está visible */
+.product-grid-container.with-filter {
+    margin-left: 270px; /* Ajuste para que la cuadrícula comience al lado del filtro */
+}
+
+/* Encabezado del filtro */
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    
+}
+
+/* Título del filtro */
+.filter-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Botón para cerrar el panel de filtros */
+.close-filter-button {
+    background: none;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Botón para mostrar el filtro cuando está oculto */
+.toggle-filter-button {
+    position: fixed;
+    top: 75px; /* Ajusta según el espacio del navbar */
+    left: 10px;
+    font-size: 1.2em;
+    background: none !important;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    z-index: 1002; /* Asegura que el botón esté por encima de otros elementos */
+}
+
+.toggle-filter-button:hover {
+    text-decoration: underline;
+}
+
+.filter-divider {
+   position: relative;
+    height: 2.5px;
+    background-color: #ccc; /* Color de la línea en reposo */
+    margin: 5px 0 15px; /* Espacio alrededor de la línea */
+    overflow: hidden; /* Oculta el efecto de expansión fuera de los bordes */
+    transition: background-color 0.4s ease; /* Transición suave */
+}
+
+.filter-divider::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%; /* Inicia el color desde el centro */
+    width: 0;
+    height: 100%;
+    background-color: #888; /* Color de la línea al pasar el puntero */
+    transition: width 0.4s ease; /* Duración y suavidad de la expansión */
+    transform: translateX(-50%); /* Centra el efecto */
+}
+
+.filter-divider:hover::before {
+    width: 100%; /* Expande el color sobre toda la línea */
+}
+
+.filter-section summary {
+    list-style: none !important;
+}
+
+/* Oculta el marcador de lista en navegadores basados en WebKit */
+.filter-section summary::-webkit-details-marker {
+    display: none !important;
+}
+
+/* Oculta el marcador de lista en otros navegadores compatibles */
+.filter-section summary::marker {
+    display: none !important;
+}
+
+.filter-section ul {
+    list-style-type: none; /* Quita las viñetas */
+    padding-left: 0;
+    margin: 0;
+}
+
+/* Estilo para las estrellas en el filtro de Average Rating */
+.star-rating-options {
+    display: flex;
+    gap: 5px;
+}
+
+.star {
+    font-size: 1.5em;
+    color: #ccc; /* Color para estrellas no seleccionadas */
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.star.selected {
+    color: #f8f805; /* Color para estrellas seleccionadas */
+}
+
+.star.hovered {
+    color: #9a9a95; /* Color para estrellas al pasar el mouse */
+}
+
+.price-range-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.price-input {
+    width: 80px;
+    margin: 5px;
+    text-align: center;
+}
+
+.slider-container {
+    position: relative;
+    width: 100%;
+}
+
+.price-slider {
+    position: absolute;
+    width: 100%;
+    pointer-events: none; 
+    
+}
+
+.price-slider:first-of-type {
+    pointer-events: auto; /* Habilita el puntero para el control izquierdo */
+}
+
+.price-slider:last-of-type {
+    pointer-events: auto; /* Habilita el puntero para el control derecho */
+}
+.price-range-container label {
+    
+    font-weight: bold;
+    color: #333; /* Cambia este color si necesitas algo diferente */
+    margin-bottom: 2px;
+    width: 0;
+    margin-top: 10%;
+}
+

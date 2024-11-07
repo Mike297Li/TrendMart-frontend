@@ -1,14 +1,10 @@
-/* eslint-disable */
-// src/pages/HomePage.js
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase.utils';
-import { useNavigate } from 'react-router-dom';
-import Navbar from '../component/Navbar';
 import WelcomeSection from '../component/WelcomeSection';
 import CategoryBar from '../pages/CategoryBar';
 import ImageSection from './ImageSection';
-import Footer from '../component/footer'; // Importa el Footer
+import Footer from '../component/footer';
 import collection1 from '../assets/collection1.jpg';
 import collection2 from '../assets/collection2.jpg';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -19,8 +15,6 @@ const HomePage = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isScrolling, setIsScrolling] = useState(false);
     const categoryBarRef = useRef(null);
-    const navbarRef = useRef(null);
-    
 
     const sections = ['welcome', 'category-bar'];
     const scrollTimeout = 700;
@@ -33,13 +27,10 @@ const HomePage = () => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
         });
-
         return () => {
             unsubscribe();
         };
     }, []);
-
-    const isAuthenticated = Boolean(user);
 
     const handleScroll = useCallback((event) => {
         if (isScrolling) return;
@@ -65,9 +56,8 @@ const HomePage = () => {
     }, [handleScroll]);
 
     useEffect(() => {
-        if (currentIndex === 1 && categoryBarRef.current && navbarRef.current) {
-            const navbarHeight = navbarRef.current.offsetHeight;
-            const categoryBarPosition = categoryBarRef.current.getBoundingClientRect().top + window.scrollY - navbarHeight;
+        if (currentIndex === 1 && categoryBarRef.current) {
+            const categoryBarPosition = categoryBarRef.current.getBoundingClientRect().top + window.scrollY;
             window.scrollTo({
                 top: categoryBarPosition,
                 behavior: 'smooth',
@@ -77,9 +67,6 @@ const HomePage = () => {
 
     return (
         <div>
-            <div className='bg-black' style={{height: '60px'}} ref={navbarRef}>
-                <Navbar isAuthenticated={isAuthenticated} user={user} />
-            </div>
             <WelcomeSection id="welcome" />
             <CategoryBar ref={categoryBarRef} />
             <div className="content">
@@ -94,7 +81,7 @@ const HomePage = () => {
                     />
                 </div>
             </div>
-            <Footer /> {/* Agrega el Footer aquí */}
+            <Footer />
         </div>
     );
 };
