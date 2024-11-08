@@ -11,6 +11,7 @@ import TermsAndConditions from './pages/TermsAndConditions';
 import AdminLogin from './pages/AdminLogin';
 import './App.css'
 import AdminProductManagement from './pages/AdminProductManagement';
+import SearchResults from "./pages/SearchResults";
 import ProductPage from './pages/ProductPage';
 import FindProducts from './pages/FindProducts';
 import ProductSearchPage from './component/ProductSearchPage';
@@ -50,10 +51,11 @@ const App = () => {
                     <Route path="/admin" element={<AdminLogin />} />
                     <Route path="/adminPortal" element={<AdminProductManagement />} />
                     <Route path="/create-product" element={<ProductPage />} />
+                    <Route path="/search-results" element={<SearchResults />} />
                     <Route path="/edit-product/:productId" element={<ProductPage />} /> 
                     <Route path="/find_products" element={<FindProducts />} /> 
                     <Route path="/search" element={<ProductSearchPage />} /> 
-                    <Route path="/" element={<HomePage />} />
+                    <Route path="/Homepage" element={<HomePage />} />
                     <Route path="/about" element={<AboutPage />} /> {/* Añade esta línea */}
                     <Route path="/claim-form" element={<ClaimForm />} />
                     <Route path="/contact" element={<ContactUs />} />

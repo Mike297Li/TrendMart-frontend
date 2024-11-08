@@ -19,7 +19,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                 sessionStorage.setItem('user', JSON.stringify(userCredential.user))
             }
             console.log("User Logged In: ", userCredential.user);
-            navigate('/'); // Redirige al homePage después del login
+            navigate('/Homepage'); // Redirige al homePage después del login
             onClose(); // Cierra el modal después del login exitoso
         } catch (error) {
             console.error("Login failed:", error);
@@ -34,7 +34,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                 sessionStorage.setItem('user',  JSON.stringify(response.user))
             }
             console.log("Google User Logged In: ", response);
-            navigate('/'); // Redirige al homePage después del login con Google
+            navigate('/Homepage'); // Redirige al homePage después del login con Google
             onClose(); // Cierra el modal después del login exitoso
         } catch (error) {
             console.error("Google login failed:", error);

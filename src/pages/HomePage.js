@@ -10,6 +10,7 @@ import collection2 from '../assets/collection2.jpg';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '../styles/HomePage.css';
 
+
 const HomePage = () => {
     const [user, setUser] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -81,7 +82,6 @@ const HomePage = () => {
                     />
                 </div>
             </div>
-            <Footer />
         </div>
     );
 };

@@ -19,7 +19,7 @@ const Login = () => {
             }
             console.log("User Logged In: ", userCredential.user);
             // Redirect to homePage after successful login
-            navigate('/homePage'); // Cambiar a navigate
+            navigate('/Homepage'); // Cambiar a navigate
         } catch (error) {
             console.error("Login failed:", error);
             setError("Login failed. Please check your email or password.");
@@ -35,7 +35,7 @@ const Login = () => {
             }
             console.log("Google User Logged In: ", response);
             // Redirect to homePage after successful login
-            navigate('/homePage'); // Cambiar a navigate
+            navigate('/HomePage'); // Cambiar a navigate
         } catch (error) {
             console.error("Google login failed:", error);
             setError("Google login failed. Please try again.");

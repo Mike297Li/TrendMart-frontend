@@ -13,7 +13,7 @@ const Navbar = ({ isAuthenticated, user }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const isHomePage = location.pathname === '/';
+    const isHomePage = location.pathname === '/Homepage';
     const isSearchProductPage = location.pathname === '/searchproduct';
 
     // Estado para manejar el popup de búsqueda
@@ -27,7 +27,7 @@ const Navbar = ({ isAuthenticated, user }) => {
         signOut(auth)
             .then(() => {
                 sessionStorage.clear();
-                navigate('/');
+                navigate('/Homepage');
             })
             .catch((error) => {
                 console.error('Error while logging out:', error);
@@ -87,7 +87,7 @@ const Navbar = ({ isAuthenticated, user }) => {
                 className={`navbar-logo ${isHomePage && !isScrolled ? 'large-logo' : 'small-logo'}`}
                 aria-label="TrendMart Logo"
             >
-                <Link to="/" className="logo-link">
+                <Link to="/Homepage" className="logo-link">
                     TRENDMART
                 </Link>
             </h2>
