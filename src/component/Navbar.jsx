@@ -81,7 +81,7 @@ const Navbar = ({ isAuthenticated, user }) => {
             </ul>
             <ul className="navbar-links2">
                 <li className="navbar-item navbar-find-products">
-                    <span className="navbar-link" onClick={handleSearchClick}>
+                    <span className="navbar-link" onClick={handleSearchSubmit}>
                         <i className="fas fa-search" style={{ marginLeft: '8px' }}></i>
                     </span>
                 </li>
