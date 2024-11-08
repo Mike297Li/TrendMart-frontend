@@ -67,18 +67,20 @@
 /* ProductDetail.css */
 
 .icon-container {
-    position: fixed; /* Fixed position to keep it in the corner */
-    top: 20px; /* Distance from the top */
-    right: 20px; /* Distance from the right */
-    display: flex; /* Use flexbox */
-    align-items: center; /* Center items vertically */
-    gap: 15px; /* Space between icons */
+    position: fixed; /* Ensures the container is fixed to the corner */
+    top: 20px; /* Adjust this as needed */
+    right: 20px; /* Adjust this as needed */
+    display: flex; /* Use flex to align child elements */
+    align-items: center;
+    z-index: 1000; /* Ensure it's above other content */
+    background-color: transparent; /* Make sure it's not set to the same color as the background */
 }
 
-.cart-icon {
-    cursor: pointer; /* Change cursor on hover */
-}
 
+.cart-icon svg {
+    width: 32px;
+    height: 32px;
+}
 /* Optional: Add styles for search button if applicable */
 .search-button {
     /* Your search button styles */
