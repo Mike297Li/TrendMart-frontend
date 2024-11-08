@@ -1,21 +1,26 @@
+/* eslint-disable */
+// src/pages/HomePage.js
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase.utils';
+import { useNavigate } from 'react-router-dom';
+import Navbar from '../component/Navbar';
 import WelcomeSection from '../component/WelcomeSection';
 import CategoryBar from '../pages/CategoryBar';
 import ImageSection from './ImageSection';
-import Footer from '../component/footer';
+import Footer from '../component/footer'; // Importa el Footer
 import collection1 from '../assets/collection1.jpg';
 import collection2 from '../assets/collection2.jpg';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '../styles/HomePage.css';
-
 
 const HomePage = () => {
     const [user, setUser] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isScrolling, setIsScrolling] = useState(false);
     const categoryBarRef = useRef(null);
+    const navbarRef = useRef(null);
+    
 
     const sections = ['welcome', 'category-bar'];
     const scrollTimeout = 700;
@@ -28,10 +33,13 @@ const HomePage = () => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
         });
+
         return () => {
             unsubscribe();
         };
     }, []);
+
+    const isAuthenticated = Boolean(user);
 
     const handleScroll = useCallback((event) => {
         if (isScrolling) return;

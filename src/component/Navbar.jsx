@@ -1,5 +1,6 @@
+// src/component/Navbar.jsx
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/navbar.css';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase.utils';
@@ -11,23 +12,12 @@ const Navbar = ({ isAuthenticated, user }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
-    const location = useLocation();
-
-    const isHomePage = location.pathname === '/Homepage';
-    const isSearchProductPage = location.pathname === '/searchproduct';
-
-    // Estado para manejar el popup de búsqueda
-    const [isFindProductsOpen, setIsFindProductsOpen] = useState(false);
-
-    const handleSearchClick = () => {
-        navigate('/search'); // Cambia '/search' a la ruta correcta de ProductSearch
-    };
 
     const handleLogout = () => {
         signOut(auth)
             .then(() => {
                 sessionStorage.clear();
-                navigate('/Homepage');
+                navigate('/homePage');
             })
             .catch((error) => {
                 console.error('Error while logging out:', error);
@@ -44,19 +34,14 @@ const Navbar = ({ isAuthenticated, user }) => {
 
     useEffect(() => {
         const handleScroll = () => {
-            if (isHomePage) {
-                setIsScrolled(window.scrollY > 50);
-            }
+            setIsScrolled(window.scrollY > 50);
         };
 
-        if (isHomePage) {
-            window.addEventListener('scroll', handleScroll);
-        }
-
+        window.addEventListener('scroll', handleScroll);
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [isHomePage]);
+    }, []);
 
     const handleSearchInputChange = (event) => {
         setSearchQuery(event.target.value);
@@ -82,18 +67,11 @@ const Navbar = ({ isAuthenticated, user }) => {
 
 
     return (
-        <nav className={`navbar ${isSearchProductPage ? 'black-text' : ''} ${!isHomePage ? 'white-text' : ''}`}>
-            <h2
-                className={`navbar-logo ${isHomePage && !isScrolled ? 'large-logo' : 'small-logo'}`}
-                aria-label="TrendMart Logo"
-            >
-                <Link to="/Homepage" className="logo-link">
-                    TRENDMART
-                </Link>
-            </h2>
+        <nav className="navbar">
+            <h2 className={`navbar-logo ${isScrolled ? 'scrolled' : ''}`} aria-label="TrendMart Logo">TRENDMART</h2>
             <ul className="navbar-links">
-                
-                
+
+
                 <li className="navbar-item">
                     <Link to="/about" className="navbar-link">ABOUT US</Link>
                 </li>
@@ -132,7 +110,23 @@ const Navbar = ({ isAuthenticated, user }) => {
                 )}
             </ul>
 
-            <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
+            {/* Conditionally render the search bar only when authenticated */}
+            {isAuthenticated && (
+                <form onSubmit={handleSearchSubmit} style={styles.searchForm}>
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={handleSearchInputChange}
+                        placeholder="Search products..."
+                        style={styles.searchInput}
+                    />
+                    <button type="submit" style={styles.searchButton}>
+                        <i className="fas fa-search"></i>
+                    </button>
+                </form>
+            )}
+
+            {isLoginModalOpen && <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />}
         </nav>
     );
 };
