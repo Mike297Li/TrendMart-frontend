@@ -1,93 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Button, Table, Container } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import AdminNavbar from './AdminNavBar';
+// AdminProductManagement.js
+import React, { useState } from 'react';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import AdminNavBar from './AdminNavBar';
+import ProductsManagement from './ProductsManagement';
+import OrdersManagement from './OrdersManagement';
 
 const AdminProductManagement = () => {
-    const [products, setProducts] = useState([]);
-    // const [user, setUser] = useState(null);
-    const navigate = useNavigate();
+    const [activeComponent, setActiveComponent] = useState('');
 
-    useEffect(() => {
-        if(sessionStorage.getItem('user') == null){
-            navigate('/admin');
-        }
-        // setUser(JSON.parse(sessionStorage.getItem('user')))
-        fetchProducts();
-    // eslint-disable-next-line
-    }, []);
-
-    const fetchProducts = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/api/products');
-            setProducts(response.data);
-        } catch (error) {
-            console.error('Error fetching products:', error);
-        }
+    const resetView = () => {
+        setActiveComponent('');
     };
 
-    const handleEdit = (product) => {
-        // Navigate to the edit page with the product data
-        navigate(`/edit-product/${product.productId}`, { state: { product } });
-    };
-
-    const handleDelete = async (productId) => {
-        if (window.confirm('Are you sure you want to delete this product?')) {
-            try {
-                await axios.delete(`http://localhost:8080/api/products/${productId}`);
-                alert('Product deleted successfully');
-                fetchProducts();
-            } catch (error) {
-                console.error('Error deleting product:', error);
-            }
+    const renderContent = () => {
+        switch (activeComponent) {
+            case 'products':
+                return <ProductsManagement />;
+            case 'orders':
+                return <OrdersManagement />;
+            default:
+                return (
+                    <Row className="justify-content-center">
+                        <Col md={6} className="mb-4">
+                            <Card 
+                                className="text-center shadow-lg" 
+                                style={{ height: '250px' }} // Set card height
+                            >
+                                <Card.Body 
+                                    className="d-flex flex-column align-items-center justify-content-center"
+                                >
+                                    <Card.Title>Manage Products</Card.Title>
+                                    <Card.Text>
+                                        Add, edit, or delete products from your inventory.
+                                    </Card.Text>
+                                    <Button variant="primary" onClick={() => setActiveComponent('products')}>
+                                        Go to Products Management
+                                    </Button>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                        <Col md={6} className="mb-4">
+                            <Card 
+                                className="text-center shadow-lg" 
+                                style={{ height: '250px' }} // Set card height
+                            >
+                                <Card.Body 
+                                    className="d-flex flex-column align-items-center justify-content-center"
+                                >
+                                    <Card.Title>Manage Orders</Card.Title>
+                                    <Card.Text>
+                                        View and manage customer orders efficiently.
+                                    </Card.Text>
+                                    <Button variant="secondary" onClick={() => setActiveComponent('orders')}>
+                                        Go to Orders Management
+                                    </Button>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                );
         }
     };
 
     return (
         <>
-            <AdminNavbar />
-            <Container className="mt-5 d-flex flex-column">
-                <h2 className="mb-4">Product List</h2>
-                <Table striped bordered hover responsive className="text-center custom-table" style={{ width: '100%' }}>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Features</th>
-                            <th>Rating</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products.length > 0 ? (
-                            products.map((product) => (
-                                <tr key={product.productId}>
-                                    <td>{product.name}</td>
-                                    <td>{product.description}</td>
-                                    <td>${product.price}</td>
-                                    <td>{product.features}</td>
-                                    <td>{product.averageRating}</td>
-                                    <td className='product-listing-buttons'>
-                                        <Button variant="warning" onClick={() => handleEdit(product)} className="me-2">
-                                            Edit
-                                        </Button>
-                                        <Button variant="danger" onClick={() => handleDelete(product.productId)}>
-                                            Delete
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="6" className="text-center">
-                                    No products available
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </Table>
+            <AdminNavBar resetView={resetView} />
+            <Container className="mt-5">
+                {renderContent()}
             </Container>
         </>
     );

@@ -42,6 +42,7 @@ const ProductForm = ({
                         placeholder="Enter product name"
                         value={formData.name}
                         onChange={handleChange}
+                        required
                     />
                 </Form.Group>
                 <Form.Group controlId="formProductDescription">
@@ -52,16 +53,19 @@ const ProductForm = ({
                         placeholder="Enter product description"
                         value={formData.description}
                         onChange={handleChange}
+                        required
                     />
                 </Form.Group>
                 <Form.Group controlId="formProductPrice">
                     <Form.Label>Price</Form.Label>
                     <Form.Control
                         type="number"
+                        min="1"
                         name="price"
                         placeholder="Enter price"
                         value={formData.price}
                         onChange={handleChange}
+                        required
                     />
                 </Form.Group>
                 <Form.Group controlId="formProductFeatures">
@@ -72,16 +76,31 @@ const ProductForm = ({
                         placeholder="Enter product features"
                         value={formData.features}
                         onChange={handleChange}
+                        required
                     />
                 </Form.Group>
                 <Form.Group controlId="formProductRating">
                     <Form.Label>Average Rating</Form.Label>
                     <Form.Control
                         type="number"
-                        name="average_rating"
+                        name="averageRating"
+                        min="0"
                         placeholder="Enter rating"
-                        value={formData.average_rating}
+                        value={formData.averageRating}
                         onChange={handleChange}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group controlId="formProductQuantity">
+                    <Form.Label>Quantity</Form.Label>
+                    <Form.Control
+                        type="number"
+                        name="quantity"
+                        min="0"
+                        placeholder="Enter Quantity"
+                        value={formData.quantity}
+                        onChange={handleChange}
+                        required
                     />
                 </Form.Group>
                 <Form.Group controlId="formProductImages">
@@ -90,6 +109,7 @@ const ProductForm = ({
                         type="file"
                         name="images"
                         onChange={handleImageChange} // Updated to handle image preview
+                        required={!isEditing} // Only required if not editing
                     />
                 </Form.Group>
                 {imagePreview && (

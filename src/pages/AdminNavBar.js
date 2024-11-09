@@ -1,12 +1,12 @@
+// AdminNavBar.js
 import React from 'react';
 import { Navbar, Nav, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const AdminNavbar = () => {
+const AdminNavBar = ({ resetView }) => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        // Add logout functionality here
         sessionStorage.clear();
         navigate('/admin');
     };
@@ -17,7 +17,11 @@ const AdminNavbar = () => {
 
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
-            <h2 className="me-auto text-white">
+            <h2 
+                className="me-auto text-white" 
+                onClick={resetView} 
+                style={{ cursor: 'pointer' }}
+            >
                 Admin Dashboard
             </h2>
             <Nav className="ms-auto">
@@ -32,4 +36,4 @@ const AdminNavbar = () => {
     );
 };
 
-export default AdminNavbar;
+export default AdminNavBar;

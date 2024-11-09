@@ -13,7 +13,8 @@ const ProductPage = () => {
         price: '',
         features: '',
         averageRating: '',
-        pictureBase64: '' // Change this to a single base64 string
+        pictureBase64: '', // Change this to a single base64 string
+        quantity: ''
     });
 
     useEffect(() => {
@@ -26,6 +27,7 @@ const ProductPage = () => {
                 features: product.features,
                 averageRating: product.averageRating,
                 pictureBase64: product.pictureBase64 || '', // Ensure to get base64 string if available
+                quantity: product.quantity
             });
         }
     }, [isEditing, location.state]);
@@ -66,7 +68,8 @@ const ProductPage = () => {
         formDataToSend.append('description', formData.description);
         formDataToSend.append('price', parseFloat(formData.price).toFixed(2));
         formDataToSend.append('features', formData.features);
-        formDataToSend.append('averageRating', parseFloat(formData.average_rating).toFixed(2));
+        formDataToSend.append('averageRating', parseFloat(formData.averageRating).toFixed(2));
+        formDataToSend.append('quantity', formData.quantity);
 
         // Append the base64 image if it exists
         if (formData.pictureBase64) {
