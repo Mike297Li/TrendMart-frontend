@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../component/footer';
 import '../styles/Cart.css';
 
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        // Load cart items from local storage
         const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
         setCartItems(storedCart);
     }, []);
@@ -16,7 +17,7 @@ const Cart = () => {
             const updatedItems = prevItems.map(item =>
                 item.id === id ? { ...item, quantity: newQuantity } : item
             );
-            localStorage.setItem('cart', JSON.stringify(updatedItems)); // Update local storage
+            localStorage.setItem('cart', JSON.stringify(updatedItems));
             return updatedItems;
         });
     };
@@ -24,7 +25,23 @@ const Cart = () => {
     const handleRemoveItem = (id) => {
         const updatedCart = cartItems.filter(item => item.id !== id);
         setCartItems(updatedCart);
-        localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update local storage
+        localStorage.setItem('cart', JSON.stringify(updatedCart));
+    };
+
+    // Cart.js
+    const handleCheckout = () => {
+        const updatedCartItems = cartItems.map(item => ({
+            ...item,
+            // Ensure productId is correctly passed; If it's missing, log or handle it
+            productId: item.productId || 'defaultProductId',  // Ensure it's not undefined or null
+            price: item.price || 0  // Handle missing price (optional)
+        }));
+
+        // Passing cart data to Checkout page
+        navigate('/checkout', {
+            state: { cartItems: updatedCartItems }
+        });
+        console.log('Cart Items:', cartItems); // Check the cart items before navigation
     };
 
     const calculateTotal = () => {
@@ -60,6 +77,7 @@ const Cart = () => {
                         ))}
                     </ul>
                     <h2>Total: ${calculateTotal()}</h2>
+                    <button onClick={handleCheckout} className="checkout-button">Proceed to Checkout</button>
                 </div>
             )}
             <Footer />

@@ -134,7 +134,7 @@ const SearchResults = () => {
                         <li
                             key={product.productId}
                             className="search-result-item mb-3 p-3 border rounded"
-                            onClick={() => navigate(`/product-detail/${product.productId}`)} // Update this line
+                            onClick={() => navigate(`/product-detail/${product.productId}`, { state: { product } })}
                             style={{ cursor: 'pointer' }} // Optional: to indicate it's clickable
                         >
                             <Row>

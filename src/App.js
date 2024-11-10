@@ -27,6 +27,7 @@ import Payment from "./pages/Payment";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Success from "./pages/Success";
+import Checkout from "./pages/Checkout";
 
 // Load the Stripe object with your publishable key
 const stripePromise = loadStripe('pk_test_51QI91pJXJU4eSyCwCdLRJILNHwtarSkNx6APhaKrlZLc7ykVSLyvzRbxkEnvl63wUKoE0BhixTk7WxWRVJYToY9u00mBBGFwQT');
@@ -83,6 +84,7 @@ const App = () => {
                     <Route path="/about" element={<AboutPage />} /> {/* Añade esta línea */}
                     <Route path="/claim-form" element={<ClaimForm />} />
                     <Route path="/contact" element={<ContactUs />} />
+                <Route path="/checkout" element={<Checkout />} />
 
 
                 <Route path="/search-results" element={<SearchResults />} />
