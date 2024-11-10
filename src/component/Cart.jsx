@@ -58,7 +58,7 @@ const Cart = () => {
                     <ul>
                         {cartItems.map(item => (
                             <li key={item.id} className="cart-item">
-                                <img src={`data:image/jpeg;base64,${item.pictureBase64}`} alt={item.name} className="cart-item-image" />
+                                <img src={`${item.pictureBase64}`} alt={item.name} className="cart-item-image" />
                                 <div className="cart-item-details">
                                     <h2>{item.name}</h2>
                                     <p>Price: ${item.price}</p>
