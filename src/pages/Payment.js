@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/Payment.css'; // Create a Payment.css file similar to Login.css
-import { useNavigate } from 'react-router-dom'; // For navigation
+import { useNavigate, useLocation } from 'react-router-dom'; // For navigation
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
@@ -16,6 +16,15 @@ const Payment = () => {
     const [message, setMessage] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
     const navigate = useNavigate(); // For navigation
+
+    // Retrieve orderId and totalAmount from location state
+    const { state } = useLocation();
+    const { orderId, totalAmount } = state || {}; // Destructure orderId and totalAmount
+
+    if (!orderId || !totalAmount) {
+        setMessage('Missing order details.');
+        return;
+    }
 
     const handlePaymentSubmission = async (e) => {
         e.preventDefault();
@@ -56,8 +65,8 @@ const Payment = () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                orderId: '9', // Replace with actual order ID
-                amount: 150.00, // Replace with actual amount
+                orderId: orderId, // Use the passed orderId
+                amount: totalAmount, // Use the passed totalAmount
                 paymentMethodId: paymentMethod.id,
                 email: email, // Include email in the request body
             }),

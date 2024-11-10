@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Footer from '../component/footer';
 import '../styles/Checkout.css';
+import { getAuth } from "firebase/auth"; // Import getAuth from Firebase SDK
 
 const Checkout = () => {
     const { state } = useLocation(); // Retrieve cartItems passed from Cart page
@@ -20,16 +21,27 @@ const Checkout = () => {
     const handlePlaceOrder = async () => {
         // Log cartItems before sending the order
         console.log('Checkout Cart Items before sending:', cartItems);
+        // Get the current user's Firebase UID
+        const auth = getAuth();  // Get Auth instance
+        const user = auth.currentUser;  // Get current user
+        if (!user) {
+            // Handle case when the user is not logged in
+            alert('You must be logged in to place an order');
+            return;
+        }
+        // Calculate the total amount for the order
+        const totalAmount = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
 
         // Build the order data, ensuring productId is correct
         const orderData = {
-            userId: '4KHCU8i9nWhH6SjsN8rpkfKhx1v2', // Example userId; replace with actual user ID
+            userId: user.uid,
             items: cartItems.map(item => ({
                 productId: item.id, // Ensure productId is correctly passed here (no fallback unless missing)
                 quantity: item.quantity,   // Ensure quantity is correctly passed
                 price: item.price !== null && item.price !== undefined ? item.price : 0 // Handle price properly
             })),
-            address
+            address,
+            totalAmount // Include the totalAmount in the order data
         };
 
         // Log the final orderData before sending
@@ -45,7 +57,10 @@ const Checkout = () => {
             });
 
             if (response.ok) {
-                navigate('/payment'); // Navigate to the Payment page after placing the order
+                const responseData = await response.json(); // Assuming backend returns the order ID
+                const orderId = responseData.orderId; // Get the orderId from the response
+                console.log('ORDER ID :', orderId +'totalAmount:'+totalAmount);
+                navigate('/payment', { state: { totalAmount, orderId } }); // Passing totalAmount and orderId to the Payment page
             } else {
                 const errorData = await response.json();
                 alert(`Error: ${errorData.message || 'Something went wrong'}`);
