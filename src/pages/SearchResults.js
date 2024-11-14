@@ -22,7 +22,7 @@ const SearchResults = () => {
     }, [location.state?.totalCount]);
 
     useEffect(() => {
-        if (sessionStorage.getItem('user') == null) {
+        if (localStorage.getItem('user') == null) {
             navigate('/');
         }
     }, [navigate]);
@@ -63,10 +63,6 @@ const SearchResults = () => {
         } catch (error) {
             console.error('Error fetching search results:', error);
         }
-    };
-
-    const handleProductClick = (product) => {
-        navigate(`/product/${product.productId}`, { state: { product } });
     };
 
     const totalPages = Math.ceil(totalResults / resultsPerPage);

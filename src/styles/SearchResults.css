@@ -4,6 +4,7 @@
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto; /* Center the container */
+    margin-top: 60px;
 }
 
 .search-results-title {

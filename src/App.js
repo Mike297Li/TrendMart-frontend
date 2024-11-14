@@ -28,6 +28,8 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Success from "./pages/Success";
 import Checkout from "./pages/Checkout";
+import { CartProvider } from './context/CartContext';
+import UserProfile from './component/Profile';
 
 // Load the Stripe object with your publishable key
 const stripePromise = loadStripe('pk_test_51QI91pJXJU4eSyCwCdLRJILNHwtarSkNx6APhaKrlZLc7ykVSLyvzRbxkEnvl63wUKoE0BhixTk7WxWRVJYToY9u00mBBGFwQT');
@@ -40,6 +42,9 @@ const App = () => {
     useEffect(() => {
         // Escuchar el estado de autenticación para mantener el usuario actualizado
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            if(currentUser !==null){
+                localStorage.setItem('user', JSON.stringify(currentUser))
+            }
             setUser(currentUser);
         });
         return () => unsubscribe();
@@ -62,11 +67,15 @@ const App = () => {
         return () => unsubscribe();
     }, []);
 
+    // Check if the path starts with '/admin' to conditionally hide the footer
+    const showFooter = !location.pathname.startsWith('/admin');
+
     return (
-        <div>
+        <CartProvider>
+            <div>
             {/* Pasar el estado de usuario autenticado al Navbar */}
-            {showNavbar && <Navbar isAuthenticated={isAuthenticated} user={user} />}
-            <Routes>
+                {showNavbar && <Navbar isAuthenticated={isAuthenticated} user={user} />}
+                <Routes>
 
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
@@ -84,14 +93,16 @@ const App = () => {
                     <Route path="/about" element={<AboutPage />} /> {/* Añade esta línea */}
                     <Route path="/claim-form" element={<ClaimForm />} />
                     <Route path="/contact" element={<ContactUs />} />
-                <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/checkout" element={<Checkout />} />
+                    {user && (<Route path="/user-profile" element={<UserProfile user={user} />} />)}
+                    
 
 
                 <Route path="/search-results" element={<SearchResults />} />
-                <Route path="/product-detail/:productId" element={<ProductDetail />} />
-                <Route path="/cart" element={<Cart />} />
+                    <Route path="/product-detail/:productId" element={<ProductDetail />} />
+                    <Route path="/cart" element={<Cart />} />
                 <Route path="/success" element={<Success />}/>
-                <Route path="/" element={<HomePage />} />
+                    <Route path="/" element={<HomePage />} />
                 <Route
                     path="/payment"
                     element={
@@ -100,9 +111,10 @@ const App = () => {
                         </Elements>
                     }
                 />
-            </Routes>
-            <Footer />
-        </div>
+                </Routes>
+                {showFooter && <Footer />}
+            </div>
+        </CartProvider>
     );
 };
 

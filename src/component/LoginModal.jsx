@@ -16,7 +16,7 @@ const LoginModal = ({ isOpen, onClose }) => {
         try {
             const userCredential = await signInWithEmailPassword(email, password);
             if(userCredential.user){
-                sessionStorage.setItem('user', JSON.stringify(userCredential.user))
+                localStorage.setItem('user', JSON.stringify(userCredential.user))
             }
             console.log("User Logged In: ", userCredential.user);
             navigate('/Homepage'); // Redirige al homePage después del login
@@ -31,7 +31,7 @@ const LoginModal = ({ isOpen, onClose }) => {
         try {
             const response = await signInWithGooglePopup();
             if(response.user){
-                sessionStorage.setItem('user',  JSON.stringify(response.user))
+                localStorage.setItem('user',  JSON.stringify(response.user))
             }
             console.log("Google User Logged In: ", response);
             navigate('/Homepage'); // Redirige al homePage después del login con Google
