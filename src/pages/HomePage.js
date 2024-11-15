@@ -8,6 +8,8 @@ import Navbar from '../component/Navbar';
 import WelcomeSection from '../component/WelcomeSection';
 import CategoryBar from '../pages/CategoryBar';
 import ImageSection from './ImageSection';
+import collection1 from '../assets/collection1.jpg';
+import collection2 from '../assets/collection2.jpg';
 import Footer from '../component/footer';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '../styles/HomePage.css';
@@ -43,6 +45,7 @@ const HomePage = () => {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            localStorage.setItem('user', JSON.stringify(currentUser))
             setUser(currentUser);
         });
 

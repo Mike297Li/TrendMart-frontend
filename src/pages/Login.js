@@ -15,7 +15,7 @@ const Login = () => {
             // Firebase login with email and password
             const userCredential = await signInWithEmailPassword(email, password);
             if(userCredential.user){
-                sessionStorage.setItem('user', JSON.stringify(userCredential.user))
+                localStorage.setItem('user', JSON.stringify(userCredential.user))
             }
             console.log("User Logged In: ", userCredential.user);
             // Redirect to homePage after successful login
@@ -31,7 +31,7 @@ const Login = () => {
             // Firebase login using Google Popup
             const response = await signInWithGooglePopup();
             if(response.user){
-                sessionStorage.setItem('user', JSON.stringify(response.user))
+                localStorage.setItem('user', JSON.stringify(response.user))
             }
             console.log("Google User Logged In: ", response);
             // Redirect to homePage after successful login

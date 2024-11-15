@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Footer from '../component/footer';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { Container, Row, Col, Card, Button, Form } from 'react-bootstrap';
+import { useCart } from '../context/CartContext'; // Import CartContext hook
 import '../styles/ProductDetail.css';
 
 const ProductDetail = () => {
     const { productId } = useParams();
+    const navigate = useNavigate();
+    const { addToCart } = useCart(); // Get the addToCart function from context
     const [product, setProduct] = useState(null);
     const [quantity, setQuantity] = useState(1);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -26,79 +26,75 @@ const ProductDetail = () => {
     }, [productId]);
 
     const handleAddToCart = () => {
-        // Ensure product and productId are present
         if (!product || !product.productId) {
             console.error('Product does not have a valid ID');
-            return; // Exit if no valid product ID
+            return;
         }
 
+        // Prepare the item to add to the cart
         const itemToAdd = {
-            id: product.productId, // Use productId instead of id
+            id: product.productId,
             name: product.name,
             price: product.price,
             pictureBase64: product.pictureBase64,
-            quantity: parseInt(quantity), // Ensure quantity is an integer
+            quantity: parseInt(quantity),
         };
 
-        // Retrieve existing cart items from local storage
-        const existingCart = JSON.parse(localStorage.getItem('cart')) || [];
+        // Use the addToCart function from context to add the item
+        addToCart(itemToAdd);
 
-        // Check if the item is already in the cart
-        const existingItemIndex = existingCart.findIndex(item => item.id === itemToAdd.id);
-
-        if (existingItemIndex > -1) {
-            // If the item is already in the cart, update the quantity
-            existingCart[existingItemIndex].quantity += itemToAdd.quantity;
-        } else {
-            // If the item is not in the cart, add it
-            existingCart.push(itemToAdd);
-        }
-
-        // Save updated cart back to local storage
-        localStorage.setItem('cart', JSON.stringify(existingCart));
         console.log(`Added ${quantity} of ${product.name} to cart.`);
     };
 
-
-    const handleCartClick = () => {
-        navigate('/cart');
-    };
-
     if (!product) {
-        return <p>No product details available.</p>;
+        return <p className="text-center">No product details available.</p>;
     }
 
     return (
-        <div>
-            <div className="product-detail-container">
-                <h1>{product.name}</h1>
-                <img src={`data:image/jpeg;base64,${product.pictureBase64}`} alt={product.name} className="img-fluid" />
-                <p>{product.description}</p>
-                <p>Price: ${product.price}</p>
-                <p>Rating: {product.averageRating}</p>
-
-                <div className="quantity-container">
-                    <label htmlFor="quantity">Quantity:</label>
-                    <input
-                        type="number"
-                        id="quantity"
-                        min="1"
-                        value={quantity}
-                        onChange={(e) => setQuantity(e.target.value)}
+        <Container className="product-detail-container py-5">
+            <Button variant="outline-secondary" onClick={() => navigate(-1)} className="mb-4">
+                &larr; Back
+            </Button>
+            <Row>
+                <Col md={6} className="text-center">
+                    <Card.Img 
+                        variant="top" 
+                        src={product.pictureBase64} 
+                        alt={product.name} 
+                        className="img-fluid rounded product-detail-image"
                     />
-                </div>
+                </Col>
+                <Col md={6}>
+                    <Card className="p-4 shadow-sm">
+                        <Card.Body>
+                            <Card.Title className="mb-3">{product.name}</Card.Title>
+                            <Card.Text>{product.description}</Card.Text>
+                            <Card.Text><strong>Price:</strong> ${product.price}</Card.Text>
+                            <Card.Text><strong>Rating:</strong> {product.averageRating}</Card.Text>
 
-                <button onClick={handleAddToCart} className="btn btn-primary">Add to Cart</button>
-            </div>
+                            <Form.Group controlId="quantity" className="quantity-container mb-3">
+                                <Form.Label>Quantity:</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    min="1"
+                                    value={quantity}
+                                    onChange={(e) => setQuantity(e.target.value)}
+                                    className="quantity-input"
+                                />
+                            </Form.Group>
 
-            <div className="icon-container">
-                <div className="cart-icon" onClick={handleCartClick}>
-                    <FontAwesomeIcon icon={faShoppingCart} size="2x" />
-                </div>
-            </div>
-
-            <Footer />
-        </div>
+                            <Button 
+                                onClick={handleAddToCart} 
+                                variant="primary" 
+                                className="w-100 mt-3"
+                            >
+                                Add to Cart
+                            </Button>
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

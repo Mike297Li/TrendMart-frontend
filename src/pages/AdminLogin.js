@@ -15,7 +15,7 @@ const AdminLogin = () => {
         try {
             const response = await axios.post('http://localhost:8080/api/auth/login', { email, password });
             if(response.data){
-                sessionStorage.setItem('user', JSON.stringify(response.data))
+                localStorage.setItem('user', JSON.stringify(response.data))
             }
             console.log(response.data);
             navigate('/adminPortal');

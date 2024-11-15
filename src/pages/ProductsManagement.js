@@ -48,6 +48,7 @@ const ProductsManagement = () => {
                         <th>Price</th>
                         <th>Features</th>
                         <th>Rating</th>
+                        <th>Quantity</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -60,6 +61,7 @@ const ProductsManagement = () => {
                                 <td>${product.price}</td>
                                 <td>{product.features}</td>
                                 <td>{product.averageRating}</td>
+                                <td>{product.quantity}</td>
                                 <td className='product-listing-buttons'>
                                     <Button variant="warning" onClick={() => handleEdit(product)} className="me-2">
                                         Edit
