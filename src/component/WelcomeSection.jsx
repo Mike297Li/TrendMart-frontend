@@ -10,7 +10,7 @@ const WelcomeSection = () => (
             <p>Buy 2 products and get 40% off.</p>
             <p>Online exclusive, selected items only.</p>
         </div>
-        <button className="cta-button">View Discounts</button>
+        {/* <button className="cta-button">View Discounts</button> */}
     </div>
 );
 
