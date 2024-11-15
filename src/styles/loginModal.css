@@ -39,7 +39,7 @@
     position: absolute;
     top: -15px;
     LEFT: -15px;
-    background-color: rgba(207, 209, 211, 0.841); /* Fondo azul con 50% de opacidad */
+    background-color: #bbb; /* Fondo azul con 50% de opacidad */
     border: none;
     color: #fff; /* Color del ícono en blanco */
     font-size: 1.5rem;
@@ -55,8 +55,8 @@
 
 
 .close-button:hover {
-    color: #ff5722; /* Cambia el color del ícono a naranja al pasar el ratón */
-    background-color: transparent; 
+    color: #fff; /* Cambia el color del ícono a naranja al pasar el ratón */
+    background-color: red; 
 }
 
 input {

@@ -65,7 +65,7 @@ const AdminProductManagement = () => {
     return (
         <>
             <AdminNavBar resetView={resetView} />
-            <Container className="mt-5">
+            <Container style={{margin: '7rem'}}>
                 {renderContent()}
             </Container>
         </>

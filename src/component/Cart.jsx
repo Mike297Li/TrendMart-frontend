@@ -1,86 +1,104 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../component/footer';
+import { Row, Col, Card, Button, Form } from 'react-bootstrap';
+import { useCart } from '../context/CartContext';
 import '../styles/Cart.css';
 
 const Cart = () => {
-    const [cartItems, setCartItems] = useState([]);
+    const { cart, updateCart } = useCart();
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
-        setCartItems(storedCart);
-    }, []);
+        // If the cart is empty, initialize it from localStorage
+        if (cart.length === 0) {
+            const storedCart = JSON.parse(localStorage.getItem('cart')) || [];
+            updateCart(storedCart);
+        }
+    }, [cart, updateCart]);
 
     const handleQuantityChange = (id, newQuantity) => {
-        setCartItems(prevItems => {
-            const updatedItems = prevItems.map(item =>
-                item.id === id ? { ...item, quantity: newQuantity } : item
-            );
-            localStorage.setItem('cart', JSON.stringify(updatedItems));
-            return updatedItems;
-        });
+        const updatedCart = cart.map(item => 
+            item.id === id ? { ...item, quantity: newQuantity } : item
+        );
+        updateCart(updatedCart);  // Update both context and localStorage
     };
 
     const handleRemoveItem = (id) => {
-        const updatedCart = cartItems.filter(item => item.id !== id);
-        setCartItems(updatedCart);
-        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        const updatedCart = cart.filter(item => item.id !== id);
+        updateCart(updatedCart);  // Update both context and localStorage
     };
 
-    // Cart.js
     const handleCheckout = () => {
-        const updatedCartItems = cartItems.map(item => ({
+        const updatedCartItems = cart.map(item => ({
             ...item,
-            // Ensure productId is correctly passed; If it's missing, log or handle it
-            productId: item.productId || 'defaultProductId',  // Ensure it's not undefined or null
-            price: item.price || 0  // Handle missing price (optional)
+            productId: item.productId || 'defaultProductId',
+            price: item.price || 0
         }));
-
-        // Passing cart data to Checkout page
-        navigate('/checkout', {
-            state: { cartItems: updatedCartItems }
-        });
-        console.log('Cart Items:', cartItems); // Check the cart items before navigation
+        navigate('/checkout', { state: { cartItems: updatedCartItems } });
     };
 
     const calculateTotal = () => {
-        return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+        return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
     };
 
     return (
-        <div className="cart-container">
-            <h1>Your Cart</h1>
-            {cartItems.length === 0 ? (
-                <p>Your cart is empty.</p>
+        <div className="cart-container py-5">
+            <h1 className="text-center mb-4">Your Cart</h1>
+            {cart.length === 0 ? (
+                <p className="text-center">Your cart is empty.</p>
             ) : (
-                <div>
-                    <ul>
-                        {cartItems.map(item => (
-                            <li key={item.id} className="cart-item">
-                                <img src={`${item.pictureBase64}`} alt={item.name} className="cart-item-image" />
-                                <div className="cart-item-details">
-                                    <h2>{item.name}</h2>
-                                    <p>Price: ${item.price}</p>
-                                    <label>
-                                        Quantity:
-                                        <input
-                                            type="number"
-                                            value={item.quantity}
-                                            min="1"
-                                            onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}
-                                        />
-                                    </label>
-                                    <button onClick={() => handleRemoveItem(item.id)}>Remove</button>
-                                </div>
-                            </li>
+                <>
+                    <Row className="g-4">
+                        {cart.map(item => (
+                            <Col md={6} lg={4} key={item.id}>
+                                <Card className="cart-item shadow-sm"
+                                >
+                                    <Card.Img 
+                                        variant="top" 
+                                        src={item.pictureBase64} 
+                                        alt={item.name} 
+                                        className="cart-item-image"
+                                        onClick={() => navigate(`/product-detail/${item.id}`, { state: { item } })}
+                                    />
+                                    <Card.Body>
+                                        <Card.Title>{item.name}</Card.Title>
+                                        <Card.Text>
+                                            Price: ${item.price}
+                                        </Card.Text>
+                                        <Form.Group controlId={`quantity-${item.id}`} className="mb-3">
+                                            <Form.Label>Quantity:</Form.Label>
+                                            <Form.Control
+                                                type="number"
+                                                value={item.quantity}
+                                                min="1"
+                                                onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}
+                                            />
+                                        </Form.Group>
+                                        <Button 
+                                            variant="danger" 
+                                            onClick={() => handleRemoveItem(item.id)} 
+                                            className="w-100"
+                                        >
+                                            Remove
+                                        </Button>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
                         ))}
-                    </ul>
-                    <h2>Total: ${calculateTotal()}</h2>
-                    <button onClick={handleCheckout} className="checkout-button">Proceed to Checkout</button>
-                </div>
+                    </Row>
+                    <div className="total-container my-4 text-center">
+                        <h2>Total: ${calculateTotal()}</h2>
+                        <Button 
+                            onClick={handleCheckout} 
+                            variant="success" 
+                            className="checkout-button mt-3"
+                            size="lg"
+                        >
+                            Proceed to Checkout
+                        </Button>
+                    </div>
+                </>
             )}
-            <Footer />
         </div>
     );
 };

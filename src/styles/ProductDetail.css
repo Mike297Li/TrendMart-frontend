@@ -3,8 +3,7 @@
     background-color: #f8f9fa;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 900px;
-    margin: auto;
+    margin: 75px;
 }
 
 .product-image {
@@ -47,7 +46,6 @@
 
 /* Example CSS for Navbar or Header */
 .navbar {
-    background-color: #fff; /* Set the background color */
     padding: 10px 20px; /* Adjust padding for spacing */
     display: flex; /* Flexbox for alignment */
     justify-content: space-between; /* Space items evenly */
@@ -62,26 +60,21 @@
 
 /* Optional: Add some bottom margin to separate the header from content */
 .product-detail-container {
-    margin-top: 20px; /* Space below the navbar */
+    margin: 60px auto; /* Space below the navbar */
 }
 /* ProductDetail.css */
-
-.icon-container {
-    position: fixed; /* Ensures the container is fixed to the corner */
-    top: 20px; /* Adjust this as needed */
-    right: 20px; /* Adjust this as needed */
-    display: flex; /* Use flex to align child elements */
-    align-items: center;
-    z-index: 1000; /* Ensure it's above other content */
-    background-color: transparent; /* Make sure it's not set to the same color as the background */
+.product-detail-container {
+    background-color: #f9f9f9;
+    border-radius: 8px;
 }
 
+.product-detail-image {
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+}
 
-.cart-icon svg {
-    width: 32px;
-    height: 32px;
+.quantity-container .quantity-input {
+    width: 100px;
 }
-/* Optional: Add styles for search button if applicable */
-.search-button {
-    /* Your search button styles */
-}
+

@@ -18,6 +18,14 @@
     box-shadow: none;
 }
 
+.navbar-logo{
+    color: #efe2b7;
+}
+
+.cursor-pointer:hover{
+    cursor: pointer;
+}
+
 /* Logo grande para la página de inicio */
 .navbar-logo.large-logo {
     font-size: 840%;
@@ -99,6 +107,7 @@
 
 .navbar-link:hover {
     color: #ffffff;
+    cursor: pointer;
 }
 
 
@@ -124,3 +133,19 @@
 }
 
 
+.cart-icon {
+    color: #efe2b7;
+    transition: color 0.3s ease;
+}
+
+.cart-icon:hover {
+    color: white;
+}
+
+.fa-2x{
+    font-size: 1.25em !important;
+}
+
+.username{
+    font-size: 1.15rem;
+}
