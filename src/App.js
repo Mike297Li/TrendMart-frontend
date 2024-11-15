@@ -17,6 +17,8 @@ import AboutPage from './pages/AboutPage';
 import Footer from './component/footer';
 import ContactUs from './component/ContactUs';
 import ClaimForm from './component/ClaimForm';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 
 import ProductDetail from "./pages/ProductDetail";

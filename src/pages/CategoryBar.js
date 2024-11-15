@@ -8,8 +8,7 @@ const CategoryBar = React.forwardRef((props, ref) => (
             <p></p>
         </div>
         <div className="category-bar">
-            <div className="category-option">WOMEN</div>
-            <div className="category-option">MAN</div>
+            <div className="category-option">TRENDMART</div>
         </div>
     </div>
 ));
