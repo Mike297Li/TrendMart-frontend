@@ -31,12 +31,17 @@ export const CartProvider = ({ children }) => {
         localStorage.setItem('cart', JSON.stringify(updatedItems)); // Update localStorage with updated cart
     };
 
+    const clearCart = () => {
+        setCart([]);
+        localStorage.removeItem('cart'); // Clear from localStorage as well
+    };
+
     const getTotalItems = () => {
         return cart.reduce((total, item) => total + item.quantity, 0);
     };
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, updateCart, getTotalItems }}>
+        <CartContext.Provider value={{ cart, addToCart, updateCart, clearCart, getTotalItems }}>
             {children}
         </CartContext.Provider>
     );
