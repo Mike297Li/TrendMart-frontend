@@ -32,6 +32,7 @@ import Success from "./pages/Success";
 import Checkout from "./pages/Checkout";
 import { CartProvider } from './context/CartContext';
 import UserProfile from './component/Profile';
+import OrderListing from './pages/OrderListing';
 
 // Load the Stripe object with your publishable key
 const stripePromise = loadStripe('pk_test_51QI91pJXJU4eSyCwCdLRJILNHwtarSkNx6APhaKrlZLc7ykVSLyvzRbxkEnvl63wUKoE0BhixTk7WxWRVJYToY9u00mBBGFwQT');
@@ -53,7 +54,7 @@ const App = () => {
     }, []);
 
     // Show Navbar only on certain routes
-    const showNavbar = !['/login', '/register', '/reset-password', '/admin', '/adminPortal', '/create-product', '/edit-product/:productId'].includes(location.pathname);
+    const showNavbar = !['/login', '/register', '/reset-password', '/admin', '/adminPortal', '/admin/create-product', '/edit-product/:productId'].includes(location.pathname);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -86,7 +87,7 @@ const App = () => {
                     <Route path="/terms" element={<TermsAndConditions />} />
                     <Route path="/admin" element={<AdminLogin />} />
                     <Route path="/adminPortal" element={<AdminProductManagement />} />
-                    <Route path="/create-product" element={<ProductPage />} />
+                    <Route path="/admin/create-product" element={<ProductPage />} />
                     <Route path="/search-results" element={<SearchResults />} />
                     <Route path="/edit-product/:productId" element={<ProductPage />} />
                     <Route path="/find_products" element={<FindProducts />} />
@@ -96,7 +97,12 @@ const App = () => {
                     <Route path="/claim-form" element={<ClaimForm />} />
                     <Route path="/contact" element={<ContactUs />} />
                     <Route path="/checkout" element={<Checkout />} />
-                    {user && (<Route path="/user-profile" element={<UserProfile user={user} />} />)}
+                    {user && (
+                        <>
+                        <Route path="/user-profile" element={<UserProfile user={user} />} />
+                        <Route path="/user/orders" element={<OrderListing />} />
+                        </>
+                    )}
                     
 
 

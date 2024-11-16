@@ -15,9 +15,9 @@ const AdminProductManagement = () => {
     const renderContent = () => {
         switch (activeComponent) {
             case 'products':
-                return <ProductsManagement />;
+                return <ProductsManagement resetView={resetView} />;
             case 'orders':
-                return <OrdersManagement />;
+                return <OrdersManagement resetView={resetView} />;
             default:
                 return (
                     <Row className="justify-content-center">

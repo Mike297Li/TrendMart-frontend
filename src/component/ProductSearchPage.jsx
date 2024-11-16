@@ -1,3 +1,4 @@
+/* eslint-disable */
 // src/components/ProductSearchPage.jsx
 import React, { useState, useEffect } from 'react';
 import ProductGrid from './ProductGrid';

@@ -108,10 +108,20 @@ const HomePage = () => {
                             <i className="fas fa-chevron-left"></i>
                         </button>
                         <div className="carousel-images">
-                            <img src={products[currentIndex].pictureBase64} alt={products[currentIndex].name} />
-                            <img src={products[(currentIndex + 1) % products.length].pictureBase64} alt={products[(currentIndex + 1) % products.length].name} />
-                                
+                            {products[currentIndex]?.pictureBase64 && (
+                                <img
+                                    src={products[currentIndex].pictureBase64}
+                                    alt={products[currentIndex]?.name || 'Product'}
+                                />
+                            )}
+                            {products[(currentIndex + 1) % products.length]?.pictureBase64 && (
+                                <img
+                                    src={products[(currentIndex + 1) % products.length].pictureBase64}
+                                    alt={products[(currentIndex + 1) % products.length]?.name || 'Product'}
+                                />
+                            )}
                         </div>
+
                         <button className="carousel-btn next" onClick={handleNext}>
                             <i className="fas fa-chevron-right"></i>
                         </button>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navbar, Nav, Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
@@ -20,8 +20,21 @@ const AdminNavBar = ({ resetView }) => {
     };
     
     const createNew = () => {
-        navigate('/create-product');
+        navigate('/admin/create-product');
     };
+
+    useEffect(() => {
+        // Check if the user key exists in localStorage
+        const user = JSON.parse(localStorage.getItem('user'));
+    
+        // If user exists and has a role of 'ADMIN'
+        if (user && user.role === 'ADMIN') {
+            console.log('User is an ADMIN');
+        } else {
+            navigate('/admin')
+            // Handle non-admin or no user case
+        }
+    }, [navigate]);
 
     return (
         <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">

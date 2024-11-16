@@ -102,7 +102,10 @@ const Navbar = ({ isAuthenticated, user }) => {
                                     <Link to="/user-profile" className="dropdown-link">Profile</Link>
                                 </li>
                                 <li>
-                                    <span onClick={handleLogout} className="dropdown-link">Logout</span>
+                                    <Link to="/user/orders" className="dropdown-link">My Orders</Link>
+                                </li>
+                                <li>
+                                    <span onClick={handleLogout} className="dropdown-link cursor-pointer">Logout</span>
                                 </li>
                             </ul>
                         </li>
