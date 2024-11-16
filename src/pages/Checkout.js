@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Row, Col, Form, Button, Card } from 'react-bootstrap'; // Importing Bootstrap components
 import { FaMapMarkerAlt, FaTruck, FaCreditCard } from 'react-icons/fa'; // Using React Icons
@@ -13,6 +13,12 @@ const Checkout = () => {
     const [country, setCountry] = useState('');
     const navigate = useNavigate();
     const cartItems = state?.cartItems || []; // Ensure cartItems is not undefined
+
+    useEffect(()=>{
+        if(JSON.parse(localStorage.getItem('user'))?.role === 'ADMIN'){
+            navigate('/')
+        }
+    })
 
     const handlePlaceOrder = async () => {
         // Combine address into a single string

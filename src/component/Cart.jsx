@@ -8,6 +8,12 @@ const Cart = () => {
     const { cart, updateCart } = useCart();
     const navigate = useNavigate();
 
+    useEffect(()=>{
+        if(JSON.parse(localStorage.getItem('user'))?.role === 'ADMIN'){
+            navigate('/')
+        }
+    })
+
     useEffect(() => {
         // If the cart is empty, initialize it from localStorage
         if (cart.length === 0) {
