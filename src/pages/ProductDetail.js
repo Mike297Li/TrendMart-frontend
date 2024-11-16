@@ -92,7 +92,7 @@ const ProductDetail = () => {
                     productId: parseInt(productId),
                     userId: user?.uid,
                     rating: rating,
-                    reviewText: reviewText, 
+                    reviewText: reviewText,
                     userName: user?.displayName
                 }),
             });
@@ -194,10 +194,10 @@ const ProductDetail = () => {
             </Button>
             <Row>
                 <Col md={6} className="text-center">
-                    <Card.Img 
-                        variant="top" 
-                        src={product.pictureBase64} 
-                        alt={product.name} 
+                    <Card.Img
+                        variant="top"
+                        src={product.pictureBase64}
+                        alt={product.name}
                         className="img-fluid rounded product-detail-image"
                     />
                 </Col>
@@ -209,24 +209,28 @@ const ProductDetail = () => {
                             <Card.Text><strong>Price:</strong> ${product.price}</Card.Text>
                             <Card.Text><strong>Rating:</strong> {product.averageRating}</Card.Text>
 
-                            <Form.Group controlId="quantity" className="quantity-container mb-3">
-                                <Form.Label>Quantity:</Form.Label>
-                                <Form.Control
-                                    type="number"
-                                    min="1"
-                                    value={quantity}
-                                    onChange={(e) => setQuantity(e.target.value)}
-                                    className="quantity-input"
-                                />
-                            </Form.Group>
+                            {user && JSON.parse(localStorage.getItem('user'))?.role !== 'ADMIN' && (
+                                <>
+                                    <Form.Group controlId="quantity" className="quantity-container mb-3">
+                                        <Form.Label>Quantity:</Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            min="1"
+                                            value={quantity}
+                                            onChange={(e) => setQuantity(e.target.value)}
+                                            className="quantity-input"
+                                        />
+                                    </Form.Group>
 
-                            <Button 
-                                onClick={handleAddToCart} 
-                                variant="primary" 
-                                className="w-100 mt-3"
-                            >
-                                Add to Cart
-                            </Button>
+                                    <Button
+                                        onClick={handleAddToCart}
+                                        variant="primary"
+                                        className="w-100 mt-3"
+                                    >
+                                        Add to Cart
+                                    </Button>
+                                </>
+                            )}
                         </Card.Body>
                     </Card>
                 </Col>
@@ -240,90 +244,90 @@ const ProductDetail = () => {
 
                     {reviews.map((review) => (
                         <Card key={review.reviewId} className="mb-4 p-3 shadow-sm review-card">
-                        <Card.Body>
-                            <div className="d-flex justify-content-between align-items-center">
-                                <div>
-                                    {[...Array(5)].map((_, index) => (
-                                        <FaStar
-                                            key={index}
-                                            color={index < review.rating ? "#ffc107" : "#e4e5e9"}
-                                            size={18}
-                                        />
-                                    ))}
-                                    <b className="d-inline ms-2">- {review.userName}</b>
-                                </div>
-                    
-                                {userReview?.reviewId === review.reviewId && !isEditing && (
+                            <Card.Body>
+                                <div className="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <Button 
-                                            variant="link" 
-                                            onClick={handleEditReview} 
-                                            className="text-primary"
-                                        >
-                                            <FaEdit /> Edit
-                                        </Button>
-                                        <Button 
-                                            variant="link" 
-                                            onClick={() => handleDeleteReview(review.reviewId)} 
-                                            className="text-danger ms-2"
-                                        >
-                                            <FaTrashAlt /> Delete
-                                        </Button>
+                                        {[...Array(5)].map((_, index) => (
+                                            <FaStar
+                                                key={index}
+                                                color={index < review.rating ? "#ffc107" : "#e4e5e9"}
+                                                size={18}
+                                            />
+                                        ))}
+                                        <b className="d-inline ms-2">- {review.userName}</b>
                                     </div>
-                                )}
-                            </div>
-                    
-                            {!isEditing ? (
-                                <p>{review.reviewText}</p>
-                            ) : (
-                                // Review edit form embedded inside the card
-                                <Form onSubmit={handleUpdateReview} className="mt-3 p-3 border rounded bg-light">
-                                    <Form.Group controlId="rating" className="mb-3">
-                                        <Form.Label>Rating (out of 5):</Form.Label>
+
+                                    {userReview?.reviewId === review.reviewId && !isEditing && (
                                         <div>
-                                            {[1, 2, 3, 4, 5].map((star) => (
-                                                <FaStar
-                                                    key={star}
-                                                    size={24}
-                                                    color={star <= (hoverRating || rating) ? '#ffc107' : '#e4e5e9'}
-                                                    onMouseEnter={() => setHoverRating(star)}
-                                                    onMouseLeave={() => setHoverRating(0)}
-                                                    onClick={() => setRating(star)}
-                                                    style={{ cursor: 'pointer' }}
-                                                />
-                                            ))}
+                                            <Button
+                                                variant="link"
+                                                onClick={handleEditReview}
+                                                className="text-primary"
+                                            >
+                                                <FaEdit /> Edit
+                                            </Button>
+                                            <Button
+                                                variant="link"
+                                                onClick={() => handleDeleteReview(review.reviewId)}
+                                                className="text-danger ms-2"
+                                            >
+                                                <FaTrashAlt /> Delete
+                                            </Button>
                                         </div>
-                                    </Form.Group>
-                    
-                                    <Form.Group controlId="reviewText" className="mb-3">
-                                        <Form.Label>Review:</Form.Label>
-                                        <Form.Control
-                                            as="textarea"
-                                            rows={3}
-                                            value={reviewText}
-                                            onChange={(e) => setReviewText(e.target.value)}
-                                            placeholder="Edit your review here..."
-                                            required
-                                        />
-                                    </Form.Group>
-                    
-                                    <div className="d-flex justify-content-end">
-                                        <Button type="submit" variant="primary" className="me-2">
-                                            Update Review
-                                        </Button>
-                                        <Button variant="secondary" onClick={() => setIsEditing(false)}>
-                                            Cancel
-                                        </Button>
-                                    </div>
-                                </Form>
-                            )}
-                        </Card.Body>
-                    </Card>
-                    
+                                    )}
+                                </div>
+
+                                {!isEditing ? (
+                                    <p>{review.reviewText}</p>
+                                ) : (
+                                    // Review edit form embedded inside the card
+                                    <Form onSubmit={handleUpdateReview} className="mt-3 p-3 border rounded bg-light">
+                                        <Form.Group controlId="rating" className="mb-3">
+                                            <Form.Label>Rating (out of 5):</Form.Label>
+                                            <div>
+                                                {[1, 2, 3, 4, 5].map((star) => (
+                                                    <FaStar
+                                                        key={star}
+                                                        size={24}
+                                                        color={star <= (hoverRating || rating) ? '#ffc107' : '#e4e5e9'}
+                                                        onMouseEnter={() => setHoverRating(star)}
+                                                        onMouseLeave={() => setHoverRating(0)}
+                                                        onClick={() => setRating(star)}
+                                                        style={{ cursor: 'pointer' }}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </Form.Group>
+
+                                        <Form.Group controlId="reviewText" className="mb-3">
+                                            <Form.Label>Review:</Form.Label>
+                                            <Form.Control
+                                                as="textarea"
+                                                rows={3}
+                                                value={reviewText}
+                                                onChange={(e) => setReviewText(e.target.value)}
+                                                placeholder="Edit your review here..."
+                                                required
+                                            />
+                                        </Form.Group>
+
+                                        <div className="d-flex justify-content-end">
+                                            <Button type="submit" variant="primary" className="me-2">
+                                                Update Review
+                                            </Button>
+                                            <Button variant="secondary" onClick={() => setIsEditing(false)}>
+                                                Cancel
+                                            </Button>
+                                        </div>
+                                    </Form>
+                                )}
+                            </Card.Body>
+                        </Card>
+
                     ))}
 
                     {/* Review form for new reviews or when editing */}
-                    {!userReview && !isEditing && user?.role !== 'ADMIN' && (
+                    {user && !userReview && !isEditing && user?.role !== 'ADMIN' && (
                         <Form onSubmit={handleReviewSubmit}>
                             <Form.Group controlId="rating" className="mb-3">
                                 <Form.Label>Rating (out of 5):</Form.Label>

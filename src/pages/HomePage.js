@@ -1,30 +1,17 @@
-/* eslint-disable */
 // src/pages/HomePage.js
-import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase.utils';
-import { useNavigate } from 'react-router-dom';
-import WelcomeSection from '../component/WelcomeSection';
-import CategoryBar from '../pages/CategoryBar';
-import ImageSection from './ImageSection';
-import collection1 from '../assets/collection1.jpg';
-import collection2 from '../assets/collection2.jpg';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import React, { useEffect, useState } from 'react';
+import { Carousel } from 'react-bootstrap';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import '../styles/HomePage.css';
-import '@fortawesome/fontawesome-free/css/all.min.css'; // Importa Font Awesome
+import 'bootstrap/dist/css/bootstrap.min.css';
+import WelcomeSection from './../component/WelcomeSection';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
-    const [user, setUser] = useState(null);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [products, setProducts] = useState([]); // Estado para almacenar los productos de la API
-    const [isScrolling, setIsScrolling] = useState(false);
-    const categoryBarRef = useRef(null);
-    const navbarRef = useRef(null);
-    
-    const sections = ['welcome', 'category-bar'];
-    const scrollTimeout = 700;
+    const [products, setProducts] = useState([]);
+    const navigate = useNavigate();
 
-    // Placeholder images for the carousel (replace with API data later)
+    // Fetch products from API
     useEffect(() => {
         fetch('http://localhost:8080/api/products/homepage')
             .then(response => {
@@ -37,97 +24,46 @@ const HomePage = () => {
             .catch(error => console.error('Error fetching products:', error));
     }, []);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            localStorage.setItem('user', JSON.stringify(currentUser))
-            setUser(currentUser);
-        });
-
-        return () => {
-            unsubscribe();
-        };
-    }, []);
-
-    const isAuthenticated = Boolean(user);
-
-    const handleScroll = useCallback((event) => {
-        if (isScrolling) return;
-
-        if (event.deltaY > 0 && currentIndex < sections.length - 1) {
-            setCurrentIndex((prevIndex) => prevIndex + 1);
-            setIsScrolling(true);
-        } else if (event.deltaY < 0 && currentIndex > 0) {
-            setCurrentIndex((prevIndex) => prevIndex - 1);
-            setIsScrolling(true);
-        }
-
-        setTimeout(() => {
-            setIsScrolling(false);
-        }, scrollTimeout);
-    }, [currentIndex, isScrolling]);
-
-    useEffect(() => {
-        window.addEventListener('wheel', handleScroll);
-        return () => {
-            window.removeEventListener('wheel', handleScroll);
-        };
-    }, [handleScroll]);
-
-    useEffect(() => {
-        if (currentIndex === 1 && categoryBarRef.current) {
-            const categoryBarPosition = categoryBarRef.current.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({
-                top: categoryBarPosition,
-                behavior: 'smooth',
-            });
-        }
-    }, [currentIndex]);
-
-    // Carousel functionality
-    const handleNext = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
-    };
-    
-    const handlePrev = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + products.length) % products.length);
+    // Truncate description to 30 words
+    const truncateDescription = (description, wordLimit = 30) => {
+        const words = description.split(' ');
+        return words.length > wordLimit
+            ? `${words.slice(0, wordLimit).join(' ')}...`
+            : description;
     };
 
     return (
         <div>
             <WelcomeSection id="welcome" />
-            <CategoryBar ref={categoryBarRef} />
-            <div className="content">
-                {/* Carrusel */}
-                {products.length > 0 ? (
-                    <div className="carousel">
-                        <button className="carousel-btn prev" onClick={handlePrev}>
-                            <i className="fas fa-chevron-left"></i>
-                        </button>
-                        <div className="carousel-images">
-                            {products[currentIndex]?.pictureBase64 && (
-                                <img
-                                    src={products[currentIndex].pictureBase64}
-                                    alt={products[currentIndex]?.name || 'Product'}
-                                />
-                            )}
-                            {products[(currentIndex + 1) % products.length]?.pictureBase64 && (
-                                <img
-                                    src={products[(currentIndex + 1) % products.length].pictureBase64}
-                                    alt={products[(currentIndex + 1) % products.length]?.name || 'Product'}
-                                />
-                            )}
-                        </div>
+            <div className="carousel-container">
+                {/* Featured Products Heading */}
+                <h2 className="featured-products-heading">Featured Products</h2>
 
-                        <button className="carousel-btn next" onClick={handleNext}>
-                            <i className="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
+                {products.length > 0 ? (
+                    <Carousel
+                        nextIcon={<FaChevronRight className="carousel-icon" />}
+                        prevIcon={<FaChevronLeft className="carousel-icon" />}
+                        indicators={false}
+                    >
+                        {products.map((product, index) => (
+                            <Carousel.Item
+                                key={product.productId}
+                                interval={index === 0 ? 10000 : 2000} // First slide has a longer interval
+                            >
+                                <img
+                                    src={product.pictureBase64}
+                                    className="d-block w-100"
+                                    alt={product.name}
+                                />
+                                <div className="carousel-caption d-none d-md-block">
+                                    <h5 className='cursor-pointer capitalize' onClick={() => navigate(`/product-detail/${product.productId}`, { state: { product } })}>{truncateDescription(product.name, 2)}</h5>
+                                    <p>{truncateDescription(product.description)}</p>
+                                </div>
+                            </Carousel.Item>
+                        ))}
+                    </Carousel>
                 ) : (
-                    <p>Loading Products ....</p>
+                    <p className="loading-text">Loading Products...</p>
                 )}
             </div>
         </div>

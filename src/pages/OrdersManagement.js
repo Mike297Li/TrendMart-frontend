@@ -22,7 +22,6 @@ const OrdersManagement = ({resetView}) => {
     const userId = user?.role === 'ADMIN' ? user?.userId : user?.uid;  // Check for role and get correct user ID
 
     useEffect(() => {
-        debugger
         if (userId) {
             fetchOrders();
         }

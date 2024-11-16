@@ -3,7 +3,7 @@ import { Navbar, Nav, Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase.utils';
-import { FaPlus, FaSignOutAlt } from 'react-icons/fa'; // Importing icons from react-icons
+import { FaPlus, FaSignOutAlt, FaDashcube } from 'react-icons/fa'; // Importing icons from react-icons
 
 const AdminNavBar = ({ resetView }) => {
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ const AdminNavBar = ({ resetView }) => {
         const user = JSON.parse(localStorage.getItem('user'));
     
         // If user exists and has a role of 'ADMIN'
-        if (user && user.role === 'ADMIN') {
+        if (user && user?.role === 'ADMIN') {
             console.log('User is an ADMIN');
         } else {
             navigate('/admin')
@@ -57,9 +57,16 @@ const AdminNavBar = ({ resetView }) => {
                     <Button 
                         variant="outline-light" 
                         onClick={handleLogout} 
-                        className="d-flex align-items-center" 
+                        className="me-3 d-flex align-items-center" 
                     >
                         <FaSignOutAlt className="me-2" /> Logout
+                    </Button>
+                    <Button 
+                        variant="outline-light" 
+                        onClick={()=> navigate('/')} 
+                        className="d-flex align-items-center" 
+                    >
+                        <FaDashcube className="me-2" /> Goto HomePage
                     </Button>
                 </Nav>
             </Container>

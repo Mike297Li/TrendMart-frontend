@@ -7,8 +7,9 @@ import DatePicker from 'react-datepicker'; // Import DatePicker
 import 'react-datepicker/dist/react-datepicker.css';
 import OrderDetails from './OrderDetails'; // Import the OrderDetails component
 import Select from 'react-select'; // Import react-select
+import { useNavigate } from 'react-router-dom';
 
-const OrderListing = () => {
+const OrderListing = ({user}) => {
     const [orders, setOrders] = useState([]);
     const [totalOrders, setTotalOrders] = useState(0);
     const [page, setPage] = useState(1);
@@ -18,7 +19,22 @@ const OrderListing = () => {
     const [selectedOrderStatus, setSelectedOrderStatus] = useState([]); // Add order status state
     const pageSize = 10;
 
-    const user = JSON.parse(localStorage.getItem('user'));
+    const navigate = useNavigate()
+
+    // const user = JSON.parse(localStorage.getItem('user'));
+    
+    // useEffect(() => {
+    //     if (!user) {
+    //         navigate('/'); // Redirect to the home page if no user is logged in
+    //     }
+    // }, [user, navigate]);
+
+    useEffect(()=>{
+        if(JSON.parse(localStorage.getItem('user'))?.role === 'ADMIN'){
+            navigate('/')
+        }
+    })
+    
     const userId = user?.uid;
 
     useEffect(() => {

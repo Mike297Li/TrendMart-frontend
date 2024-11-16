@@ -8,6 +8,7 @@ import {
     GoogleAuthProvider,
     createUserWithEmailAndPassword // Importa la función correctamente
 } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore"; // Import Firestore functions
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -31,6 +32,10 @@ provider.setCustomParameters({
     prompt: "select_account",
 });
 
+// Initialize Firestore
+const db = getFirestore(app);
+
+// Export the auth and db for use in other parts of the app
 export const auth = getAuth(app);
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
@@ -42,6 +47,19 @@ export const signInWithEmailPassword = (email, password) => {
 // Helper function for creating a new user with email and password
 export const createUserWithEmailPassword = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
+};
+
+// Firestore function to save user profile information
+export const saveUserProfile = async (user) => {
+    try {
+        const userDocRef = doc(db, "users", user?.uid);
+        await setDoc(userDocRef, {
+            displayName: user?.displayName,
+            email: user?.email,
+        });
+    } catch (error) {
+        console.error("Error saving user profile:", error);
+    }
 };
 
 // Export the password reset function

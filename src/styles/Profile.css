@@ -1,0 +1,32 @@
+/* Customize the Card for better visual appeal */
+.card {
+    border-radius: 20px;
+    background-color: #f8f9fa;
+}
+
+/* Update button styles */
+button {
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 16px;
+}
+
+/* Form input field styles */
+.form-control {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Heading customization */
+.card-title {
+    font-weight: 700;
+}
+
+/* Icon size and spacing */
+.card-text .me-2 {
+    margin-right: 8px;
+}
+
+.profile-container{
+    margin: 75px;
+}

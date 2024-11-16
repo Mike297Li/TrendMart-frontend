@@ -1,107 +1,87 @@
 /* src/styles/HomePage.css */
-.content {
+
+/* Featured Products Heading above carousel, but not rotating with the products */
+.featured-products-heading {
+    text-align: center;
+    font-size: 2rem;
+    color: black; /* White text to stand out on the carousel background */
+    font-weight: bold;
+    margin-bottom: 20px; /* Space below the heading */
+    z-index: 10; /* Ensure it stays on top of the carousel images */
+    position: relative; /* Positioned normally within the flow of the page */
+}
+
+.carousel-container {
+    position: relative; /* Make the container position relative */
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    
-    
-}
-    
-.image-row {
-    display: flex;
-    justify-content: center; /* Centra las imágenes dentro de la fila */
-    gap: 0px; /* Espacio entre las dos imágenes */
-    width: 100%;
-    max-width: 2000px; /* Limita el ancho máximo de la fila */
+    padding-top: 60px; /* Add space at the top for the heading */
 }
 
-.image-row .image-section {
-    flex: 1; /* Hace que las imágenes ocupen el mismo espacio */
-    max-width: 800px; /* Limita el ancho máximo de cada imagen */
-}
-
-.image-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px 0; /* Espacio entre cada sección */
-    width: 100%;
-}
-
-.image {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 10px; /* Bordes redondeados, opcional */
-}
-
-/* Styles for debugging */
-.navbar .searchForm {
-    z-index: 1000; /* Ensure it's above other elements */
-}
-.searchButton {
-    z-index: 1000;
-    position: relative;
-}
-
-.carousel {
-    position: relative;
+.carousel-item {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 95%;
-    height: 78vh;
-    overflow: hidden;
-    margin-top: 20px;
-    background-color: #f0f0f0;
+    position: relative; /* To allow absolute positioning of the caption */
 }
 
-.carousel-images {
-    display: flex;
+.carousel-image {
     width: 100%;
-    height: 100%;
-    gap: 4px; /* Espacio entre las imágenes si quieres un pequeño espacio */
+    height: 400px; /* Adjusted height for bigger images */
+    object-fit: contain;
+    border-radius: 10px;
 }
 
-.carousel-images img {
-    width: calc(80% - 4px); /* Cada imagen ocupa el 50% del contenedor menos el espacio del padding */
-    height: 100%; /* La imagen se adapta completamente a la altura del contenedor */
-    object-fit:fill;
-    padding: 2px;
-    background-color: #fff;
-    border-radius: 4px;
-}
-
-.carousel-btn {
+/* Targeting the carousel caption specifically */
+.carousel-caption {
+    text-align: center;
+    padding: 25px 40px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border-radius: 10px;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #ded696;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 24px;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    width: 60%;
+    max-width: 40%;
+    max-height: 25%;
+    right: 10% !important;
+    bottom: 1% !important;
+    left: 50% !important;
 }
 
-.carousel-btn:hover {
-    transform: translateY(-50%) scale(1.1);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+/* Specific styling for product name (h5) and description (p) inside the caption */
+.carousel-caption h5 {
+    font-size: 2.2rem; /* Larger font size for product name */
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff; /* White for readability */
 }
 
-.prev {
-    left: 15px;
+.carousel-caption p {
+    font-size: 1.2rem; /* Larger font size for product description */
+    margin-top: 10px;
+    line-height: 1.4;
+    color: #e0e0e0; /* Slightly lighter text color */
 }
 
-.next {
-    right: 15px;
+.carousel-icon {
+    color: #fff;
+    font-size: 2rem;
+}
+
+.carousel-icon:hover {
+    color: #007bff;
+}
+
+.loading-text {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 50px;
+    color: #777;
+}
+
+.carousel-inner{
+    max-height: 90vh !important;
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { auth } from '../firebase.utils';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useNavigate, Link  } from 'react-router-dom';  // v6 method
 
 const Register = () => {
@@ -9,6 +9,8 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [error, setError] = useState('');
+    const [firstName, setFirstName] = useState(''); // New state for first name
+    const [lastName, setLastName] = useState(''); // New state for last name
 
     const navigate = useNavigate();  // v6 hook
 
@@ -38,9 +40,16 @@ const Register = () => {
 
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            console.log('User Registered: ', userCredential.user);
+            const user = userCredential.user;
 
-            navigate('/login');  // Use navigate instead of history.push
+            // Update user's profile with their name
+            await updateProfile(user, {
+                displayName: `${firstName} ${lastName}`, // Set user's display name
+            });
+
+            console.log('User Registered: ', user);
+
+            navigate('/login'); // Use navigate instead of history.push
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
                 setError('This email is already registered.');
@@ -62,10 +71,32 @@ const Register = () => {
             {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleRegister}>
                 <label>
+                    First Name:
+                    <input
+                        type="text"
+                        placeholder="First Name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required
+                    />
+                </label>
+                <br />
+                <label>
+                    Last Name:
+                    <input
+                        type="text"
+                        placeholder="Last Name"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        required
+                    />
+                </label>
+                <br />
+                <label>
                     Email:
                     <input
                         type="email"
-                    placeholder="Email"
+                        placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -76,7 +107,7 @@ const Register = () => {
                     Password:
                     <input
                         type="password"
-                    placeholder="Password"
+                        placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
