@@ -2,31 +2,30 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Pagination, Row, Col, Badge, Form } from 'react-bootstrap';
 import axios from 'axios';
-import { FaDollarSign, FaShippingFast, FaCheckCircle, FaTimesCircle, FaArrowLeft } from 'react-icons/fa';
+import { FaDollarSign, FaShippingFast, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import DatePicker from 'react-datepicker'; // Import DatePicker
 import 'react-datepicker/dist/react-datepicker.css';
 import OrderDetails from './OrderDetails'; // Import the OrderDetails component
 import Select from 'react-select'; // Import react-select
 
-const OrdersManagement = ({resetView}) => {
+const OrderListing = () => {
     const [orders, setOrders] = useState([]);
     const [totalOrders, setTotalOrders] = useState(0);
     const [page, setPage] = useState(1);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
     const [startDate, setStartDate] = useState(null);  // Add startDate state
     const [endDate, setEndDate] = useState(null);      // Add endDate state
-    const [selectedOrderStatus, setSelectedOrderStatus] = useState([]);
+    const [selectedOrderStatus, setSelectedOrderStatus] = useState([]); // Add order status state
     const pageSize = 10;
 
     const user = JSON.parse(localStorage.getItem('user'));
-    const userId = user?.role === 'ADMIN' ? user?.userId : user?.uid;  // Check for role and get correct user ID
+    const userId = user?.uid;
 
     useEffect(() => {
-        debugger
         if (userId) {
             fetchOrders();
         }
-    }, [page, startDate, endDate, selectedOrderStatus, userId]);
+    }, [page, startDate, endDate, selectedOrderStatus, userId]); // Add selectedOrderStatus to dependency array
 
     const fetchOrders = async () => {
         try {
@@ -37,7 +36,7 @@ const OrdersManagement = ({resetView}) => {
                     userId,
                     page,
                     size: pageSize,
-                    status: selectedOrderStatus.map(option => option.value).join(',') // Join selected order statuses into a comma-separated string
+                    status: selectedOrderStatus.map(option => option.value).join(','), // Add status filter to API request
                 },
             });
             setOrders(response.data.orders);
@@ -76,18 +75,9 @@ const OrdersManagement = ({resetView}) => {
         <div className='product-detail-container container' style={{ margin: '100px auto' }}>
             {!selectedOrderId ? (
                 <>
-
                     <Row className="justify-content-between align-items-center mb-3">
-                        <Col className='text-center'>
-                            <h1>Orders Management Dashboard</h1>
-                        </Col>
-                        <Col className="text-end">
-                            <Button variant="secondary" onClick={resetView}>
-                                <FaArrowLeft /> Back to Dashboard
-                            </Button>
-                        </Col>
+                        <Col className='text-center'><h1>My Orders</h1></Col>
                     </Row>
-
                     {/* Filters Row */}
                     <Row className="mb-4">
                         <Col md={4} className="mb-3 mb-md-0">
@@ -123,9 +113,6 @@ const OrdersManagement = ({resetView}) => {
                                 placeholder="Select Order Status"
                             />
                         </Col>
-                        {/* <Col md={3} className="align-self-end">
-                            <Button variant="primary" onClick={() => setPage(1)} className="w-100">Filter</Button>
-                        </Col> */}
                     </Row>
 
                     <Table striped bordered hover responsive style={{ textAlign: 'center' }}>
@@ -156,7 +143,7 @@ const OrdersManagement = ({resetView}) => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="5" className="text-center">No orders found</td>
+                                    <td colSpan="6" className="text-center">No orders found</td>
                                 </tr>
                             )}
                         </tbody>
@@ -181,4 +168,4 @@ const OrdersManagement = ({resetView}) => {
     );
 };
 
-export default OrdersManagement;
+export default OrderListing;

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState } from 'react';
 import '../styles/AboutUs.css';
 import { Link } from 'react-router-dom';
