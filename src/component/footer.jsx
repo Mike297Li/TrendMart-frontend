@@ -30,7 +30,7 @@ const Footer = () => {
                 <div className="footer-section">
                     <h3>About Us</h3>
                     <ul>
-                        <li><Link to="/payment">Our Story</Link></li> {/* Updated to use Link */}
+                        <li>Our Story</li> {/* Updated to use Link */}
                         <li><a href="#">Sustainability</a></li>
                         <li><a href="#">Our Stores</a></li>
                     </ul>
