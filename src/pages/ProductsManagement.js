@@ -40,7 +40,7 @@ const ProductsManagement = ({resetView}) => {
     };
 
     const handleEdit = (product) => {
-        navigate(`/edit-product/${product.productId}`, { state: { product } });
+        navigate(`/admin/edit-product/${product.productId}`, { state: { product } });
     };
 
     const handleDelete = async (productId) => {
@@ -157,7 +157,7 @@ const ProductsManagement = ({resetView}) => {
                         getPaginatedProducts().map((product) => (
                             <tr key={product.productId}>
                                 <td className='cursor-pointer' onClick={() => navigate(`/product-detail/${product.productId}`, { state: { product } })}>{product.name}</td>
-                                <td>{product.description}</td>
+                                <td>{product.description.substr(0, 50)}...</td>
                                 <td><FaDollarSign /> {product.price.toFixed(2)}</td>
                                 <td>{product.features}</td>
                                 <td>

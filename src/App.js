@@ -54,7 +54,7 @@ const App = () => {
     }, []);
 
     // Show Navbar only on certain routes
-    const showNavbar = !['/login', '/register', '/reset-password', '/admin', '/adminPortal', '/admin/create-product', '/edit-product/:productId'].includes(location.pathname);
+    const showNavbar = !['/login', '/register', '/reset-password', '/admin', '/adminPortal', '/admin/create-product', '/admin/edit-product/:productId'].includes(location.pathname);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -72,12 +72,13 @@ const App = () => {
 
     // Check if the path starts with '/admin' to conditionally hide the footer
     const showFooter = !location.pathname.startsWith('/admin');
+    const showNavbarAdmin = !location.pathname.startsWith('/admin');
 
     return (
         <CartProvider>
             <div>
-            {/* Pasar el estado de usuario autenticado al Navbar */}
-                {showNavbar && <Navbar isAuthenticated={isAuthenticated} user={user} />}
+                {/* Pasar el estado de usuario autenticado al Navbar */}
+                {showNavbar && showNavbarAdmin && <Navbar isAuthenticated={isAuthenticated} user={user} />}
                 <Routes>
 
                     <Route path="/login" element={<Login />} />
@@ -89,36 +90,28 @@ const App = () => {
                     <Route path="/adminPortal" element={<AdminProductManagement />} />
                     <Route path="/admin/create-product" element={<ProductPage />} />
                     <Route path="/search-results" element={<SearchResults />} />
-                    <Route path="/edit-product/:productId" element={<ProductPage />} />
+                    <Route path="/admin/edit-product/:productId" element={<ProductPage />} />
                     <Route path="/find_products" element={<FindProducts />} />
                     <Route path="/search" element={<ProductSearchPage />} />
-                    <Route path="/Homepage" element={<HomePage />} />
                     <Route path="/about" element={<AboutPage />} /> {/* Añade esta línea */}
                     <Route path="/claim-form" element={<ClaimForm />} />
                     <Route path="/contact" element={<ContactUs />} />
                     <Route path="/checkout" element={<Checkout />} />
-                    {user && (
-                        <>
-                        <Route path="/user-profile" element={<UserProfile user={user} />} />
-                        <Route path="/user/orders" element={<OrderListing />} />
-                        </>
-                    )}
-                    
-
-
-                <Route path="/search-results" element={<SearchResults />} />
+                    <Route path="/user-profile" element={<UserProfile user={user} />} />
+                    <Route path="/user/orders" element={<OrderListing user={user} />} />
+                    <Route path="/search-results" element={<SearchResults />} />
                     <Route path="/product-detail/:productId" element={<ProductDetail />} />
                     <Route path="/cart" element={<Cart />} />
-                <Route path="/success" element={<Success />}/>
+                    <Route path="/success" element={<Success />} />
                     <Route path="/" element={<HomePage />} />
-                <Route
-                    path="/payment"
-                    element={
-                        <Elements stripe={stripePromise}>
-                            <Payment />
-                        </Elements>
-                    }
-                />
+                    <Route
+                        path="/payment"
+                        element={
+                            <Elements stripe={stripePromise}>
+                                <Payment />
+                            </Elements>
+                        }
+                    />
                 </Routes>
                 {showFooter && <Footer />}
             </div>

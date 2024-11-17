@@ -19,7 +19,7 @@ const Navbar = ({ isAuthenticated, user }) => {
         signOut(auth)
             .then(() => {
                 localStorage.clear();
-                navigate('/homePage');
+                navigate('/');
             })
             .catch((error) => {
                 console.error('Error while logging out:', error);
@@ -93,17 +93,28 @@ const Navbar = ({ isAuthenticated, user }) => {
                 </li>
             </ul>
             <ul className="navbar-links">
-                {isAuthenticated ? (
+                {isAuthenticated || JSON.parse(localStorage.getItem('user'))?.role === 'ADMIN' ? (
                     <>
                         <li className="navbar-item dropdown">
                             <span className="navbar-link username">Hi! {user?.displayName || 'ACCOUNT'}</span>
                             <ul className="dropdown-menu dropdown-menu-custom">
-                                <li>
-                                    <Link to="/user-profile" className="dropdown-link">Profile</Link>
-                                </li>
-                                <li>
-                                    <Link to="/user/orders" className="dropdown-link">My Orders</Link>
-                                </li>
+                                {JSON.parse(localStorage.getItem('user'))?.role !== 'ADMIN' && (
+                                    <>
+                                        <li>
+                                            <Link to="/user-profile" className="dropdown-link">Profile</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/user/orders" className="dropdown-link">My Orders</Link>
+                                        </li>
+                                    </>
+                                )}
+                                {JSON.parse(localStorage.getItem('user'))?.role === 'ADMIN' && (
+                                    <>
+                                        <li>
+                                            <Link to="/adminPortal" className="dropdown-link">Dashboard</Link>
+                                        </li>
+                                    </>
+                                )}
                                 <li>
                                     <span onClick={handleLogout} className="dropdown-link cursor-pointer">Logout</span>
                                 </li>
@@ -114,25 +125,27 @@ const Navbar = ({ isAuthenticated, user }) => {
                                 <i className="fas fa-search" style={{ marginLeft: '8px' }}></i>
                             </span>
                         </li>
-                        <li className="navbar-item navbar-find-products cursor-pointer">
-                            <div style={{ position: 'relative' }} onClick={handleCartClick}>
-                                <FaShoppingCart className="fa-2x cart-icon" aria-hidden="true" />
-                                {cartItemCount > 0 && (
-                                    <Badge 
-                                        pill 
-                                        bg="danger" 
-                                        style={{
-                                            position: 'absolute',
-                                            top: '-5px',
-                                            right: '-10px',
-                                            fontSize: '12px',
-                                        }}
-                                    >
-                                        {cartItemCount}
-                                    </Badge>
-                                )}
-                            </div>
-                        </li>
+                        {JSON.parse(localStorage.getItem('user'))?.role !== 'ADMIN' && (
+                            <li className="navbar-item navbar-find-products cursor-pointer">
+                                <div style={{ position: 'relative' }} onClick={handleCartClick}>
+                                    <FaShoppingCart className="fa-2x cart-icon" aria-hidden="true" />
+                                    {cartItemCount > 0 && (
+                                        <Badge 
+                                            pill 
+                                            bg="danger" 
+                                            style={{
+                                                position: 'absolute',
+                                                top: '-5px',
+                                                right: '-10px',
+                                                fontSize: '12px',
+                                            }}
+                                        >
+                                            {cartItemCount}
+                                        </Badge>
+                                    )}
+                                </div>
+                            </li>
+                        )}
                     </>
                 ) : (
                     !isLoginModalOpen && (

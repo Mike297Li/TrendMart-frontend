@@ -67,6 +67,14 @@ const SearchResults = () => {
 
     const totalPages = Math.ceil(totalResults / resultsPerPage);
 
+    // Truncate description to 30 words
+    const truncateDescription = (description, wordLimit = 30) => {
+        const words = description.split(' ');
+        return words.length > wordLimit
+            ? `${words.slice(0, wordLimit).join(' ')}...`
+            : description;
+    };
+
     return (
         <Container className="search-results-container">
             <h1 className="text-center mb-4">Search Products</h1>
@@ -143,7 +151,7 @@ const SearchResults = () => {
                                 </Col>
                                 <Col xs={8} md={9}>
                                     <h4>{product.name}</h4>
-                                    <p>{product.description}</p>
+                                    <p>{truncateDescription(product.description)}</p>
                                     <p>Rating: {product.averageRating} | Price: ${product.price}</p>
                                 </Col>
                             </Row>
