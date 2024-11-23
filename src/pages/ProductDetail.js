@@ -21,6 +21,7 @@ const ProductDetail = () => {
     const [userReview, setUserReview] = useState(null); // To store user's review if they already submitted one
     const [isEditing, setIsEditing] = useState(false); // Track if the user is editing the review
     const user = JSON.parse(localStorage.getItem('user'));
+    const [editingReviewId, setEditingReviewId] = useState(null);
 
     // Fetch product details
     const fetchProductDetails = async () => {
@@ -114,10 +115,16 @@ const ProductDetail = () => {
     };
 
     // Handle editing a review
-    const handleEditReview = () => {
-        setReviewText(userReview.reviewText);
-        setRating(userReview.rating);
-        setIsEditing(true); // Enable editing mode
+    const handleEditReview = (review) => {
+        setReviewText(review.reviewText);
+        setRating(review.rating);
+        setEditingReviewId(review.reviewId); // Set the ID of the review being edited
+    };
+
+    const handleCancelEdit = () => {
+        setEditingReviewId(null); // Reset editing state
+        setReviewText(""); // Clear review text
+        setRating(0); // Reset rating
     };
 
     // Handle updating an existing review
@@ -146,6 +153,7 @@ const ProductDetail = () => {
                 setReviewMessage('Review updated successfully!');
                 setReviewError('');
                 setIsEditing(false); // Exit editing mode
+                setEditingReviewId(null);
                 fetchReviews(); // Re-fetch reviews after updating
             } else {
                 const errorData = await response.json();
@@ -257,11 +265,11 @@ const ProductDetail = () => {
                                         <b className="d-inline ms-2">- {review.userName}</b>
                                     </div>
 
-                                    {userReview?.reviewId === review.reviewId && !isEditing && (
+                                    {userReview?.reviewId === review.reviewId && editingReviewId !== review.reviewId && (
                                         <div>
                                             <Button
                                                 variant="link"
-                                                onClick={handleEditReview}
+                                                onClick={() => handleEditReview(review)}
                                                 className="text-primary"
                                             >
                                                 <FaEdit /> Edit
@@ -277,10 +285,9 @@ const ProductDetail = () => {
                                     )}
                                 </div>
 
-                                {!isEditing ? (
-                                    <p>{review.reviewText}</p>
-                                ) : (
-                                    // Review edit form embedded inside the card
+                                {/* Show review text or edit form based on the editing state */}
+                                {editingReviewId === review.reviewId ? (
+                                    // Show the edit form only for the review being edited
                                     <Form onSubmit={handleUpdateReview} className="mt-3 p-3 border rounded bg-light">
                                         <Form.Group controlId="rating" className="mb-3">
                                             <Form.Label>Rating (out of 5):</Form.Label>
@@ -315,15 +322,17 @@ const ProductDetail = () => {
                                             <Button type="submit" variant="primary" className="me-2">
                                                 Update Review
                                             </Button>
-                                            <Button variant="secondary" onClick={() => setIsEditing(false)}>
+                                            <Button variant="secondary" onClick={handleCancelEdit}>
                                                 Cancel
                                             </Button>
                                         </div>
                                     </Form>
+                                ) : (
+                                    // Show the review text if not in editing mode
+                                    <p>{review.reviewText}</p>
                                 )}
                             </Card.Body>
                         </Card>
-
                     ))}
 
                     {/* Review form for new reviews or when editing */}
