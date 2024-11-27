@@ -3,7 +3,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Row, Col, Form, Button, Card } from 'react-bootstrap'; // Importing Bootstrap components
 import { FaMapMarkerAlt, FaTruck, FaCreditCard } from 'react-icons/fa'; // Using React Icons
 import { getAuth } from "firebase/auth";
+import { toast } from 'react-toastify'; // Importing React Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 import '../styles/Checkout.css';
+
 
 const Checkout = () => {
     const { state } = useLocation(); // Retrieve cartItems passed from Cart page
@@ -20,7 +23,22 @@ const Checkout = () => {
         }
     })
 
+    const validateFields = () => {
+        const missingFields = [];
+        if (!street.trim()) missingFields.push('Street Address');
+        if (!city.trim()) missingFields.push('City');
+        if (!postalCode.trim()) missingFields.push('Postal Code');
+        if (!country.trim()) missingFields.push('Country');
+
+        if (missingFields.length > 0) {
+            toast.error(`Please fill in the following fields: ${missingFields.join(', ')}`);
+            return false;
+        }
+        return true;
+    };
+
     const handlePlaceOrder = async () => {
+        if (!validateFields()) return; // Stop if validation fails
         // Combine address into a single string
         const address = `${street}, ${city}, ${postalCode}, ${country}`;
 
@@ -28,7 +46,7 @@ const Checkout = () => {
         const auth = getAuth();
         const user = auth.currentUser;
         if (!user) {
-            alert('You must be logged in to place an order');
+            toast.error('You must be logged in to place an order');
             return;
         }
         // Calculate the total amount for the order
@@ -61,11 +79,11 @@ const Checkout = () => {
                 navigate('/payment', { state: { totalAmount, orderId } });
             } else {
                 const errorData = await response.json();
-                alert(`Error: ${errorData.message || 'Something went wrong'}`);
+                toast.error(`Error: ${errorData.message || 'Something went wrong'}`);
             }
         } catch (error) {
             console.error('Error placing order:', error);
-            alert('Failed to place the order. Please try again later.');
+            toast.error('Failed to place the order. Please try again later.');
         }
     };
 

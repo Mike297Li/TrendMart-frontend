@@ -18,9 +18,8 @@ import Footer from './component/footer';
 import ContactUs from './component/ContactUs';
 import ClaimForm from './component/ClaimForm';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-
-
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 import ProductDetail from "./pages/ProductDetail";
 import { auth } from './firebase.utils';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -77,6 +76,17 @@ const App = () => {
     return (
         <CartProvider>
             <div>
+            <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
                 {/* Pasar el estado de usuario autenticado al Navbar */}
                 {showNavbar && showNavbarAdmin && <Navbar isAuthenticated={isAuthenticated} user={user} />}
                 <Routes>

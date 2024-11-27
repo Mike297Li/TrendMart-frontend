@@ -5,6 +5,8 @@ import { Container, Row, Col, Card, Button, Form, Alert } from 'react-bootstrap'
 import { FaStar, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { useCart } from '../context/CartContext'; // Import CartContext hook
 import '../styles/ProductDetail.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProductDetail = () => {
     const { productId } = useParams();
@@ -60,7 +62,12 @@ const ProductDetail = () => {
             console.error('Product does not have a valid ID');
             return;
         }
-
+    
+        if (quantity > product.quantity) {
+            toast.warn(`Only ${product.quantity} units of ${product.name} are available.`);
+            return;
+        }
+    
         const itemToAdd = {
             id: product.productId,
             name: product.name,
@@ -68,9 +75,10 @@ const ProductDetail = () => {
             pictureBase64: product.pictureBase64,
             quantity: parseInt(quantity),
         };
-
+    
         addToCart(itemToAdd);
-
+        toast.success(`${quantity} unit(s) of ${product.name} added to your cart!`);
+    
         console.log(`Added ${quantity} of ${product.name} to cart.`);
     };
 
@@ -216,6 +224,7 @@ const ProductDetail = () => {
                             <Card.Text>{product.description}</Card.Text>
                             <Card.Text><strong>Price:</strong> ${product.price}</Card.Text>
                             <Card.Text><strong>Rating:</strong> {product.averageRating}</Card.Text>
+                            <Card.Text><strong>Available Stock:</strong> {product.quantity}</Card.Text>
 
                             {user && JSON.parse(localStorage.getItem('user'))?.role !== 'ADMIN' && (
                                 <>

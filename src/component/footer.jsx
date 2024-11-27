@@ -17,7 +17,7 @@ const Footer = () => {
                 <a href="#" className="social-icon"><FaPinterest /></a>
             </div>
             <div className="footer-content">
-                <div className="footer-section subscribe-section">
+                {/* <div className="footer-section subscribe-section">
                     <h3>Stay Updated</h3>
                     <div className="subscribe-input">
                         <input type="email" placeholder="Email" />
@@ -26,7 +26,7 @@ const Footer = () => {
                     <p>
                         I authorize the processing of my personal data in accordance with the privacy policy available by clicking <a href="#">here</a>
                     </p>
-                </div>
+                </div> */}
                 <div className="footer-section">
                     <h3>About Us</h3>
                     <ul>

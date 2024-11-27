@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import '../styles/ContactUs.css'; // Ensure this path is correct
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,11 +25,11 @@ const ContactUs = () => {
                     <p>Customer Service Vélez</p>
                 </div>
             </div>
-            <div className="contact-section">
+            {/* <div className="contact-section">
                 <h2>FORM FOR PQR</h2>
                 <p>For any petitions, complaints, and claims, you can access the following form:</p>
                 <button className="contact-button" onClick={() => navigate('/claim-form')}>Click Here</button>
-            </div>
+            </div> */}
         </div>
     );
 };
