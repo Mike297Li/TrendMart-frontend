@@ -17,7 +17,7 @@ const ProductsManagement = ({resetView}) => {
     const [priceFilter, setPriceFilter] = useState([0, 100000]);
     const [nameFilter, setNameFilter] = useState(""); // State for name filter
     const navigate = useNavigate();
-
+    const apiUrl = process.env.REACT_APP_API_URL;
     useEffect(() => {
         fetchProducts();
     }, []);
@@ -28,7 +28,7 @@ const ProductsManagement = ({resetView}) => {
 
     const fetchProducts = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/products');
+            const response = await axios.get(`${api}/api/products`);
             setProducts(response.data); // Set the products array directly from the response
         } catch (error) {
             console.error('Error fetching products:', error);
@@ -46,7 +46,7 @@ const ProductsManagement = ({resetView}) => {
     const handleDelete = async (productId) => {
         if (window.confirm('Are you sure you want to delete this product?')) {
             try {
-                await axios.delete(`http://localhost:8080/api/products/${productId}`);
+                await axios.delete(`${apiUrl}/api/products/${productId}`);
                 alert('Product deleted successfully');
                 fetchProducts();
             } catch (error) {

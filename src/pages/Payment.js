@@ -23,7 +23,7 @@ const Payment = () => {
     const [message, setMessage] = useState('');
     const [isProcessing, setIsProcessing] = useState(false);
     const navigate = useNavigate(); // For navigation
-
+    const apiUrl = process.env.REACT_APP_API_URL;
     // Retrieve orderId and totalAmount from location state
     const { state } = useLocation();
     const { orderId, totalAmount } = state || {}; // Destructure orderId and totalAmount
@@ -66,7 +66,7 @@ const Payment = () => {
 
         console.log('PaymentMethod created:', paymentMethod);
 
-        fetch('http://localhost:8080/api/payments/create', {
+        fetch(`${apiUrl}/api/payments/create`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

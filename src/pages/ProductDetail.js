@@ -24,11 +24,11 @@ const ProductDetail = () => {
     const [isEditing, setIsEditing] = useState(false); // Track if the user is editing the review
     const user = JSON.parse(localStorage.getItem('user'));
     const [editingReviewId, setEditingReviewId] = useState(null);
-
+    const apiUrl = process.env.REACT_APP_API_URL;
     // Fetch product details
     const fetchProductDetails = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/products/${productId}`);
+            const response = await fetch(`${apiUrl}/api/products/${productId}`);
             const data = await response.json();
             setProduct(data);
         } catch (error) {
@@ -39,7 +39,7 @@ const ProductDetail = () => {
     // Fetch reviews for the product
     const fetchReviews = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/review/product/${productId}`);
+            const response = await fetch(`${apiUrl}/api/review/product/${productId}`);
             const data = await response.json();
             setReviews(data);
 
@@ -92,7 +92,7 @@ const ProductDetail = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/api/review/submit', {
+            const response = await fetch('${apiUrl}/api/review/submit', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -145,7 +145,7 @@ const ProductDetail = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/api/review/update', {
+            const response = await fetch(`${apiUrl}/api/review/update`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -176,7 +176,7 @@ const ProductDetail = () => {
     // Handle deleting a review
     const handleDeleteReview = async (reviewId) => {
         try {
-            const response = await fetch('http://localhost:8080/api/review/delete', {
+            const response = await fetch(`${apiUrl}/api/review/delete`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

@@ -9,11 +9,12 @@ const AdminLogin = () => {
     const [error, setError] = useState('');
     
     const navigate = useNavigate(); // Use useNavigate for navigation
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8080/api/auth/login', { email, password });
+            const response = await axios.post(`${apiUrl}/api/auth/login`, { email, password });
             if(response.data){
                 localStorage.setItem('user', JSON.stringify(response.data))
             }

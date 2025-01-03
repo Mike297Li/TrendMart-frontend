@@ -9,11 +9,11 @@ const OrderDetails = ({ orderId, onBack }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const fetchOrderItems = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/order/${orderId}`);
+            const response = await axios.get(`${apiUrl}/api/order/${orderId}`);
             setOrderItems(response.data);
             setLoading(false);
         } catch (error) {

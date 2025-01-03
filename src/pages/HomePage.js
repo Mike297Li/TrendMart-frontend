@@ -10,10 +10,10 @@ import { useNavigate } from 'react-router-dom';
 const HomePage = () => {
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
-
+    const apiUrl = process.env.REACT_APP_API_URL;
     // Fetch products from API
     useEffect(() => {
-        fetch('http://localhost:8080/api/products/homepage')
+        fetch(`${apiUrl}/api/products/homepage`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch top-rated products');

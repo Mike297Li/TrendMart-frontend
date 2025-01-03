@@ -16,7 +16,7 @@ const Checkout = () => {
     const [country, setCountry] = useState('');
     const navigate = useNavigate();
     const cartItems = state?.cartItems || []; // Ensure cartItems is not undefined
-
+    const apiUrl = process.env.REACT_APP_API_URL;
     useEffect(()=>{
         if(JSON.parse(localStorage.getItem('user'))?.role === 'ADMIN'){
             navigate('/')
@@ -65,7 +65,7 @@ const Checkout = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:8080/api/checkout/place-order', {
+            const response = await fetch(`${apiUrl}/api/checkout/place-order`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

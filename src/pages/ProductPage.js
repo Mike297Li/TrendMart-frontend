@@ -16,6 +16,7 @@ const ProductPage = () => {
         pictureBase64: '', // Change this to a single base64 string
         quantity: ''
     });
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
         if (isEditing) {
@@ -89,14 +90,14 @@ const ProductPage = () => {
 
         try {
             if (isEditing) {
-                await axios.put(`http://localhost:8080/api/products/${location.state.product.productId}`, formDataToSend, {
+                await axios.put(`${apiUrl}/api/products/${location.state.product.productId}`, formDataToSend, {
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 });
                 alert('Product updated successfully');
             } else {
-                await axios.post('http://localhost:8080/api/products', formDataToSend, {
+                await axios.post(`${apiUrl}/api/products`, formDataToSend, {
                     headers: {
                         'Content-Type': 'application/json',
                     },

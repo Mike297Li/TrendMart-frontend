@@ -13,7 +13,7 @@ const ProductSearchPage = () => {
     const [productName, setProductName] = useState('');
     const [allProducts, setAllProducts] = useState([]); // Todos los productos desde el backend
     const [filteredProducts, setFilteredProducts] = useState([]); // Productos filtrados que se mostrarán
-
+    const apiUrl = process.env.REACT_APP_API_URL;
     // Cargar todos los productos una vez al montar el componente
     useEffect(() => {
         fetchAllProducts();
@@ -22,7 +22,7 @@ const ProductSearchPage = () => {
     // Función para traer todos los productos del backend
     const fetchAllProducts = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/api/products`);
+            const response = await fetch(`${apiUrl}/api/products`);
             if (response.ok) {
                 const data = await response.json();
                 setAllProducts(data);

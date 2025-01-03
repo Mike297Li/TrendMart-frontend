@@ -16,6 +16,8 @@ const SearchResults = () => {
     const [currentPage, setCurrentPage] = useState(location.state?.page || 1);
     const [totalResults, setTotalResults] = useState(location.state?.totalCount || 0);
     const resultsPerPage = 10;
+    const apiUrl = process.env.REACT_APP_API_URL;
+
 
     useEffect(() => {
         setTotalResults(location.state?.totalCount || 0);
@@ -42,7 +44,7 @@ const SearchResults = () => {
         e.preventDefault();
         setCurrentPage(1);
         try {
-            const response = await fetch(`http://localhost:8080/api/products/search?${buildQueryParams(1)}`);
+            const response = await fetch(`${apiUrl}/api/products/search?${buildQueryParams(1)}`);
             const data = await response.json();
             setResults(data.products);
             setTotalResults(data.totalCount);
@@ -55,7 +57,7 @@ const SearchResults = () => {
     const handlePageChange = async (page) => {
         setCurrentPage(page); // Update page state immediately
         try {
-            const response = await fetch(`http://localhost:8080/api/products/search?${buildQueryParams(page)}`);
+            const response = await fetch(`${apiUrl}/api/products/search?${buildQueryParams(page)}`);
             const data = await response.json();
             setResults(data.products);
             setTotalResults(data.totalCount);

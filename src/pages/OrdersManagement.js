@@ -17,6 +17,7 @@ const OrdersManagement = ({resetView}) => {
     const [endDate, setEndDate] = useState(null);      // Add endDate state
     const [selectedOrderStatus, setSelectedOrderStatus] = useState([]);
     const pageSize = 10;
+    const apiUrl = process.env.REACT_APP_API_URL;
 
     const user = JSON.parse(localStorage.getItem('user'));
     const userId = user?.role === 'ADMIN' ? user?.userId : user?.uid;  // Check for role and get correct user ID
@@ -29,10 +30,10 @@ const OrdersManagement = ({resetView}) => {
 
     const fetchOrders = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/searchOrders', {
+            const response = await axios.get(`${apiUrl}/api/searchOrders'`, {
                 params: {
-                    startDate: startDate ? startDate.toISOString().split('T')[0] : '2024-01-01',
-                    endDate: endDate ? endDate.toISOString().split('T')[0] : '2024-12-31',
+                    startDate: startDate ? startDate.toISOString().split('T')[0] : '2020-01-01',
+                    endDate: endDate ? endDate.toISOString().split('T')[0] : '2028-12-31',
                     userId,
                     page,
                     size: pageSize,

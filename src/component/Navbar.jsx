@@ -14,7 +14,7 @@ const Navbar = ({ isAuthenticated, user }) => {
     const { getTotalItems } = useCart(); // Get the total items in the cart from context
     const cartItemCount = getTotalItems(); // Calculate the total items in the cart using the context
     const navigate = useNavigate();
-
+    const apiUrl = process.env.REACT_APP_API_URL;
     const handleLogout = () => {
         signOut(auth)
             .then(() => {
@@ -63,7 +63,7 @@ const Navbar = ({ isAuthenticated, user }) => {
     const handleSearchSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8080/api/products/search?${buildQueryParams(1)}`);
+            const response = await fetch(`${apiUrl}/api/products/search?${buildQueryParams(1)}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
